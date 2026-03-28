@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-  preload: true,
-});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -21,21 +12,9 @@ const jetbrainsMono = JetBrains_Mono({
 
 const satoshi = localFont({
   src: [
-    {
-      path: "./fonts/Satoshi-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Satoshi-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Satoshi-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
+    { path: "./fonts/Satoshi-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Satoshi-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/Satoshi-Bold.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-body",
   display: "swap",
@@ -66,11 +45,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${instrumentSerif.variable} ${jetbrainsMono.variable} ${satoshi.variable}`}
-    >
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={`${jetbrainsMono.variable} ${satoshi.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
