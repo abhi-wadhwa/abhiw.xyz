@@ -1,88 +1,82 @@
-"use client";
+import Link from "next/link";
+import Footer from "@/components/Footer";
 
-import { useEffect, useState } from "react";
-import Sidebar from "@/components/layout/Sidebar";
-import Experience from "@/components/sections/Experience";
-import Research from "@/components/sections/Research";
-import Awards from "@/components/sections/Awards";
-import Coursework from "@/components/sections/Coursework";
-import Personal from "@/components/sections/Personal";
-
-const sections = [
-  { id: "about", label: "About", num: "01" },
-  { id: "experience", label: "Experience", num: "02" },
-  { id: "research", label: "Research", num: "03" },
-  { id: "awards", label: "Awards", num: "04" },
-  { id: "courses", label: "Coursework", num: "05" },
-  { id: "personal", label: "Personal", num: "06" },
+const navItems = [
+  { num: "01", title: "Experience", href: "/experience", desc: "Optiver · Iron Pillar Fund · The World Bank · RBC Capital Markets" },
+  { num: "02", title: "Research", href: "/research", desc: "SVD Theory · Random Matrix Theory · Stochastic Control · Behavioral Economics" },
+  { num: "03", title: "Awards", href: "/awards", desc: "Debate · Mathematics · Scholarships" },
+  { num: "04", title: "Coursework", href: "/courses", desc: "22 courses across Mathematics, CS, Economics, and Finance" },
+  { num: "05", title: "Personal", href: "/personal", desc: "Background · Interests · Philosophy" },
 ];
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("about");
-
-  // Track active section on scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -60% 0px" }
-    );
-
-    sections.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Scroll-triggered reveal animations
-  useEffect(() => {
-    const reveals = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    reveals.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div className="grid-frame">
-      <Sidebar sections={sections} activeSection={activeSection} />
-      <main className="col-right">
-        <section id="about" className="section">
-          <p className="intro-text">
-            I study Applied Mathematics at USC on scholarship. I work on how
-            utility theory and optimization methods enable multi-agent systems
-            to model incentives involving uncertainty and competition — with
-            applications to market and auction design.
-          </p>
-        </section>
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <div className="container">
+          <div className="hero-inner">
+            <div className="hero-text">
+              <h1 className="hero-name">Abhi Wadhwa</h1>
+              <p className="hero-subtitle">Applied Mathematics &middot; USC</p>
+              <p className="hero-focus">
+                Game Theory &middot; Optimization &middot; Market Design
+              </p>
+              <p className="hero-desc">
+                I study Applied Mathematics at USC on scholarship. I work on how
+                utility theory and optimization methods enable multi-agent
+                systems to model incentives involving uncertainty and
+                competition — with applications to market and auction design.
+              </p>
+              <div className="hero-chips">
+                <span className="hero-chip">
+                  <span className="hero-dot" /> Optiver &rsquo;26
+                </span>
+                <span className="hero-chip">
+                  <span className="hero-dot" /> Random Matrix Theory
+                </span>
+                <span className="hero-chip">
+                  <span className="hero-dot" /> USC Applied Math
+                </span>
+              </div>
+            </div>
 
-        <Experience />
-        <Research />
-        <Awards />
-        <Coursework />
-        <Personal />
+            <div className="hero-photo-wrap">
+              <img
+                src="/assets/abhi.jpeg"
+                alt="Abhi Wadhwa"
+                className="hero-photo"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <footer className="site-footer">
-          <p className="footer-text">&copy; 2026 Abhi Wadhwa</p>
-        </footer>
-      </main>
-    </div>
+      {/* Navigation to sections */}
+      <section className="home-nav">
+        <div className="container">
+          <div className="home-nav-list">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="home-nav-item"
+              >
+                <div className="home-nav-left">
+                  <span className="home-nav-num">{item.num}</span>
+                  <span className="home-nav-title">
+                    {item.title}
+                    <span className="home-nav-arrow">&rarr;</span>
+                  </span>
+                </div>
+                <span className="home-nav-desc">{item.desc}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer dark />
+    </>
   );
 }

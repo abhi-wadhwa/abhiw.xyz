@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif } from "next/font/google";
 import localFont from "next/font/local";
+import Navigation from "@/components/Navigation";
 import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -45,8 +47,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} ${satoshi.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${instrumentSerif.variable} ${satoshi.variable}`}
+    >
+      <body>
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }
