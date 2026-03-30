@@ -88,9 +88,17 @@ export default function ExperiencePage() {
     <>
       <div className="section-header">
         <div className="container">
-          <TextReveal as="h1" className="section-title">
-            Experience
-          </TextReveal>
+          <div className="section-header-row">
+            <TextReveal as="h1" className="section-title">
+              Experience
+            </TextReveal>
+            <Reveal delay={0.3} direction="right" variant="slide">
+              <span className="section-tagline">Mathematics &times; Markets</span>
+            </Reveal>
+          </div>
+          <Reveal delay={0.4} variant="scale">
+            <div className="section-header-line" />
+          </Reveal>
         </div>
       </div>
 

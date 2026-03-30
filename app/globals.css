@@ -723,18 +723,42 @@ button {
    PAGE HEADERS
    ============================================ */
 
-/* Compact section header — just title, tight spacing */
+/* Section header — title + tagline + accent line */
 .section-header {
-  padding: 110px 0 32px;
+  padding: 120px 0 0;
   background: var(--bg);
 }
 
+.section-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+
 .section-title {
-  font-size: clamp(36px, 5vw, 56px);
+  font-size: clamp(40px, 6vw, 64px);
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.03em;
   line-height: 1.1;
+}
+
+.section-tagline {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.section-header-line {
+  height: 2px;
+  margin-top: 24px;
+  margin-bottom: 48px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent 60%);
 }
 
 /* Legacy page header */
@@ -1933,7 +1957,16 @@ button {
   }
 
   .section-header {
-    padding: 100px 0 24px;
+    padding: 100px 0 0;
+  }
+
+  .section-header-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .section-header-line {
+    margin-bottom: 32px;
   }
 
   .page-header {
