@@ -22,7 +22,7 @@ export const experiences: Experience[] = [
   },
   {
     company: "Citadel Securities",
-    logo: "/assets/citadel.png",
+    logo: "/assets/citsec.png",
     role: "Trading Invitational Participant",
     location: "Miami, FL",
     dateRange: "Apr 2026",
