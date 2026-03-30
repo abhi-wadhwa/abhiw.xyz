@@ -27,7 +27,7 @@ export default function MusicPlayer() {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [expanded, setExpanded] = useState(false);
-  const progressInterval = useRef<ReturnType<typeof setInterval>>();
+  const progressInterval = useRef<ReturnType<typeof setInterval>>(undefined);
 
   const current = queue[trackIndex] || PLAYLIST[0];
 
