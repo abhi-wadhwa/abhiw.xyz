@@ -69,16 +69,28 @@ body {
   overflow-x: hidden;
 }
 
-/* Faint dot grid — graph paper background */
+/* Mathematical background — grid + contour lines + gradient wash */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background-image:
-    radial-gradient(circle, rgba(30, 82, 243, 0.06) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background:
+    /* Contour rings from bottom-left — like level sets of a cost function */
+    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.035) 199px, transparent 200px),
+    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.025) 399px, transparent 400px),
+    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.018) 599px, transparent 600px),
+    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.012) 799px, transparent 800px),
+    /* Subtle cobalt wash from top-right */
+    radial-gradient(ellipse at 80% 10%, rgba(30, 82, 243, 0.035) 0%, transparent 55%),
+    /* Fine grid lines */
+    linear-gradient(rgba(30, 82, 243, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 82, 243, 0.035) 1px, transparent 1px);
+  background-size:
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    100% 100%,
+    44px 44px, 44px 44px;
 }
 
 ::selection {
