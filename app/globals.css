@@ -1,42 +1,42 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS — Light, bright, optimistic
+   DESIGN TOKENS — Light, solemn blue-green
    ============================================ */
 
 :root {
-  /* Backgrounds — white base */
+  /* Backgrounds — clean white */
   --bg: #ffffff;
   --bg-elevated: #ffffff;
-  --bg-subtle: #f6f7fb;
-  --surface: #eef0f6;
+  --bg-subtle: #f5f5f7;
+  --surface: #ececee;
 
-  /* Text — rich darks */
-  --text-primary: #1a1a2e;
-  --text-secondary: #4a4a6a;
-  --text-tertiary: #8888a8;
+  /* Text — D.E. Shaw-inspired darks */
+  --text-primary: #252525;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
 
-  /* Borders — light */
-  --border: rgba(0, 0, 0, 0.07);
-  --border-hover: rgba(0, 0, 0, 0.14);
+  /* Borders */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.16);
 
-  /* Accent — vibrant violet → blue → cyan */
-  --accent: #7c3aed;
-  --accent-bright: #8b5cf6;
-  --accent-blue: #3b82f6;
-  --accent-cyan: #0891b2;
-  --accent-glow: rgba(124, 58, 237, 0.07);
-  --accent-glow-strong: rgba(124, 58, 237, 0.14);
+  /* Accent — solemn cobalt → deep teal */
+  --accent: #1e52f3;
+  --accent-bright: #3b6cf5;
+  --accent-blue: #1e52f3;
+  --accent-cyan: #0e7490;
+  --accent-glow: rgba(30, 82, 243, 0.06);
+  --accent-glow-strong: rgba(30, 82, 243, 0.12);
 
   /* Gradients */
-  --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #0891b2 100%);
-  --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444);
+  --gradient-accent: linear-gradient(135deg, #1e52f3 0%, #0e7490 100%);
+  --gradient-warm: linear-gradient(135deg, #d97706, #b45309);
 
   /* Semantic */
-  --warm: #d97706;
-  --warm-glow: rgba(217, 119, 6, 0.08);
-  --rose: #e11d48;
-  --emerald: #059669;
+  --warm: #b45309;
+  --warm-glow: rgba(180, 83, 9, 0.07);
+  --rose: #be123c;
+  --emerald: #047857;
 
   /* Motion */
   --ease: cubic-bezier(0.76, 0, 0.24, 1);
@@ -246,8 +246,8 @@ button {
   inset: 0;
   background: radial-gradient(
     ellipse 70% 50% at 25% 50%,
-    rgba(124, 58, 237, 0.05) 0%,
-    rgba(59, 130, 246, 0.03) 40%,
+    rgba(30, 82, 243, 0.04) 0%,
+    rgba(14, 116, 144, 0.02) 40%,
     transparent 70%
   );
   pointer-events: none;
@@ -260,7 +260,7 @@ button {
   height: 600px;
   right: -100px;
   top: 10%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(14, 116, 144, 0.03) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -361,8 +361,8 @@ button {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(124, 58, 237, 0.08) 0%,
-    rgba(59, 130, 246, 0.04) 40%,
+    rgba(30, 82, 243, 0.06) 0%,
+    rgba(14, 116, 144, 0.03) 40%,
     transparent 70%
   );
   pointer-events: none;
@@ -998,13 +998,13 @@ button {
 }
 
 .course-card-grad {
-  border-color: rgba(124, 58, 237, 0.12);
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), var(--bg) 60%);
+  border-color: rgba(30, 82, 243, 0.10);
+  background: linear-gradient(135deg, rgba(30, 82, 243, 0.03), var(--bg) 60%);
 }
 
 .course-card-grad:hover {
-  border-color: rgba(124, 58, 237, 0.22);
-  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.06);
+  border-color: rgba(30, 82, 243, 0.18);
+  box-shadow: 0 16px 40px rgba(30, 82, 243, 0.05);
 }
 
 .course-top {
@@ -1027,7 +1027,7 @@ button {
   padding: 4px 12px;
   border-radius: 100px;
   background: var(--accent-glow);
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(30, 82, 243, 0.12);
   color: var(--accent);
   letter-spacing: 0.04em;
   text-transform: uppercase;
