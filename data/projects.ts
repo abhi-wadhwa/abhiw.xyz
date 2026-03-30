@@ -12,13 +12,8 @@ export const projects: Project[] = [
   { name: "Market Making Game", repo: "market-making-game", desc: "Interactive market-making simulator — quote bid/ask spreads, manage inventory risk, Glosten-Milgrom model.", category: "Finance", lang: "Python" },
   { name: "Limit Order Book", repo: "limit-order-book", desc: "High-fidelity LOB simulation — matching engine, agent-based simulation, execution algorithms, market microstructure.", category: "Finance", lang: "Python" },
   { name: "Options Pricing Trainer", repo: "options-pricing-trainer", desc: "Interactive options pricing education — Black-Scholes, binomial trees, Monte Carlo, Greeks, volatility surface.", category: "Finance", lang: "Python" },
-  { name: "Fixed Income Toolkit", repo: "fixed-income-toolkit", desc: "Fixed income analytics — yield curve bootstrapping, bond pricing, duration/convexity, scenario analysis.", category: "Finance", lang: "Python" },
   { name: "Put-Call Parity", repo: "put-call-parity", desc: "Put-call parity visualization and arbitrage detection tool.", category: "Finance", lang: "JavaScript" },
-  { name: "Equities", repo: "equities", desc: "Valuation models, stock pitches, and financial modeling work from coursework and personal analysis.", category: "Finance", lang: "Various" },
-  { name: "Fixed Income", repo: "fixed-income", desc: "Explorations in debt markets — bond math, yield curve analysis, and fixed income modeling.", category: "Finance", lang: "Various" },
   { name: "Alpha Engine", repo: "alpha-engine", desc: "Proprietary alpha signal research and systematic strategy development platform.", category: "Finance", lang: "TypeScript", private: true },
-  { name: "Tower Game", repo: "towergame", desc: "Recreation of a game from a trading interview — strategy and decision-making under uncertainty.", category: "Finance", lang: "TypeScript", private: true },
-  { name: "Trading QBank", repo: "trading-qbank", desc: "Question bank and training tool for quantitative trading preparation.", category: "Finance", lang: "TypeScript", private: true },
 
   // ── Economics & Mechanism Design ─────────────────────
   { name: "Arrow-Debreu Equilibrium", repo: "arrow-debreu-equilibrium", desc: "Compute Walrasian equilibria in Arrow-Debreu exchange economies — Scarf's algorithm, tâtonnement, Edgeworth box.", category: "Economics & Mechanism Design", lang: "Python" },
@@ -53,7 +48,4 @@ export const projects: Project[] = [
   { name: "Tournament System", repo: "tournament-system", desc: "Tournament management platform — Swiss pairing, Round Robin, British Parliamentary tabulation, judge allocation.", category: "Debate", lang: "Python" },
   { name: "Double Blind Review", repo: "double-blind-review", desc: "Anonymized evaluation platform — double-blind review with structured rubrics, calibration, score aggregation.", category: "Debate", lang: "Python" },
   { name: "BP Break Calculator", repo: "bp-break-calculator", desc: "Break calculation tool for British Parliamentary debate tournaments.", category: "Debate", lang: "Python" },
-  { name: "Debate Practice App", repo: "debate-practice-app", desc: "Debate practice and preparation tool for competitive parliamentary debaters.", category: "Debate", lang: "TypeScript" },
-  { name: "BP Flow", repo: "bp-flow", desc: "British Parliamentary debate flow tracking tool.", category: "Debate", lang: "JavaScript" },
-  { name: "VCA Review", repo: "vca-review", desc: "Debate adjudication and review platform.", category: "Debate", lang: "TypeScript" },
 ];
