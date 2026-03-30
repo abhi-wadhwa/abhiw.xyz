@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 
-// Add your songs here — files go in public/assets/music/
 const PLAYLIST = [
   { title: "Can't Decide", artist: "Max Dean", cover: "", file: "/assets/music/Can't Decide.mp3" },
 ];
@@ -18,6 +17,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [unlocked, setUnlocked] = useState(false);
   const [queue, setQueue] = useState(() => shuffle(PLAYLIST));
   const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -28,6 +28,21 @@ export default function MusicPlayer() {
   const progressInterval = useRef<ReturnType<typeof setInterval>>(undefined);
 
   const current = queue[trackIndex] || PLAYLIST[0];
+
+  // Listen for the easter egg event
+  useEffect(() => {
+    const handler = () => {
+      setUnlocked(true);
+      setExpanded(true);
+      // Auto-play after a tiny delay so the UI renders first
+      setTimeout(() => {
+        audioRef.current?.play().catch(() => {});
+        setPlaying(true);
+      }, 100);
+    };
+    window.addEventListener("easter-egg-music", handler);
+    return () => window.removeEventListener("easter-egg-music", handler);
+  }, []);
 
   const play = useCallback(() => {
     audioRef.current?.play().catch(() => {});
@@ -102,6 +117,11 @@ export default function MusicPlayer() {
 
   const pct = duration ? (progress / duration) * 100 : 0;
 
+  // Hidden until easter egg is found
+  if (!unlocked) {
+    return <audio ref={audioRef} src={current.file} onEnded={next} preload="none" />;
+  }
+
   return (
     <div className={`mp ${expanded ? "mp-expanded" : ""}`}>
       <audio
@@ -113,7 +133,7 @@ export default function MusicPlayer() {
         }}
       />
 
-      {/* Collapsed: spinning disc */}
+      {/* Collapsed: spinning vinyl disc */}
       {!expanded && (
         <button
           className={`mp-disc-btn ${playing ? "mp-disc-spinning" : ""}`}
@@ -134,7 +154,6 @@ export default function MusicPlayer() {
       {/* Expanded player */}
       {expanded && (
         <div className="mp-panel">
-          {/* Spinning vinyl */}
           <div className="mp-vinyl-wrap">
             <div className={`mp-vinyl ${playing ? "mp-vinyl-spinning" : ""}`}>
               {current.cover ? (
@@ -149,13 +168,11 @@ export default function MusicPlayer() {
             </div>
           </div>
 
-          {/* Track info */}
           <div className="mp-info">
             <div className="mp-track">{current.title}</div>
             <div className="mp-artist">{current.artist}</div>
           </div>
 
-          {/* Progress */}
           <div className="mp-progress-wrap" onClick={seek}>
             <div className="mp-progress-fill" style={{ width: `${pct}%` }} />
           </div>
@@ -164,7 +181,6 @@ export default function MusicPlayer() {
             <span>{fmt(duration)}</span>
           </div>
 
-          {/* Controls */}
           <div className="mp-controls">
             <button className="mp-btn" onClick={prev} aria-label="Previous">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -189,7 +205,6 @@ export default function MusicPlayer() {
             </button>
           </div>
 
-          {/* Volume + close */}
           <div className="mp-bottom">
             <div className="mp-volume">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

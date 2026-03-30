@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
@@ -82,6 +84,15 @@ export default function Home() {
                     <Link href="/personal" className="about-link">Richmond, Mumbai, Dubai, and Los Angeles</Link>{" "}
                     &mdash; and that background shapes how I think about incentives,
                     policy, and markets.
+                    {" "}I also{" "}
+                    <span
+                      className="about-link easter-egg-link"
+                      onClick={() => {
+                        window.dispatchEvent(new CustomEvent("easter-egg-music"));
+                      }}
+                    >
+                      like electronic music
+                    </span>.
                   </p>
                 </Reveal>
               </div>

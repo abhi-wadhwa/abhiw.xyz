@@ -337,6 +337,10 @@ button {
   width: 100%;
 }
 
+.easter-egg-link {
+  cursor: pointer;
+}
+
 /* Right column — 100vh flex-centered, sticks at viewport top */
 .hero-scroll-right {
   position: relative;
