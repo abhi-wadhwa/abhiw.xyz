@@ -15,7 +15,6 @@ export default function Home() {
           <div className="hero-scroll-grid">
             {/* Left: statement then paragraphs */}
             <div className="hero-scroll-left">
-              <div className="hero-scroll-spacer" />
               <TextReveal as="h1" className="statement-text" delay={0.15}>
                 I am Abhi Wadhwa, a Quant Trader at Optiver and applied mathematician studying game theory, optimization, and market design at USC.
               </TextReveal>

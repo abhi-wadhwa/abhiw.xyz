@@ -241,13 +241,8 @@ button {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 64px;
-  padding-top: 72px;
+  padding-top: 40vh;
   align-items: start;
-}
-
-/* Left column — spacer pushes statement to vertical center */
-.hero-scroll-spacer {
-  height: calc(50vh - 200px);
 }
 
 .statement-text {
@@ -301,14 +296,14 @@ button {
   opacity: 0.7;
 }
 
-/* Right column — photo sticks, vertically centered with statement */
+/* Right column — photo sticks at top of text, stays while scrolling */
 .hero-scroll-right {
   position: relative;
 }
 
 .hero-scroll-photo {
   position: sticky;
-  top: calc(50vh - 200px);
+  top: 40vh;
   width: 380px;
   height: 380px;
 }
@@ -1492,10 +1487,7 @@ button {
   .hero-scroll-grid {
     grid-template-columns: 1fr;
     gap: 32px;
-  }
-
-  .hero-scroll-spacer {
-    height: calc(50vh - 180px);
+    padding-top: 120px;
   }
 
   .hero-scroll-right {
