@@ -33,11 +33,9 @@ export default function ProjectsPage() {
       if (flickering) return;
       targetRef.current = target;
       setFlickering(true);
-
       let count = 0;
       const interval = setInterval(() => {
-        const rand = Math.floor(Math.random() * projects.length);
-        setFlickerName(projects[rand].name);
+        setFlickerName(projects[Math.floor(Math.random() * projects.length)].name);
         count++;
         if (count >= FLICKER_COUNT) {
           clearInterval(interval);
@@ -65,6 +63,16 @@ export default function ProjectsPage() {
     return () => clearTimeout(timerRef.current);
   }, [index, paused, flickering, next]);
 
+  // Arrow key navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); next(); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); prev(); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [next, prev]);
+
   return (
     <>
       <div className="section-header">
@@ -74,7 +82,7 @@ export default function ProjectsPage() {
           </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
-              {projects.length} repositories across finance, economics, game theory, and debate.
+              some finance stuff, some econ stuff, some ml stuff
             </p>
           </Reveal>
           <Reveal delay={0.3} variant="scale">
@@ -90,6 +98,20 @@ export default function ProjectsPage() {
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
+            {/* Left arrow */}
+            <button className="proj-arrow proj-arrow-left" onClick={prev} aria-label="Previous project">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            {/* Right arrow */}
+            <button className="proj-arrow proj-arrow-right" onClick={next} aria-label="Next project">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
             {/* Counter */}
             <div className="proj-counter">
               <span className="proj-counter-current">
@@ -101,70 +123,55 @@ export default function ProjectsPage() {
               </span>
             </div>
 
-            {/* Flickering / Current project */}
-            <AnimatePresence mode="wait">
-              {flickering ? (
-                <motion.div
-                  key="flicker"
-                  className="proj-flicker"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.05 }}
-                >
-                  <h2 className="proj-name proj-name-flicker">{flickerName || current.name}</h2>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="proj-category-row">
-                    <span
-                      className="proj-category"
-                      style={{ color: CATEGORY_COLORS[current.category] }}
-                    >
-                      {current.category}
-                    </span>
-                    <span className="proj-lang">{current.lang}</span>
-                  </div>
-
-                  <h2 className="proj-name">{current.name}</h2>
-
-                  <p className="proj-desc">{current.desc}</p>
-
-                  {current.private ? (
-                    <span className="proj-private">Private Repository</span>
-                  ) : (
-                    <a
-                      href={`https://github.com/abhi-wadhwa/${current.repo}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="proj-link"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View on GitHub &rarr;
-                    </a>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Navigation */}
-            <div className="proj-nav">
-              <button className="proj-nav-btn" onClick={prev} aria-label="Previous project">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-              </button>
-              <button className="proj-nav-btn" onClick={next} aria-label="Next project">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
+            {/* Content */}
+            <div className="proj-content">
+              <AnimatePresence mode="wait">
+                {flickering ? (
+                  <motion.div
+                    key="flicker"
+                    className="proj-flicker"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.05 }}
+                  >
+                    <h2 className="proj-name proj-name-flicker">{flickerName || current.name}</h2>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className="proj-category-row">
+                      <span
+                        className="proj-category"
+                        style={{ color: CATEGORY_COLORS[current.category] }}
+                      >
+                        {current.category}
+                      </span>
+                      <span className="proj-lang">{current.lang}</span>
+                    </div>
+                    <h2 className="proj-name">{current.name}</h2>
+                    <p className="proj-desc">{current.desc}</p>
+                    {current.private ? (
+                      <span className="proj-private">Private Repository</span>
+                    ) : (
+                      <a
+                        href={`https://github.com/abhi-wadhwa/${current.repo}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="proj-link"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View on GitHub &rarr;
+                      </a>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Progress dots */}

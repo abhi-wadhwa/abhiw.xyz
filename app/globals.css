@@ -1890,14 +1890,46 @@ button {
    ============================================ */
 
 .proj-stage {
-  min-height: 420px;
+  min-height: 440px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  padding: 60px 0;
+  padding: 60px 80px;
 }
 
+/* Arrows — opposite sides */
+.proj-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.proj-arrow:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.proj-arrow-left {
+  left: 0;
+}
+
+.proj-arrow-right {
+  right: 0;
+}
+
+/* Counter */
 .proj-counter {
   font-size: 13px;
   font-weight: 700;
@@ -1918,6 +1950,14 @@ button {
 
 .proj-counter-total {
   color: var(--text-tertiary);
+}
+
+/* Content area */
+.proj-content {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .proj-category-row {
@@ -1993,40 +2033,12 @@ button {
   font-style: italic;
 }
 
-/* Navigation arrows */
-.proj-nav {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.proj-nav-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-tertiary);
-  border: 1px solid var(--border);
-  transition: all 0.25s ease;
-}
-
-.proj-nav-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-glow);
-}
-
 /* Progress dots */
 .proj-dots {
   display: flex;
   gap: 6px;
   margin-top: 32px;
+  flex-wrap: wrap;
 }
 
 .proj-dot {
@@ -2054,15 +2066,13 @@ button {
     padding: 40px 0;
   }
 
-  .proj-name {
-    font-size: clamp(28px, 7vw, 40px);
-  }
-
-  .proj-nav {
+  .proj-arrow {
     position: static;
     transform: none;
-    flex-direction: row;
-    margin-top: 24px;
+  }
+
+  .proj-name {
+    font-size: clamp(28px, 7vw, 40px);
   }
 
   .proj-desc {
