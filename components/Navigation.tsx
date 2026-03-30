@@ -31,7 +31,6 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Top nav bar */}
       <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
         <Link href="/" className="nav-logo">
           Abhi Wadhwa
@@ -66,13 +65,13 @@ export default function Navigation() {
             </svg>
           )}
         </button>
-      </nav>
 
-      {/* Vertical scroll progress — left edge */}
-      <motion.div
-        className="scroll-progress"
-        style={{ scaleY: scrollYProgress }}
-      />
+        {/* Scroll progress bar */}
+        <motion.div
+          className="scroll-progress"
+          style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
+        />
+      </nav>
 
       {mobileOpen && (
         <div className="nav-mobile-overlay">
