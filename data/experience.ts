@@ -21,6 +21,16 @@ export const experiences: Experience[] = [
     narrative: "I'm spending my first four weeks manually click-trading single stock options in simulation to build deep intuition around pricing dynamics, liquidity, and execution. From there, I'm building models, researching hypotheses, and generating alpha for systematic strategies focused on single stock options. A major part of the work involves modeling volatility and constructing vol surfaces as part of proprietary market making strategies that discretionary traders use to inform their positions.",
   },
   {
+    company: "Citadel Securities",
+    logo: "/assets/citadel.png",
+    role: "Trading Invitational Participant",
+    location: "Miami, FL",
+    dateRange: "Apr 2026",
+    summary: "Selected for an elite, invite-only trading competition run by one of the world's largest market makers.",
+    companyDesc: "Citadel Securities is one of the world's largest market makers, handling roughly a quarter of all U.S. equity trading volume. Founded by Ken Griffin and headquartered in Miami, the firm uses advanced quantitative strategies and technology to provide liquidity across equities, options, fixed income, and ETFs on exchanges worldwide.",
+    narrative: "I was selected to participate in the Citadel Securities Trading Invitational, a highly selective competition that draws top quantitative and trading-minded students from universities across the country. The event tested market-making intuition, quantitative reasoning, and decision-making under pressure through simulated trading challenges. Participants had to price instruments, manage risk in real-time, and adapt to shifting market conditions — all while competing against some of the strongest quantitative minds in the undergraduate talent pool.",
+  },
+  {
     company: "Iron Pillar Fund",
     logo: "/assets/Ironpillar.jpg",
     role: "Private Equity Intern",
@@ -49,15 +59,5 @@ export const experiences: Experience[] = [
     summary: "Ranked #1 in an operating-model competition and built a long/short equity strategy that generated 2% alpha.",
     companyDesc: "RBC Capital Markets is the investment banking arm of the Royal Bank of Canada, one of North America's largest financial institutions. They provide advisory, sales & trading, and research services across global markets.",
     narrative: "I built a long/short equity strategy on NVDA and TSLA based on political sentiment analysis and fundamental valuation, which yielded 2% uncorrelated alpha over the program period. I also ranked first out of 40 participants in a time-intensive operating-model competition, where I built financial simulations from scratch and diagnosed errors in existing model templates under pressure.",
-  },
-  {
-    company: "Citadel Securities",
-    logo: "/assets/citadel.png",
-    role: "Trading Invitational Participant",
-    location: "Miami, FL",
-    dateRange: "2025",
-    summary: "Selected for an elite, invite-only trading competition run by one of the world's largest market makers.",
-    companyDesc: "Citadel Securities is one of the world's largest market makers, handling roughly a quarter of all U.S. equity trading volume. Founded by Ken Griffin and headquartered in Miami, the firm uses advanced quantitative strategies and technology to provide liquidity across equities, options, fixed income, and ETFs on exchanges worldwide.",
-    narrative: "I was selected to participate in the Citadel Securities Trading Invitational, a highly selective competition that draws top quantitative and trading-minded students from universities across the country. The event tested market-making intuition, quantitative reasoning, and decision-making under pressure through simulated trading challenges. Participants had to price instruments, manage risk in real-time, and adapt to shifting market conditions — all while competing against some of the strongest quantitative minds in the undergraduate talent pool.",
   },
 ];
