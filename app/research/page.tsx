@@ -28,43 +28,25 @@ export default function ResearchPage() {
           <div className="res-list">
             {research.map((item, i) => (
               <Reveal key={`${item.institution}-${item.advisor}`} delay={i * 0.12}>
-                <article className="res-paper">
-                  {/* Decorative math symbol */}
-                  <div className="res-symbol">{item.symbol}</div>
-
-                  {/* Title */}
-                  <h2 className="res-title">{item.title}</h2>
-
-                  {/* Metadata bar */}
-                  <div className="res-meta-bar">
-                    <div className="res-meta-left">
-                      <img
-                        src={item.logo}
-                        alt={item.institution}
-                        className="res-meta-logo"
-                        loading="lazy"
-                      />
-                      <span className="res-meta-text">
-                        {item.institution} &mdash; {item.department}
-                      </span>
-                    </div>
-                    <span className="res-meta-text">
-                      Advisor: {item.advisor}
-                    </span>
-                    <span className="res-meta-text">
-                      {item.location} &middot; {item.year}
-                    </span>
+                <article className="res-entry">
+                  <div className="res-entry-head">
+                    <span className="res-symbol-inline">{item.symbol}</span>
+                    <h2 className="res-title">{item.title}</h2>
                   </div>
 
-                  {/* Narrative */}
+                  <p className="res-attribution">
+                    {item.institution} &mdash; {item.department}
+                    <span className="res-sep">/</span>
+                    Advisor: {item.advisor}
+                    <span className="res-sep">/</span>
+                    {item.year}
+                  </p>
+
                   <p className="res-narrative">{item.narrative}</p>
 
-                  {/* Tags */}
-                  <div className="res-tags">
-                    {item.tags.map((tag) => (
-                      <span key={tag} className="res-tag">{tag}</span>
-                    ))}
-                  </div>
+                  <p className="res-keywords">
+                    {item.tags.join(" · ")}
+                  </p>
                 </article>
               </Reveal>
             ))}
