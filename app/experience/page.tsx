@@ -93,7 +93,7 @@ export default function ExperiencePage() {
           </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
-              Quantitative trading, private equity, machine learning, and capital markets — from Chicago to Dubai to New York.
+              Quantitative trading, private equity, machine learning, and capital markets.
             </p>
           </Reveal>
           <Reveal delay={0.4} variant="scale">

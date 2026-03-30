@@ -13,7 +13,7 @@ export default function ResearchPage() {
           </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
-              Random matrix theory, stochastic control, convex optimization, and game-theoretic models of human behavior.
+              Random matrix theory, stochastic control, optimization, and behavioral economics.
             </p>
           </Reveal>
           <Reveal delay={0.4} variant="scale">
