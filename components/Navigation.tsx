@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 
 const links = [
@@ -17,7 +17,18 @@ export default function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
+  const [centerY, setCenterY] = useState(300);
+  const { scrollY, scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    const calc = () => {
+      const navHeight = links.length * 20 + (links.length - 1) * 24;
+      setCenterY((window.innerHeight - navHeight) / 2);
+    };
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -29,24 +40,17 @@ export default function Navigation() {
     setMobileOpen(false);
   }, [pathname]);
 
+  // Vertical nav interpolations: extended when at top, collapsed on scroll
+  const navTop = useTransform(scrollY, [0, 400], [centerY, 90]);
+  const navGap = useTransform(scrollY, [0, 400], [24, 10]);
+
   return (
     <>
+      {/* Top bar — logo + scroll progress */}
       <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
         <Link href="/" className="nav-logo">
           Abhi Wadhwa
         </Link>
-
-        <div className="nav-links">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`nav-link ${pathname === l.href ? "active" : ""}`}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </div>
 
         <button
           className="nav-mobile-toggle"
@@ -66,12 +70,28 @@ export default function Navigation() {
           )}
         </button>
 
-        {/* Scroll progress bar */}
+        {/* Horizontal scroll progress */}
         <motion.div
           className="scroll-progress"
           style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
         />
       </nav>
+
+      {/* Vertical nav — right side, scroll-driven */}
+      <motion.nav
+        className="nav-vertical"
+        style={{ top: navTop, gap: navGap }}
+      >
+        {links.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className={`nav-vertical-link ${pathname === l.href ? "active" : ""}`}
+          >
+            {l.label}
+          </Link>
+        ))}
+      </motion.nav>
 
       {mobileOpen && (
         <div className="nav-mobile-overlay">
