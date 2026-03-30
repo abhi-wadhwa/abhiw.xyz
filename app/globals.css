@@ -255,13 +255,12 @@ button {
 
 /* Left column */
 .hero-scroll-left {
-  padding-top: 100px;
   padding-right: 48px;
 }
 
 /* First screen: statement vertically centered */
 .hero-scroll-statement {
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
   display: flex;
   align-items: center;
 }
@@ -316,18 +315,23 @@ button {
   opacity: 0.7;
 }
 
-/* Right column — full height, photo sticks centered */
+/* Right column — 100vh flex-centered, sticks at viewport top */
 .hero-scroll-right {
   position: relative;
-  padding-top: 100px;
 }
 
 .hero-scroll-photo {
   position: sticky;
-  top: calc(50vh - 150px);
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-scroll-photo .hero-photo-ring {
   width: 440px;
   height: 440px;
-  margin: 0 auto;
 }
 
 /* Shared tag + photo styles */
@@ -1522,12 +1526,17 @@ button {
 
   .hero-scroll-right {
     order: -1;
-    padding-top: 100px;
   }
 
   .hero-scroll-photo {
     position: relative;
     top: auto;
+    height: auto;
+    display: block;
+    padding: 100px 0 0;
+  }
+
+  .hero-scroll-photo .hero-photo-ring {
     width: 220px;
     height: 220px;
   }
