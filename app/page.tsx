@@ -6,6 +6,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import TextReveal from "@/components/TextReveal";
+import HeroIntro from "@/components/HeroIntro";
 
 const navItems = [
   {
@@ -47,6 +48,7 @@ export default function Home() {
 
   return (
     <>
+      <HeroIntro />
       {/* Hero */}
       <section className="hero" ref={heroRef}>
         <motion.div className="container" style={{ opacity: heroOpacity }}>
