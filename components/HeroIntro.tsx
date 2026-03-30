@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const NODE_COUNT = 130;
 const CONNECT_DIST = 140;
@@ -10,6 +12,14 @@ const SYMBOL_TEXTS = [
   "\u03BB\u2098\u2090\u2093", "\u2207f(x)", "\u03C3\u00B2(t)",
   "E[U(x)]", "\u03C0*(s)", "\u222B d\u03BC",
   "P(s'|s,a)", "V*(s)",
+];
+
+const NAV_LINKS = [
+  { label: "Experience", href: "/experience" },
+  { label: "Research", href: "/research" },
+  { label: "Awards", href: "/awards" },
+  { label: "Courses", href: "/courses" },
+  { label: "Personal", href: "/personal" },
 ];
 
 interface Node {
@@ -35,10 +45,12 @@ interface SymbolNode {
 
 export default function HeroIntro() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [nameVisible, setNameVisible] = useState(false);
   const [subVisible, setSubVisible] = useState(false);
   const [skipVisible, setSkipVisible] = useState(false);
+  const [navVisible, setNavVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
   const exitedRef = useRef(false);
   const animatingRef = useRef(true);
@@ -48,7 +60,6 @@ export default function HeroIntro() {
   const startTimeRef = useRef<number | null>(null);
   const sizeRef = useRef({ w: 0, h: 0 });
 
-  // Check first visit
   useEffect(() => {
     const seen = sessionStorage.getItem("heroSeen");
     if (!seen) {
@@ -72,25 +83,31 @@ export default function HeroIntro() {
     }, 1000);
   }, []);
 
+  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    sessionStorage.setItem("heroSeen", "1");
+    document.body.style.overflow = "";
+    animatingRef.current = false;
+    setVisible(false);
+    router.push(href);
+  };
+
   // Initialize nodes
   useEffect(() => {
     if (!visible) return;
-
     const nodes: Node[] = [];
     for (let i = 0; i < NODE_COUNT; i++) {
       const rx = Math.random();
       const ry = Math.random();
       nodes.push({
         ratioX: rx, ratioY: ry,
-        homeX: rx, homeY: ry,
-        x: rx, y: ry,
+        homeX: rx, homeY: ry, x: rx, y: ry,
         vx: 0, vy: 0,
         radius: 1.5 + Math.random(),
         phase: Math.random() * Math.PI * 2,
         spawnDelay: 0,
       });
     }
-
     const symbols: SymbolNode[] = [];
     const step = Math.floor(NODE_COUNT / SYMBOL_TEXTS.length);
     for (let i = 0; i < SYMBOL_TEXTS.length; i++) {
@@ -98,14 +115,11 @@ export default function HeroIntro() {
       if (idx < NODE_COUNT) {
         nodes[idx].radius = 2.5;
         symbols.push({
-          node: nodes[idx],
-          text: SYMBOL_TEXTS[i],
-          ratioX: nodes[idx].ratioX,
-          ratioY: nodes[idx].ratioY,
+          node: nodes[idx], text: SYMBOL_TEXTS[i],
+          ratioX: nodes[idx].ratioX, ratioY: nodes[idx].ratioY,
         });
       }
     }
-
     nodesRef.current = nodes;
     symbolsRef.current = symbols;
   }, [visible]);
@@ -131,20 +145,18 @@ export default function HeroIntro() {
         n.homeY = n.ratioY * h;
         n.x = n.homeX;
         n.y = n.homeY;
-        n.spawnDelay = Math.sqrt(
-          (n.homeX - w / 2) ** 2 + (n.homeY - h / 2) ** 2
-        ) * 1.2;
+        n.spawnDelay = Math.sqrt((n.homeX - w / 2) ** 2 + (n.homeY - h / 2) ** 2) * 1.2;
       }
     }
 
     resize();
     window.addEventListener("resize", resize);
 
-    // Text timing
     const t1 = setTimeout(() => setNameVisible(true), 500);
     const t2 = setTimeout(() => setSubVisible(true), 1100);
-    const t3 = setTimeout(() => setSkipVisible(true), 2200);
-    const t4 = setTimeout(() => exit(), 4500);
+    const t3 = setTimeout(() => setNavVisible(true), 1400);
+    const t4 = setTimeout(() => setSkipVisible(true), 2200);
+    const t5 = setTimeout(() => exit(), 4500);
 
     startTimeRef.current = null;
     animatingRef.current = true;
@@ -158,18 +170,15 @@ export default function HeroIntro() {
       const my = mouseRef.current.y;
       const mouseActive = mouseRef.current.active;
 
-      // Background
       ctx.fillStyle = "#0a1628";
       ctx.fillRect(0, 0, W, H);
 
-      // Radial gradient
       const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.55);
       bgGrad.addColorStop(0, "rgba(30,82,243,0.02)");
       bgGrad.addColorStop(1, "rgba(30,82,243,0)");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, W, H);
 
-      // Mouse glow
       if (mouseActive && mx > 0) {
         const glow = ctx.createRadialGradient(mx, my, 0, mx, my, MOUSE_RADIUS);
         glow.addColorStop(0, "rgba(30,82,243,0.05)");
@@ -181,11 +190,9 @@ export default function HeroIntro() {
         ctx.fill();
       }
 
-      // Physics
       for (const n of nodes) {
         n.vx += (n.homeX - n.x) * 0.004;
         n.vy += (n.homeY - n.y) * 0.004;
-
         if (mouseActive) {
           const dx = mx - n.x, dy = my - n.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
@@ -195,7 +202,6 @@ export default function HeroIntro() {
             n.vy += (dy / dist) * strength;
           }
         }
-
         n.vx += (Math.random() - 0.5) * 0.025;
         n.vy += (Math.random() - 0.5) * 0.025;
         n.vx *= 0.94;
@@ -209,7 +215,6 @@ export default function HeroIntro() {
         return t < 0 ? 0 : Math.min(t / 500, 1);
       }
 
-      // Connections
       ctx.lineWidth = 0.6;
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
@@ -228,9 +233,7 @@ export default function HeroIntro() {
             const emx = (a.x + b.x) / 2 - mx;
             const emy = (a.y + b.y) / 2 - my;
             const eDist = Math.sqrt(emx * emx + emy * emy);
-            if (eDist < MOUSE_RADIUS) {
-              alpha += (1 - eDist / MOUSE_RADIUS) * 0.13 * edgeFade;
-            }
+            if (eDist < MOUSE_RADIUS) alpha += (1 - eDist / MOUSE_RADIUS) * 0.13 * edgeFade;
           }
           ctx.strokeStyle = "rgba(30,82,243," + alpha + ")";
           ctx.beginPath();
@@ -240,7 +243,6 @@ export default function HeroIntro() {
         }
       }
 
-      // Particles
       for (const n of nodes) {
         const a = spawnAlpha(n);
         if (a < 0.01) continue;
@@ -262,7 +264,6 @@ export default function HeroIntro() {
         ctx.fill();
       }
 
-      // Symbols
       ctx.font = '12px "JetBrains Mono", monospace';
       for (const s of symbols) {
         const a = spawnAlpha(s.node);
@@ -271,9 +272,7 @@ export default function HeroIntro() {
         if (mouseActive) {
           const dx = s.node.x - mx, dy = s.node.y - my;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 200) {
-            symAlpha += (1 - dist / 200) * 0.35 * a;
-          }
+          if (dist < 200) symAlpha += (1 - dist / 200) * 0.35 * a;
         }
         ctx.fillStyle = "rgba(30,82,243," + symAlpha + ")";
         ctx.fillText(s.text, s.node.x + s.node.radius + 8, s.node.y + 4);
@@ -291,6 +290,7 @@ export default function HeroIntro() {
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(t4);
+      clearTimeout(t5);
     };
   }, [visible, exit]);
 
@@ -302,7 +302,6 @@ export default function HeroIntro() {
     };
     const onLeave = () => { mouseRef.current.active = false; };
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") exit(); };
-
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     window.addEventListener("keydown", onKey);
@@ -321,6 +320,7 @@ export default function HeroIntro() {
       onClick={exit}
     >
       <canvas ref={canvasRef} className="hero-intro-canvas" />
+
       <div className="hero-intro-content">
         <h1 className={`hero-intro-name${nameVisible ? " visible" : ""}`}>
           Abhi Wadhwa
@@ -329,6 +329,33 @@ export default function HeroIntro() {
           Applied Mathematics &middot; Game Theory &middot; Optimization
         </p>
       </div>
+
+      {/* Vertical nav — center-right, collapses to top-right on exit */}
+      <nav className="hero-intro-nav">
+        {NAV_LINKS.map((l, i) => (
+          <motion.div
+            key={l.href}
+            className="hero-intro-nav-link"
+            onClick={handleNavClick(l.href)}
+            initial={{ opacity: 0, x: 30 }}
+            animate={
+              exiting
+                ? { opacity: 0, y: -220, x: -60, scale: 0.75 }
+                : navVisible
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: 30 }
+            }
+            transition={{
+              delay: exiting ? i * 0.04 : navVisible ? i * 0.08 : 0,
+              duration: exiting ? 0.65 : 0.5,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
+            {l.label}
+          </motion.div>
+        ))}
+      </nav>
+
       <span className={`hero-intro-skip${skipVisible ? " visible" : ""}`}>
         click anywhere to skip
       </span>
