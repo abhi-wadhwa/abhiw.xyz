@@ -234,7 +234,7 @@ button {
    ============================================ */
 
 .hero-scroll {
-  background: var(--bg-subtle);
+  background: var(--bg);
 }
 
 .hero-scroll-grid {
@@ -264,7 +264,7 @@ button {
 .about-para {
   font-size: 18px;
   line-height: 1.9;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   max-width: 600px;
 }
 
