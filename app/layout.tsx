@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Dancing_Script } from "next/font/google";
 import Navigation from "@/components/Navigation";
+import PageTransition from "@/components/PageTransition";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="en" className={`${nunito.variable} ${dancingScript.variable}`}>
       <body>
         <Navigation />
+        <PageTransition />
         {children}
       </body>
     </html>
