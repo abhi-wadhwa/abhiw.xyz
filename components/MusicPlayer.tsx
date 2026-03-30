@@ -4,6 +4,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 const PLAYLIST = [
   { title: "Can't Decide", artist: "Max Dean", cover: "", file: "/assets/music/Can't Decide.mp3" },
+  { title: "Never Alone", artist: "Lizzy Land", cover: "", file: "/assets/music/Never Alone (feat. Lizzy Land)_spotdown.org.mp3" },
+  { title: "TESLA", artist: "Unknown", cover: "", file: "/assets/music/TESLA_spotdown.org.mp3" },
+  { title: "Too Cool To Be Careless", artist: "Unknown", cover: "", file: "/assets/music/TOO COOL TO BE CARELESS_spotdown.org.mp3" },
+  { title: "In The Yuma", artist: "Aatig", cover: "", file: "/assets/music/[SPOTIFY-DOWNLOADER.COM] In The Yuma (feat. Aatig).mp3" },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
