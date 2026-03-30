@@ -78,13 +78,13 @@ body::after {
   pointer-events: none;
   background:
     /* Contour rings from bottom-left */
-    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.03) 199px, transparent 200px),
-    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.02) 399px, transparent 400px),
-    radial-gradient(circle at 5% 95%, rgba(30, 82, 243, 0.014) 599px, transparent 600px),
+    radial-gradient(circle at 5% 95%, rgba(59, 108, 245, 0.05) 199px, transparent 200px),
+    radial-gradient(circle at 5% 95%, rgba(59, 108, 245, 0.035) 399px, transparent 400px),
+    radial-gradient(circle at 5% 95%, rgba(59, 108, 245, 0.025) 599px, transparent 600px),
     /* Cobalt wash from top-right */
-    radial-gradient(ellipse at 80% 10%, rgba(30, 82, 243, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 10%, rgba(59, 108, 245, 0.05) 0%, transparent 50%),
     /* Dot grid */
-    radial-gradient(circle, rgba(30, 82, 243, 0.07) 1px, transparent 1px);
+    radial-gradient(circle, rgba(59, 108, 245, 0.12) 1px, transparent 1px);
   background-size:
     100% 100%, 100% 100%, 100% 100%,
     100% 100%,
