@@ -40,9 +40,22 @@ export default function Home() {
       {/* Statement — bottom-left, D.E. Shaw style */}
       <section className="hero-statement">
         <div className="container">
-          <TextReveal as="h1" className="statement-text" delay={0.15}>
-            I am Abhi Wadhwa, an applied mathematician studying game theory, optimization, and market design at USC.
-          </TextReveal>
+          <div className="hero-statement-inner">
+            <div className="hero-statement-text">
+              <TextReveal as="h1" className="statement-text" delay={0.15}>
+                I am Abhi Wadhwa, a Quant Trader at Optiver and applied mathematician studying game theory, optimization, and market design at USC.
+              </TextReveal>
+            </div>
+            <div className="hero-statement-photo">
+              <div className="hero-photo-ring">
+                <img
+                  src="/assets/abhi.jpeg"
+                  alt="Abhi Wadhwa"
+                  className="hero-photo"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
