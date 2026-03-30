@@ -1042,7 +1042,146 @@ button {
 }
 
 /* ============================================
-   RESEARCH CARDS
+   RESEARCH PAGE
+   ============================================ */
+
+.res-page-header {
+  padding: 160px 0 48px;
+  position: relative;
+  background: var(--bg);
+}
+
+.res-list {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.res-paper {
+  position: relative;
+  padding: 48px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--bg);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.res-paper:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* Decorative math symbol — large, faint, top-right */
+.res-symbol {
+  position: absolute;
+  top: -20px;
+  right: 24px;
+  font-size: 140px;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.04;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.res-paper:hover .res-symbol {
+  opacity: 0.08;
+  transition: opacity 0.4s ease;
+}
+
+.res-title {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  max-width: 700px;
+  position: relative;
+}
+
+.res-meta-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.res-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.res-meta-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.res-meta-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.res-narrative {
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--text-primary);
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+
+.res-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.res-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+@media (max-width: 900px) {
+  .res-paper {
+    padding: 28px;
+  }
+
+  .res-symbol {
+    font-size: 80px;
+    top: -10px;
+    right: 12px;
+  }
+
+  .res-title {
+    font-size: 22px;
+  }
+
+  .res-meta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* ============================================
+   RESEARCH CARDS (legacy — kept for compatibility)
    ============================================ */
 
 .research-grid {

@@ -6,7 +6,7 @@ import { research } from "@/data/research";
 export default function ResearchPage() {
   return (
     <>
-      <div className="page-header">
+      <div className="res-page-header">
         <div className="container">
           <TextReveal as="h1" className="page-title">
             Research
@@ -25,47 +25,47 @@ export default function ResearchPage() {
 
       <div className="page-content">
         <div className="container">
-          <div className="research-grid">
+          <div className="res-list">
             {research.map((item, i) => (
-              <Reveal
-                key={`${item.institution}-${item.advisor}`}
-                delay={i * 0.12}
-                variant="scale"
-              >
-                <div
-                  className="research-card"
-                  style={{
-                    "--card-accent": item.accentColor,
-                    "--card-accent-glow": `${item.accentColor}20`,
-                  } as React.CSSProperties}
-                >
-                  <div className="research-card-header">
-                    <div className="research-card-info">
-                      <div className="research-role">{item.role}</div>
-                      <div className="research-org">
+              <Reveal key={`${item.institution}-${item.advisor}`} delay={i * 0.12}>
+                <article className="res-paper">
+                  {/* Decorative math symbol */}
+                  <div className="res-symbol">{item.symbol}</div>
+
+                  {/* Title */}
+                  <h2 className="res-title">{item.title}</h2>
+
+                  {/* Metadata bar */}
+                  <div className="res-meta-bar">
+                    <div className="res-meta-left">
+                      <img
+                        src={item.logo}
+                        alt={item.institution}
+                        className="res-meta-logo"
+                        loading="lazy"
+                      />
+                      <span className="res-meta-text">
                         {item.institution} &mdash; {item.department}
-                      </div>
-                      <div className="research-meta">
-                        Advisor: {item.advisor} &middot; {item.location}
-                      </div>
+                      </span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
-                      <div className="research-logo">
-                        <img
-                          src={item.logo}
-                          alt={item.institution}
-                          loading="lazy"
-                        />
-                      </div>
-                      <span className="research-year">{item.year}</span>
-                    </div>
+                    <span className="res-meta-text">
+                      Advisor: {item.advisor}
+                    </span>
+                    <span className="res-meta-text">
+                      {item.location} &middot; {item.year}
+                    </span>
                   </div>
-                  <ul className="research-bullets">
-                    {item.bullets.map((bullet, j) => (
-                      <li key={j}>{bullet}</li>
+
+                  {/* Narrative */}
+                  <p className="res-narrative">{item.narrative}</p>
+
+                  {/* Tags */}
+                  <div className="res-tags">
+                    {item.tags.map((tag) => (
+                      <span key={tag} className="res-tag">{tag}</span>
                     ))}
-                  </ul>
-                </div>
+                  </div>
+                </article>
               </Reveal>
             ))}
           </div>
