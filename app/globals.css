@@ -20,16 +20,16 @@
   --border: rgba(0, 0, 0, 0.08);
   --border-hover: rgba(0, 0, 0, 0.16);
 
-  /* Accent — solemn cobalt → deep teal */
+  /* Accent — cobalt */
   --accent: #1e52f3;
   --accent-bright: #3b6cf5;
   --accent-blue: #1e52f3;
-  --accent-cyan: #0e7490;
+  --accent-cyan: #1e52f3;
   --accent-glow: rgba(30, 82, 243, 0.06);
   --accent-glow-strong: rgba(30, 82, 243, 0.12);
 
   /* Gradients */
-  --gradient-accent: linear-gradient(135deg, #1e52f3 0%, #0e7490 100%);
+  --gradient-accent: linear-gradient(135deg, #1e52f3 0%, #1e52f3 100%);
   --gradient-warm: linear-gradient(135deg, #d97706, #b45309);
 
   /* Semantic */
@@ -604,12 +604,12 @@ button {
 .sig-line {
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #1e52f3, #22d3ee);
+  background: linear-gradient(90deg, #1e52f3, #3b6cf5);
   width: 100%;
 }
 
 .sig-light .sig-line {
-  background: linear-gradient(90deg, #1e52f3, #22d3ee);
+  background: linear-gradient(90deg, #1e52f3, #3b6cf5);
 }
 
 /* Draw animation */
