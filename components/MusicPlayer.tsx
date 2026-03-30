@@ -4,9 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // Add your songs here — files go in public/assets/music/
 const PLAYLIST = [
-  { title: "Track 1", file: "/assets/music/track1.mp3" },
-  { title: "Track 2", file: "/assets/music/track2.mp3" },
-  { title: "Track 3", file: "/assets/music/track3.mp3" },
+  { title: "Can't Decide", file: "/assets/music/Can't Decide.mp3" },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
