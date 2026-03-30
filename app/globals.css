@@ -245,26 +245,38 @@ button {
   background: var(--bg);
 }
 
+/* Two-column layout: text left, photo right sticky */
 .hero-scroll-grid {
   display: grid;
-  grid-template-columns: 1fr 440px;
-  gap: 40px;
-  padding-top: 40vh;
-  padding-right: 0;
+  grid-template-columns: 55% 45%;
+  gap: 0;
   align-items: start;
 }
 
+/* Left column */
+.hero-scroll-left {
+  padding-top: 100px;
+  padding-right: 48px;
+}
+
+/* First screen: statement vertically centered */
+.hero-scroll-statement {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+}
+
 .statement-text {
-  font-size: clamp(26px, 3.5vw, 42px);
+  font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.45;
-  max-width: 680px;
   letter-spacing: -0.02em;
 }
 
+/* Paragraphs below the fold */
 .hero-scroll-about {
-  padding: 80px 0 140px;
+  padding: 60px 0 140px;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -274,7 +286,6 @@ button {
   font-size: 18px;
   line-height: 1.9;
   color: var(--text-primary);
-  max-width: 600px;
 }
 
 .about-link {
@@ -305,17 +316,18 @@ button {
   opacity: 0.7;
 }
 
-/* Right column — photo sticks, centered with text, pushed right */
+/* Right column — full height, photo sticks centered */
 .hero-scroll-right {
   position: relative;
-  margin-right: -48px;
+  padding-top: 100px;
 }
 
 .hero-scroll-photo {
   position: sticky;
-  top: calc(40vh - 120px);
+  top: calc(50vh - 220px);
   width: 440px;
   height: 440px;
+  margin: 0 auto;
 }
 
 /* Shared tag + photo styles */
@@ -1496,19 +1508,28 @@ button {
 
   .hero-scroll-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding-top: 120px;
+  }
+
+  .hero-scroll-left {
+    padding-top: 100px;
+    padding-right: 0;
+  }
+
+  .hero-scroll-statement {
+    min-height: auto;
+    padding: 40px 0;
   }
 
   .hero-scroll-right {
     order: -1;
+    padding-top: 100px;
   }
 
   .hero-scroll-photo {
     position: relative;
     top: auto;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
   }
 
   .hero-scroll-about {
