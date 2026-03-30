@@ -324,7 +324,7 @@ button {
 
 .hero-scroll-photo {
   position: sticky;
-  top: calc(50vh - 220px);
+  top: calc(50vh - 185px);
   width: 440px;
   height: 440px;
   margin: 0 auto;
