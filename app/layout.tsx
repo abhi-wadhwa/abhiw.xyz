@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito, Dancing_Script } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
+import MusicPlayer from "@/components/MusicPlayer";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body>
         <Navigation />
         <PageTransition />
+        <MusicPlayer />
         {children}
       </body>
     </html>
