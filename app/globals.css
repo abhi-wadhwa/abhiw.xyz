@@ -1886,6 +1886,184 @@ button {
 }
 
 /* ============================================
+   PROJECTS PAGE
+   ============================================ */
+
+.proj-stage {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 60px 0;
+}
+
+.proj-counter {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.proj-counter-current {
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.proj-counter-sep {
+  color: var(--text-tertiary);
+  margin: 0 6px;
+}
+
+.proj-counter-total {
+  color: var(--text-tertiary);
+}
+
+.proj-category-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.proj-category {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.proj-lang {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.proj-name {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.proj-name-flicker {
+  opacity: 0.3;
+  color: var(--accent);
+}
+
+.proj-flicker {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.proj-desc {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+.proj-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+  transition: gap 0.3s var(--ease-out);
+}
+
+.proj-link:hover {
+  gap: 12px;
+}
+
+/* Navigation arrows */
+.proj-nav {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.proj-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+}
+
+.proj-nav-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+/* Progress dots */
+.proj-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 32px;
+}
+
+.proj-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-hover);
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.proj-dot:hover {
+  background: var(--text-tertiary);
+}
+
+.proj-dot-active {
+  background: var(--accent);
+  width: 24px;
+  border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+  .proj-stage {
+    min-height: 360px;
+    padding: 40px 0;
+  }
+
+  .proj-name {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+
+  .proj-nav {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    margin-top: 24px;
+  }
+
+  .proj-desc {
+    font-size: 16px;
+  }
+}
+
+/* ============================================
    MUSIC PLAYER
    ============================================ */
 
