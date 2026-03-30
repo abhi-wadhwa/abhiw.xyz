@@ -13,7 +13,7 @@ export default function SignatureLogo({
     <div
       className={`sig ${animate ? "sig-animate" : ""} ${light ? "sig-light" : ""} ${className}`}
     >
-      <span className="sig-text">Abhi</span>
+      <span className="sig-text">Abhi Wadhwa</span>
       <div className="sig-line" />
     </div>
   );

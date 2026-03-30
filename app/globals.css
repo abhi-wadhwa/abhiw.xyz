@@ -578,12 +578,12 @@ button {
 .sig-line {
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #1e52f3, rgba(30, 82, 243, 0.08));
+  background: linear-gradient(90deg, #1e52f3, #22d3ee);
   width: 100%;
 }
 
 .sig-light .sig-line {
-  background: linear-gradient(90deg, #1e52f3, rgba(255, 255, 255, 0.15));
+  background: linear-gradient(90deg, #1e52f3, #22d3ee);
 }
 
 /* Draw animation */
@@ -623,13 +623,13 @@ button {
   transform: translateY(0);
 }
 
-/* Signature in nav — small */
+/* Signature in nav */
 .nav-logo .sig {
-  font-size: 22px;
+  font-size: 28px;
 }
 
 .nav-logo .sig-line {
-  height: 2px;
+  height: 2.5px;
 }
 
 .hero-intro-sub {
