@@ -4,7 +4,9 @@ export interface Experience {
   role: string;
   location: string;
   dateRange: string;
-  bullets: string[];
+  summary: string;
+  companyDesc: string;
+  narrative: string;
 }
 
 export const experiences: Experience[] = [
@@ -14,11 +16,9 @@ export const experiences: Experience[] = [
     role: "Quantitative Trader Intern",
     location: "Chicago, IL",
     dateRange: "Jun 2026 — Aug 2026",
-    bullets: [
-      "Manually click trading single stock options in simulation for 4 weeks to build intuition around pricing, liquidity, and execution dynamics",
-      "Building models, researching and testing hypotheses, and generating alpha for systematic strategies focused on single stock options",
-      "Modeling volatility and building vol surfaces as part of proprietary options market making strategies for use by discretionary traders",
-    ],
+    summary: "Building systematic options strategies and volatility models at one of the world's largest market makers.",
+    companyDesc: "Optiver is a global market maker founded in Amsterdam, trading on every major exchange. They provide liquidity across equities, options, fixed income, and commodities — processing millions of trades daily with a focus on pricing efficiency and execution speed.",
+    narrative: "I'm spending my first four weeks manually click-trading single stock options in simulation to build deep intuition around pricing dynamics, liquidity, and execution. From there, I'm building models, researching hypotheses, and generating alpha for systematic strategies focused on single stock options. A major part of the work involves modeling volatility and constructing vol surfaces as part of proprietary market making strategies that discretionary traders use to inform their positions.",
   },
   {
     company: "Iron Pillar Fund",
@@ -26,11 +26,9 @@ export const experiences: Experience[] = [
     role: "Private Equity Intern",
     location: "Dubai, UAE",
     dateRange: "Jun 2025 — Aug 2025",
-    bullets: [
-      "Sourced 30+ investment opportunities for $500MM growth tech fund, developing operating models to target 25-30% IRR benchmarks",
-      "Developed projections incorporating SaaS metrics (ARR, churn, LTV/CAC) for evaluating growth synergies in late stage ventures",
-      "Designed go-to-market strategy for PortCos targeting US-India corridor and diaspora markets to achieve growth and scaling targets",
-    ],
+    summary: "Sourced deals and built operating models for a $500MM growth-stage tech fund targeting the US-India corridor.",
+    companyDesc: "Iron Pillar is a growth-stage venture fund based across Dubai and Mumbai, managing over $500 million focused on late-stage technology companies operating in the US-India corridor and diaspora markets.",
+    narrative: "I sourced over 30 investment opportunities, developing operating models that targeted 25–30% IRR benchmarks across the portfolio. I built detailed projections incorporating SaaS metrics — ARR, churn, LTV/CAC — to evaluate growth synergies in late-stage ventures. I also designed a go-to-market strategy for portfolio companies targeting the US-India corridor and diaspora markets, working closely with the partners on scaling and growth execution.",
   },
   {
     company: "The World Bank",
@@ -38,11 +36,9 @@ export const experiences: Experience[] = [
     role: "Machine Learning Researcher",
     location: "Los Angeles, CA",
     dateRange: "Oct 2024 — Apr 2025",
-    bullets: [
-      "Engineered spatial alignment model in TensorFlow using linear regressions to reconcile district boundary inconsistencies in census data",
-      "Architected pipelines using pandas to process and standardize 300K+ records to normalize data for modeling and statistical inference",
-      "Deployed a PostgreSQL schema to improve accuracy 30% (MSE) through integrating additional datasets to double data volume",
-    ],
+    summary: "Built ML models and data pipelines to reconcile census data inconsistencies across 300K+ records.",
+    companyDesc: "The World Bank is an international financial institution that provides loans, grants, and technical assistance to developing countries for infrastructure, education, health, and governance projects worldwide.",
+    narrative: "I engineered a spatial alignment model in TensorFlow using linear regressions to reconcile district boundary inconsistencies across census datasets — a problem that had been creating noise in the Bank's economic analyses for years. I architected data pipelines using pandas to process and standardize over 300,000 records, normalizing them for downstream modeling and statistical inference. I also deployed a PostgreSQL schema that doubled the available data volume by integrating additional datasets, which improved model accuracy by 30% as measured by MSE.",
   },
   {
     company: "RBC Capital Markets",
@@ -50,9 +46,8 @@ export const experiences: Experience[] = [
     role: "Markets Apprentice",
     location: "New York City, NY",
     dateRange: "Sep 2024 — Feb 2025",
-    bullets: [
-      "Built long/short equity strategy on NVDA/TSLA on political sentiment and fundamental valuation, yielded 2% uncorrelated alpha",
-      "Ranked #1/40 in a time-intensive operating-model competition, building financial simulations and diagnosing errors in model templates",
-    ],
+    summary: "Ranked #1 in an operating-model competition and built a long/short equity strategy that generated 2% alpha.",
+    companyDesc: "RBC Capital Markets is the investment banking arm of the Royal Bank of Canada, one of North America's largest financial institutions. They provide advisory, sales & trading, and research services across global markets.",
+    narrative: "I built a long/short equity strategy on NVDA and TSLA based on political sentiment analysis and fundamental valuation, which yielded 2% uncorrelated alpha over the program period. I also ranked first out of 40 participants in a time-intensive operating-model competition, where I built financial simulations from scratch and diagnosed errors in existing model templates under pressure.",
   },
 ];
