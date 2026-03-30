@@ -230,31 +230,23 @@ button {
 }
 
 /* ============================================
-   HOMEPAGE — STATEMENT HERO
+   HOMEPAGE — STICKY SCROLL LAYOUT
    ============================================ */
 
-.hero-statement {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 0 100px;
-  position: relative;
+.hero-scroll {
   background: var(--bg-subtle);
 }
 
-.hero-statement-inner {
-  display: flex;
-  align-items: flex-end;
-  gap: 60px;
+.hero-scroll-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 64px;
+  padding-top: 72px;
 }
 
-.hero-statement-text {
-  flex: 1;
-}
-
-.hero-statement-photo {
-  width: 180px;
-  flex-shrink: 0;
+/* Left column — scrolls normally */
+.hero-scroll-spacer {
+  min-height: calc(100vh - 340px);
 }
 
 .statement-text {
@@ -266,19 +258,8 @@ button {
   letter-spacing: -0.02em;
 }
 
-/* ============================================
-   HOMEPAGE — ABOUT (below fold)
-   ============================================ */
-
-.about-section {
-  padding: 100px 0;
-}
-
-.about-inner {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 64px;
-  align-items: center;
+.hero-scroll-about {
+  padding: 80px 0 120px;
 }
 
 .about-desc {
@@ -295,9 +276,16 @@ button {
   margin-top: 32px;
 }
 
-.about-photo {
+/* Right column — photo sticks while scrolling */
+.hero-scroll-right {
   position: relative;
-  width: 100%;
+}
+
+.hero-scroll-photo {
+  position: sticky;
+  top: calc(50vh - 170px);
+  width: 340px;
+  height: 340px;
 }
 
 /* Shared tag + photo styles */
@@ -1416,28 +1404,28 @@ button {
     display: flex;
   }
 
-  .hero-statement {
-    padding: 0 0 60px;
-  }
-
-  .hero-statement-inner {
-    flex-direction: column-reverse;
-    gap: 32px;
-    align-items: flex-start;
-  }
-
-  .hero-statement-photo {
-    width: 140px;
-  }
-
-  .about-inner {
+  .hero-scroll-grid {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 32px;
   }
 
-  .about-photo {
-    max-width: 220px;
+  .hero-scroll-spacer {
+    min-height: calc(100vh - 400px);
+  }
+
+  .hero-scroll-right {
     order: -1;
+  }
+
+  .hero-scroll-photo {
+    position: relative;
+    top: auto;
+    width: 200px;
+    height: 200px;
+  }
+
+  .hero-scroll-about {
+    padding: 48px 0 80px;
   }
 
   .home-nav-item {
@@ -1537,8 +1525,9 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .about-photo {
-    max-width: 180px;
+  .hero-scroll-photo {
+    width: 160px;
+    height: 160px;
   }
 
   .home-nav {

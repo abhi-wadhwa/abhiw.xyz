@@ -37,50 +37,37 @@ export default function Home() {
     <>
       <HeroIntro />
 
-      {/* Statement — bottom-left, D.E. Shaw style */}
-      <section className="hero-statement">
+      {/* Hero + About — photo sticky right, content scrolls left */}
+      <section className="hero-scroll">
         <div className="container">
-          <div className="hero-statement-inner">
-            <div className="hero-statement-text">
+          <div className="hero-scroll-grid">
+            {/* Left: statement then paragraph */}
+            <div className="hero-scroll-left">
+              <div className="hero-scroll-spacer" />
               <TextReveal as="h1" className="statement-text" delay={0.15}>
                 I am Abhi Wadhwa, a Quant Trader at Optiver and applied mathematician studying game theory, optimization, and market design at USC.
               </TextReveal>
-            </div>
-            <div className="hero-statement-photo">
-              <div className="hero-photo-ring">
-                <img
-                  src="/assets/abhi.jpeg"
-                  alt="Abhi Wadhwa"
-                  className="hero-photo"
-                />
+              <div className="hero-scroll-about">
+                <Reveal>
+                  <p className="about-desc">
+                    I study how utility theory and optimization methods enable
+                    multi-agent systems to model incentives involving uncertainty
+                    and competition — with applications to market and auction design.
+                  </p>
+                </Reveal>
+                <Reveal delay={0.12}>
+                  <div className="about-tags">
+                    <span className="hero-tag hero-tag-active">Optiver &rsquo;26</span>
+                    <span className="hero-tag">Random Matrix Theory</span>
+                    <span className="hero-tag">USC Applied Math</span>
+                  </div>
+                </Reveal>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* About — revealed on scroll */}
-      <section className="about-section">
-        <div className="container">
-          <div className="about-inner">
-            <div>
-              <Reveal>
-                <p className="about-desc">
-                  I study how utility theory and optimization methods enable
-                  multi-agent systems to model incentives involving uncertainty
-                  and competition — with applications to market and auction design.
-                </p>
-              </Reveal>
-              <Reveal delay={0.12}>
-                <div className="about-tags">
-                  <span className="hero-tag hero-tag-active">Optiver &rsquo;26</span>
-                  <span className="hero-tag">Random Matrix Theory</span>
-                  <span className="hero-tag">USC Applied Math</span>
-                </div>
-              </Reveal>
-            </div>
-            <Reveal variant="scale" delay={0.1}>
-              <div className="about-photo">
+            {/* Right: sticky photo */}
+            <div className="hero-scroll-right">
+              <div className="hero-scroll-photo">
                 <div className="hero-photo-ring">
                   <img
                     src="/assets/abhi.jpeg"
@@ -89,7 +76,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
