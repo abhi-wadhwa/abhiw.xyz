@@ -1887,69 +1887,180 @@ button {
 
 .mp {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  right: 28px;
   z-index: 200;
 }
 
-.mp-fab {
-  width: 44px;
-  height: 44px;
+/* Collapsed — spinning vinyl disc */
+.mp-disc-btn {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(30, 82, 243, 0.25);
+  padding: 0;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
 }
 
-.mp-fab:hover {
+.mp-disc-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 24px rgba(30, 82, 243, 0.35);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.2);
 }
 
+.mp-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #1a1a2e;
+  position: relative;
+  overflow: hidden;
+}
+
+.mp-disc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.mp-disc-default {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #1a1a2e 0deg, #252540 30deg, #1a1a2e 60deg,
+    #252540 90deg, #1a1a2e 120deg, #252540 150deg,
+    #1a1a2e 180deg, #252540 210deg, #1a1a2e 240deg,
+    #252540 270deg, #1a1a2e 300deg, #252540 330deg,
+    #1a1a2e 360deg
+  );
+}
+
+.mp-disc-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+}
+
+.mp-disc-spinning .mp-disc {
+  animation: spin 3s linear infinite;
+}
+
+/* Expanded panel */
 .mp-panel {
-  width: 260px;
+  width: 280px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-  position: relative;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
-.mp-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+/* Vinyl in panel */
+.mp-vinyl-wrap {
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--text-tertiary);
-  transition: color 0.2s ease, background 0.2s ease;
+  margin-bottom: 20px;
 }
 
-.mp-close:hover {
-  color: var(--text-primary);
-  background: var(--surface);
+.mp-vinyl {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.mp-vinyl-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.mp-vinyl-default {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #15152a 0deg, #22223a 20deg, #15152a 40deg,
+    #22223a 60deg, #15152a 80deg, #22223a 100deg,
+    #15152a 120deg, #22223a 140deg, #15152a 160deg,
+    #22223a 180deg, #15152a 200deg, #22223a 220deg,
+    #15152a 240deg, #22223a 260deg, #15152a 280deg,
+    #22223a 300deg, #15152a 320deg, #22223a 340deg,
+    #15152a 360deg
+  );
+}
+
+.mp-vinyl-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  z-index: 3;
+  box-shadow: 0 0 0 1px rgba(30, 82, 243, 0.3);
+}
+
+.mp-vinyl-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.mp-vinyl-ring-1 { width: 50px; height: 50px; }
+.mp-vinyl-ring-2 { width: 85px; height: 85px; }
+.mp-vinyl-ring-3 { width: 120px; height: 120px; }
+
+.mp-vinyl-spinning {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Track info */
+.mp-info {
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 .mp-track {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 14px;
-  padding-right: 28px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.mp-artist {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* Progress */
 .mp-progress-wrap {
   width: 100%;
   height: 4px;
@@ -1973,20 +2084,20 @@ button {
   color: var(--text-tertiary);
   margin-top: 6px;
   font-weight: 600;
-  letter-spacing: 0.02em;
 }
 
+/* Controls */
 .mp-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin: 14px 0 12px;
+  gap: 8px;
+  margin: 16px 0 14px;
 }
 
 .mp-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2001,17 +2112,24 @@ button {
 }
 
 .mp-btn-play {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(30, 82, 243, 0.2);
+  box-shadow: 0 3px 12px rgba(30, 82, 243, 0.25);
 }
 
 .mp-btn-play:hover {
   color: #fff;
   background: var(--accent-bright);
-  box-shadow: 0 4px 16px rgba(30, 82, 243, 0.3);
+  box-shadow: 0 5px 20px rgba(30, 82, 243, 0.35);
+}
+
+/* Bottom row: volume + minimize */
+.mp-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .mp-volume {
@@ -2019,6 +2137,7 @@ button {
   align-items: center;
   gap: 8px;
   color: var(--text-tertiary);
+  flex: 1;
 }
 
 .mp-volume-slider {
@@ -2051,6 +2170,23 @@ button {
   border: none;
 }
 
+.mp-minimize {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.mp-minimize:hover {
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
 @media (max-width: 900px) {
   .mp {
     bottom: 16px;
@@ -2058,8 +2194,13 @@ button {
   }
 
   .mp-panel {
-    width: 240px;
-    padding: 16px;
+    width: 260px;
+    padding: 20px;
+  }
+
+  .mp-vinyl {
+    width: 110px;
+    height: 110px;
   }
 }
 
