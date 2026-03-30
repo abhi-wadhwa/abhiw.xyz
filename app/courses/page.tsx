@@ -35,7 +35,7 @@ export default function CoursesPage() {
           <Reveal>
             <h1 className="page-title">Coursework</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <p className="page-subtitle">
               {courses.filter((c) => c.level === "graduate").length} graduate
               and {courses.filter((c) => c.level === "undergraduate").length} undergraduate
@@ -68,10 +68,10 @@ export default function CoursesPage() {
                 <motion.div
                   key={course.code}
                   layout
-                  initial={{ opacity: 0, scale: 0.95, y: 12 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -8 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                   className={`course-card ${course.level === "graduate" ? "course-card-grad" : ""}`}
                 >
                   <div className="course-top">

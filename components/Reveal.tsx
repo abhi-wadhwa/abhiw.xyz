@@ -13,10 +13,10 @@ interface RevealProps {
 }
 
 const offsets = {
-  up: { y: 32 },
-  down: { y: -32 },
-  left: { x: 32 },
-  right: { x: -32 },
+  up: { y: 12 },
+  down: { y: -12 },
+  left: { x: 12 },
+  right: { x: -12 },
 };
 
 export default function Reveal({
@@ -24,11 +24,11 @@ export default function Reveal({
   className,
   delay = 0,
   direction = "up",
-  duration = 0.7,
+  duration = 0.5,
   once = true,
 }: RevealProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: "-60px 0px" });
+  const isInView = useInView(ref, { once, margin: "-40px 0px" });
 
   return (
     <motion.div
@@ -43,7 +43,7 @@ export default function Reveal({
       transition={{
         duration,
         delay,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       {children}

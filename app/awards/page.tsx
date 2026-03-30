@@ -31,7 +31,7 @@ export default function AwardsPage() {
           <Reveal>
             <h1 className="page-title">Awards &amp; Honors</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <p className="page-subtitle">
               Competition mathematics, parliamentary debate, and academic
               recognition.
@@ -42,10 +42,9 @@ export default function AwardsPage() {
 
       <div className="page-content">
         <div className="container">
-          {/* Featured achievements */}
           <Reveal>
             <div className="awards-featured">
-              {featured.map((a, i) => (
+              {featured.map((a) => (
                 <div key={a.title} className="award-featured-card">
                   <div className="award-featured-title">{a.title}</div>
                   <div className="award-featured-org">{a.organization}</div>
@@ -55,9 +54,7 @@ export default function AwardsPage() {
             </div>
           </Reveal>
 
-          {/* All awards */}
           <div className="awards-columns">
-            {/* Left: Debate */}
             <div>
               <Reveal>
                 <div className="award-group">
@@ -67,7 +64,7 @@ export default function AwardsPage() {
                   ))}
                 </div>
               </Reveal>
-              <Reveal delay={0.1}>
+              <Reveal delay={0.08}>
                 <div className="award-group">
                   <div className="award-group-title">Debate &mdash; High School &amp; International</div>
                   {awards.debate.highSchool.map((a) => (
@@ -77,7 +74,6 @@ export default function AwardsPage() {
               </Reveal>
             </div>
 
-            {/* Right: Math + Scholarships */}
             <div>
               <Reveal>
                 <div className="award-group">
@@ -87,7 +83,7 @@ export default function AwardsPage() {
                   ))}
                 </div>
               </Reveal>
-              <Reveal delay={0.1}>
+              <Reveal delay={0.08}>
                 <div className="award-group">
                   <div className="award-group-title">Scholarships</div>
                   {awards.scholarships.filter((a) => !a.featured).map((a) => (

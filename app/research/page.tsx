@@ -10,7 +10,7 @@ export default function ResearchPage() {
           <Reveal>
             <h1 className="page-title">Research</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <p className="page-subtitle">
               Investigating problems in random matrix theory, stochastic control,
               optimization, and behavioral economics.
@@ -23,7 +23,7 @@ export default function ResearchPage() {
         <div className="container">
           <div className="research-grid">
             {research.map((item, i) => (
-              <Reveal key={`${item.institution}-${item.advisor}`} delay={i * 0.1}>
+              <Reveal key={`${item.institution}-${item.advisor}`} delay={i * 0.08}>
                 <div
                   className="research-card"
                   style={{ "--card-accent": item.accentColor } as React.CSSProperties}
@@ -38,7 +38,7 @@ export default function ResearchPage() {
                         Advisor: {item.advisor} &middot; {item.location}
                       </div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                       <div className="research-logo">
                         <img
                           src={item.logo}

@@ -17,8 +17,8 @@ function Chevron({ open }: { open: boolean }) {
   return (
     <svg
       className={`interest-chevron ${open ? "open" : ""}`}
-      width="16"
-      height="16"
+      width="14"
+      height="14"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -43,7 +43,7 @@ function InterestCard({ interest }: { interest: (typeof personalData.interests)[
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
             style={{ overflow: "hidden" }}
           >
             <p className="interest-body">{interest.body}</p>
@@ -71,7 +71,7 @@ export default function PersonalPage() {
           <Reveal>
             <h1 className="page-title">Personal</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <p className="page-subtitle">
               The story behind the math — where I come from, what I care about,
               and how I see the world.
@@ -82,7 +82,6 @@ export default function PersonalPage() {
 
       <div className="page-content">
         <div className="container">
-          {/* Journey map */}
           <Reveal>
             <div className="journey-map">
               {journey.map((stop, i) => (
@@ -102,12 +101,12 @@ export default function PersonalPage() {
                 <h2 className="sub-heading">About</h2>
               </Reveal>
               {personalData.bio.map((p, i) => (
-                <Reveal key={i} delay={i * 0.06}>
+                <Reveal key={i} delay={i * 0.05}>
                   <p className="bio-text">{p}</p>
                 </Reveal>
               ))}
-              <Reveal delay={0.2}>
-                <div style={{ marginTop: 8 }}>
+              <Reveal delay={0.15}>
+                <div style={{ marginTop: 4 }}>
                   <span className="bio-meta">
                     {personalData.pronunciation}
                   </span>
@@ -123,18 +122,18 @@ export default function PersonalPage() {
                 <h2 className="sub-heading">Areas of Interest</h2>
               </Reveal>
               {personalData.interests.map((interest, i) => (
-                <Reveal key={interest.title} delay={i * 0.08}>
+                <Reveal key={interest.title} delay={i * 0.06}>
                   <InterestCard interest={interest} />
                 </Reveal>
               ))}
             </div>
           </div>
 
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <div
               className="interest-card"
               onClick={() => setPhilOpen(!philOpen)}
-              style={{ marginTop: 56 }}
+              style={{ marginTop: 48 }}
             >
               <div className="interest-header">
                 <span className="sub-heading" style={{ marginBottom: 0 }}>
@@ -148,7 +147,7 @@ export default function PersonalPage() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                     style={{ overflow: "hidden" }}
                   >
                     <div className="philosophy-grid">

@@ -10,7 +10,7 @@ export default function ExperiencePage() {
           <Reveal>
             <h1 className="page-title">Experience</h1>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <p className="page-subtitle">
               From quantitative trading to machine learning research — building
               at the intersection of mathematics and markets.
@@ -23,7 +23,7 @@ export default function ExperiencePage() {
         <div className="container">
           <div className="feed-list">
             {experiences.map((exp, i) => (
-              <Reveal key={exp.company} delay={i * 0.08}>
+              <Reveal key={exp.company} delay={i * 0.06}>
                 <div className="feed-entry">
                   <div className="logo-frame">
                     <img

@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="footer-inner">
           <div className="footer-left">
             <span className="footer-name">Abhi Wadhwa</span>
-            <span className="footer-copy">&copy; 2026 &middot; abhiw.xyz</span>
+            <span className="footer-copy">&copy; 2026</span>
           </div>
           <div className="contact-row">
             {contacts.map((c) => {

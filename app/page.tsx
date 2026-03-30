@@ -33,7 +33,6 @@ const navItems = [
 export default function Home() {
   return (
     <>
-      {/* Hero */}
       <section className="hero">
         <div className="container">
           <div className="hero-inner">
@@ -60,7 +59,6 @@ export default function Home() {
             </div>
 
             <div className="hero-photo-wrap">
-              <div className="hero-photo-glow" />
               <div className="hero-photo-ring">
                 <img
                   src="/assets/abhi.jpeg"
@@ -73,7 +71,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Navigation to sections */}
       <section className="home-nav">
         <div className="container">
           <Reveal>
@@ -81,7 +78,7 @@ export default function Home() {
           </Reveal>
           <div className="home-nav-list">
             {navItems.map((item, i) => (
-              <Reveal key={item.href} delay={i * 0.08}>
+              <Reveal key={item.href} delay={i * 0.06}>
                 <Link href={item.href} className="home-nav-item">
                   <span className="home-nav-title">
                     {item.title}
