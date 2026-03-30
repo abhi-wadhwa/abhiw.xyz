@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import SignatureLogo from "@/components/SignatureLogo";
 
 const links = [
   { label: "Experience", href: "/experience" },
@@ -50,7 +49,7 @@ export default function Navigation() {
       {/* Top bar — logo + scroll progress */}
       <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
         <Link href="/" className="nav-logo">
-          <SignatureLogo />
+          Abhi Wadhwa
         </Link>
 
         <button
