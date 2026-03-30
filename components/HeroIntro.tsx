@@ -15,6 +15,7 @@ const SYMBOL_TEXTS = [
 ];
 
 const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "Experience", href: "/experience" },
   { label: "Research", href: "/research" },
   { label: "Awards", href: "/awards" },

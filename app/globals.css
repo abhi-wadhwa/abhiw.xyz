@@ -154,44 +154,44 @@ button {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
+  opacity: 0.45;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition: color 0.25s ease, transform 0.25s var(--ease-out);
+  transition: color 0.25s ease, opacity 0.25s ease;
   position: relative;
   padding: 6px 0;
+  padding-left: 18px;
 }
 
 .nav-vertical-link::before {
-  content: "";
+  content: "›";
   position: absolute;
-  right: -16px;
+  left: 0;
   top: 50%;
-  transform: translateY(-50%) scaleX(0);
-  width: 8px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--accent);
-  transition: transform 0.3s var(--ease-out);
-  transform-origin: right;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .nav-vertical-link:hover {
   color: var(--accent);
-  transform: translateX(-4px);
+  opacity: 1;
 }
 
 .nav-vertical-link:hover::before {
-  transform: translateY(-50%) scaleX(1);
+  opacity: 1;
 }
 
 .nav-vertical-link.active {
   color: var(--accent);
+  opacity: 1;
 }
 
 .nav-vertical-link.active::before {
-  transform: translateY(-50%) scaleX(1);
-  background: var(--gradient-accent);
-  width: 12px;
+  opacity: 1;
 }
 
 /* Scroll progress bar */
