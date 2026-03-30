@@ -153,7 +153,7 @@ button {
 .nav-vertical-link {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: color 0.25s ease, transform 0.25s var(--ease-out);

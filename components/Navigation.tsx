@@ -7,6 +7,7 @@ import Link from "next/link";
 import SignatureLogo from "@/components/SignatureLogo";
 
 const links = [
+  { label: "Home", href: "/" },
   { label: "Experience", href: "/experience" },
   { label: "Research", href: "/research" },
   { label: "Awards", href: "/awards" },
