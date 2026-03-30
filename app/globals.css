@@ -182,15 +182,16 @@ button {
   width: 100%;
 }
 
-/* Scroll progress bar */
+/* Vertical scroll progress — left edge */
 .scroll-progress {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  top: 0;
   left: 0;
-  right: 0;
-  height: 2px;
+  width: 3px;
+  height: 100vh;
   background: var(--gradient-accent);
-  transform-origin: left;
+  transform-origin: top;
+  z-index: 100;
 }
 
 /* Mobile nav */
