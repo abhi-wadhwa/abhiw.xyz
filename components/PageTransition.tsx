@@ -1,14 +1,33 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
-const SYMBOLS = ["∑", "∫", "∇", "λ", "π", "σ²", "Δ", "∞", "∂", "ℝ"];
+const SYMBOLS = [
+  "∑", "∫", "∇", "λ", "π", "σ²", "Δ", "∞", "∂", "ℝ",
+  "∈", "⊂", "∀", "∃", "⟨·⟩", "≈", "⊗", "→", "⇒", "∝",
+  "ℂ", "ℤ", "∅", "⊕", "≡", "∧", "∨", "¬", "μ", "ε",
+  "θ", "Ω", "φ", "ψ", "α", "β", "γ", "δ", "ζ", "η",
+];
+
+function generateGrid() {
+  const cols = 14;
+  const rows = 8;
+  const cells = [];
+  for (let i = 0; i < cols * rows; i++) {
+    cells.push({
+      symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      delay: Math.random() * 0.35,
+      duration: 0.3 + Math.random() * 0.2,
+    });
+  }
+  return { cells, cols, rows };
+}
 
 export default function PageTransition() {
   const pathname = usePathname();
   const [active, setActive] = useState(false);
-  const [symbol, setSymbol] = useState("∑");
+  const [grid, setGrid] = useState(() => generateGrid());
   const prevPath = useRef(pathname);
   const isFirst = useRef(true);
 
@@ -21,9 +40,9 @@ export default function PageTransition() {
 
     if (prevPath.current !== pathname) {
       prevPath.current = pathname;
-      setSymbol(SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]);
+      setGrid(generateGrid());
       setActive(true);
-      const timer = setTimeout(() => setActive(false), 900);
+      const timer = setTimeout(() => setActive(false), 1100);
       return () => clearTimeout(timer);
     }
   }, [pathname]);
@@ -33,7 +52,26 @@ export default function PageTransition() {
   return (
     <div className="ptr" key={pathname}>
       <div className="ptr-bg" />
-      <span className="ptr-symbol">{symbol}</span>
+      <div
+        className="ptr-grid"
+        style={{
+          gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
+          gridTemplateRows: `repeat(${grid.rows}, 1fr)`,
+        }}
+      >
+        {grid.cells.map((cell, i) => (
+          <span
+            key={i}
+            className="ptr-cell"
+            style={{
+              animationDelay: `${cell.delay}s`,
+              animationDuration: `${cell.duration}s`,
+            }}
+          >
+            {cell.symbol}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

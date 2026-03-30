@@ -1761,9 +1761,6 @@ button {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   pointer-events: none;
 }
 
@@ -1771,22 +1768,28 @@ button {
   position: absolute;
   inset: 0;
   background: #0a1628;
-  background-image:
-    radial-gradient(circle, rgba(30, 82, 243, 0.12) 1px, transparent 1px);
-  background-size: 28px 28px;
-  animation: ptrIn 0.4s var(--ease-out) forwards,
-             ptrOut 0.4s var(--ease) 0.5s forwards;
+  animation: ptrIn 0.45s var(--ease-out) forwards,
+             ptrOut 0.45s var(--ease) 0.65s forwards;
 }
 
-.ptr-symbol {
-  position: relative;
+.ptr-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  padding: 24px;
   z-index: 1;
-  font-size: 72px;
-  font-weight: 800;
+}
+
+.ptr-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 2.5vw, 28px);
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-weight: 700;
   color: var(--accent);
   opacity: 0;
-  animation: ptrSymbol 0.7s var(--ease-out) 0.1s forwards;
-  font-family: "JetBrains Mono", "Fira Code", monospace;
+  animation: ptrCellPop var(--dur, 0.3s) var(--ease-out) var(--delay, 0s) forwards;
 }
 
 @keyframes ptrIn {
@@ -1799,10 +1802,10 @@ button {
   to   { clip-path: inset(0 0% 0 100%); }
 }
 
-@keyframes ptrSymbol {
-  0%   { opacity: 0; transform: scale(0.7) rotate(-10deg); }
-  40%  { opacity: 0.7; transform: scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: scale(1.15) rotate(5deg); }
+@keyframes ptrCellPop {
+  0%   { opacity: 0; transform: scale(0) rotate(-20deg); }
+  50%  { opacity: 0.5; transform: scale(1.2) rotate(5deg); }
+  100% { opacity: 0.15; transform: scale(1) rotate(0deg); }
 }
 
 /* ============================================
