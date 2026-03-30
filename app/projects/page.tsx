@@ -13,6 +13,7 @@ const AUTO_ADVANCE = 5000;
 
 const CATEGORY_COLORS: Record<string, string> = {
   Finance: "#1e52f3",
+  "Economics & Mechanism Design": "#b45309",
   "Game Theory & AI": "#7c3aed",
   Debate: "#059669",
 };
@@ -73,7 +74,7 @@ export default function ProjectsPage() {
           </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
-              17 open-source repositories across finance, game theory, and debate.
+              {projects.length} repositories across finance, economics, game theory, and debate.
             </p>
           </Reveal>
           <Reveal delay={0.3} variant="scale">
@@ -135,15 +136,19 @@ export default function ProjectsPage() {
 
                   <p className="proj-desc">{current.desc}</p>
 
-                  <a
-                    href={`https://github.com/abhi-wadhwa/${current.repo}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="proj-link"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    View on GitHub &rarr;
-                  </a>
+                  {current.private ? (
+                    <span className="proj-private">Private Repository</span>
+                  ) : (
+                    <a
+                      href={`https://github.com/abhi-wadhwa/${current.repo}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="proj-link"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View on GitHub &rarr;
+                    </a>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

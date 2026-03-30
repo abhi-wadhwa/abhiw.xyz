@@ -1986,6 +1986,13 @@ button {
   gap: 12px;
 }
 
+.proj-private {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
 /* Navigation arrows */
 .proj-nav {
   position: absolute;
