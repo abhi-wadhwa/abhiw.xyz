@@ -88,14 +88,9 @@ export default function ExperiencePage() {
     <>
       <div className="section-header">
         <div className="container">
-          <div className="section-header-row">
-            <TextReveal as="h1" className="section-title">
-              Experience
-            </TextReveal>
-            <Reveal delay={0.3} direction="right" variant="slide">
-              <span className="section-tagline">Mathematics &times; Markets</span>
-            </Reveal>
-          </div>
+          <TextReveal as="h1" className="section-title">
+            Experience
+          </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
               Quantitative trading, private equity, machine learning, and capital markets — from Chicago to Dubai to New York.

@@ -8,14 +8,9 @@ export default function ResearchPage() {
     <>
       <div className="section-header">
         <div className="container">
-          <div className="section-header-row">
-            <TextReveal as="h1" className="section-title">
-              Research
-            </TextReveal>
-            <Reveal delay={0.3} direction="right" variant="slide">
-              <span className="section-tagline">Theory &times; Application</span>
-            </Reveal>
-          </div>
+          <TextReveal as="h1" className="section-title">
+            Research
+          </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
               Random matrix theory, stochastic control, convex optimization, and game-theoretic models of human behavior.
