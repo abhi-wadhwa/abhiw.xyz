@@ -42,7 +42,7 @@ export default function PageTransition() {
       prevPath.current = pathname;
       setGrid(generateGrid());
       setActive(true);
-      const timer = setTimeout(() => setActive(false), 1100);
+      const timer = setTimeout(() => setActive(false), 700);
       return () => clearTimeout(timer);
     }
   }, [pathname]);
@@ -51,26 +51,27 @@ export default function PageTransition() {
 
   return (
     <div className="ptr" key={pathname}>
-      <div className="ptr-bg" />
-      <div
-        className="ptr-grid"
-        style={{
-          gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
-          gridTemplateRows: `repeat(${grid.rows}, 1fr)`,
-        }}
-      >
-        {grid.cells.map((cell, i) => (
-          <span
-            key={i}
-            className="ptr-cell"
-            style={{
-              animationDelay: `${cell.delay}s`,
-              animationDuration: `${cell.duration}s`,
-            }}
-          >
-            {cell.symbol}
-          </span>
-        ))}
+      <div className="ptr-bg">
+        <div
+          className="ptr-grid"
+          style={{
+            gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
+            gridTemplateRows: `repeat(${grid.rows}, 1fr)`,
+          }}
+        >
+          {grid.cells.map((cell, i) => (
+            <span
+              key={i}
+              className="ptr-cell"
+              style={{
+                animationDelay: `${cell.delay * 0.6}s`,
+                animationDuration: `${cell.duration * 0.7}s`,
+              }}
+            >
+              {cell.symbol}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1768,8 +1768,8 @@ button {
   position: absolute;
   inset: 0;
   background: #0a1628;
-  animation: ptrIn 0.45s var(--ease-out) forwards,
-             ptrOut 0.45s var(--ease) 0.65s forwards;
+  animation: ptrIn 0.3s var(--ease-out) forwards,
+             ptrOut 0.3s var(--ease) 0.4s forwards;
 }
 
 .ptr-grid {
@@ -1777,7 +1777,6 @@ button {
   inset: 0;
   display: grid;
   padding: 24px;
-  z-index: 1;
 }
 
 .ptr-cell {
