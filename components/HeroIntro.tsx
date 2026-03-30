@@ -335,15 +335,13 @@ export default function HeroIntro() {
             onClick={handleNavClick(l.href)}
             initial={{ opacity: 0, x: 30 }}
             animate={
-              exiting
-                ? { opacity: 0, y: -220, x: -60, scale: 0.75 }
-                : navVisible
-                  ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: 30 }
+              navVisible
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: 30 }
             }
             transition={{
-              delay: exiting ? i * 0.04 : navVisible ? i * 0.08 : 0,
-              duration: exiting ? 0.65 : 0.5,
+              delay: navVisible ? i * 0.08 : 0,
+              duration: 0.5,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
