@@ -6,20 +6,11 @@ import { research } from "@/data/research";
 export default function ResearchPage() {
   return (
     <>
-      <div className="res-page-header">
+      <div className="section-header">
         <div className="container">
-          <TextReveal as="h1" className="page-title">
+          <TextReveal as="h1" className="section-title">
             Research
           </TextReveal>
-          <Reveal delay={0.2}>
-            <p className="page-subtitle">
-              Investigating problems in random matrix theory, stochastic control,
-              optimization, and behavioral economics.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3} variant="scale">
-            <span className="page-header-line" />
-          </Reveal>
         </div>
       </div>
 

@@ -720,13 +720,28 @@ button {
 }
 
 /* ============================================
-   PAGE HEADER (interior pages)
+   PAGE HEADERS
    ============================================ */
 
+/* Compact section header — just title, tight spacing */
+.section-header {
+  padding: 110px 0 32px;
+  background: var(--bg);
+}
+
+.section-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Legacy page header */
 .page-header {
   padding: 160px 0 48px;
   position: relative;
-  background: var(--bg-subtle);
+  background: var(--bg);
 }
 
 .page-header-line {
@@ -888,11 +903,6 @@ button {
    EXPERIENCE PAGE
    ============================================ */
 
-.exp-page-header {
-  padding: 160px 0 48px;
-  position: relative;
-  background: var(--bg);
-}
 
 .exp-list {
   display: flex;
@@ -1072,11 +1082,6 @@ button {
    RESEARCH PAGE
    ============================================ */
 
-.res-page-header {
-  padding: 160px 0 48px;
-  position: relative;
-  background: var(--bg);
-}
 
 .res-list {
   display: flex;
@@ -1925,6 +1930,10 @@ button {
   .home-nav-desc {
     text-align: left;
     max-width: none;
+  }
+
+  .section-header {
+    padding: 100px 0 24px;
   }
 
   .page-header {

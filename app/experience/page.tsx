@@ -86,20 +86,11 @@ export default function ExperiencePage() {
 
   return (
     <>
-      <div className="exp-page-header">
+      <div className="section-header">
         <div className="container">
-          <TextReveal as="h1" className="page-title">
+          <TextReveal as="h1" className="section-title">
             Experience
           </TextReveal>
-          <Reveal delay={0.2}>
-            <p className="page-subtitle">
-              From quantitative trading to machine learning research — building
-              at the intersection of mathematics and markets.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3} variant="scale">
-            <span className="page-header-line" />
-          </Reveal>
         </div>
       </div>
 
