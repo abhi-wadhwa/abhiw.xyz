@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import SignatureLogo from "@/components/SignatureLogo";
 
 const NODE_COUNT = 130;
 const CONNECT_DIST = 140;
@@ -322,9 +323,9 @@ export default function HeroIntro() {
       <canvas ref={canvasRef} className="hero-intro-canvas" />
 
       <div className="hero-intro-content">
-        <h1 className={`hero-intro-name${nameVisible ? " visible" : ""}`}>
-          Abhi Wadhwa
-        </h1>
+        <div className={`hero-intro-sig${nameVisible ? " visible" : ""}`}>
+          <SignatureLogo animate={nameVisible} light />
+        </div>
         <p className={`hero-intro-sub${subVisible ? " visible" : ""}`}>
           Applied Mathematics &middot; Game Theory &middot; Optimization
         </p>

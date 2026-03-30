@@ -242,11 +242,12 @@ button {
   grid-template-columns: 1fr 340px;
   gap: 64px;
   padding-top: 72px;
+  align-items: start;
 }
 
 /* Left column — scrolls normally */
 .hero-scroll-spacer {
-  min-height: calc(100vh - 340px);
+  min-height: calc(100vh - 420px);
 }
 
 .statement-text {
@@ -259,7 +260,7 @@ button {
 }
 
 .hero-scroll-about {
-  padding: 80px 0 120px;
+  padding: 60px 0 120px;
 }
 
 .about-desc {
@@ -276,16 +277,16 @@ button {
   margin-top: 32px;
 }
 
-/* Right column — photo sticks while scrolling */
+/* Right column — photo sticks, vertically centered */
 .hero-scroll-right {
   position: relative;
 }
 
 .hero-scroll-photo {
   position: sticky;
-  top: calc(50vh - 170px);
-  width: 340px;
-  height: 340px;
+  top: calc(50vh - 190px);
+  width: 380px;
+  height: 380px;
 }
 
 /* Shared tag + photo styles */
@@ -536,20 +537,76 @@ button {
   pointer-events: none;
 }
 
-.hero-intro-name {
-  font-size: clamp(42px, 7vw, 88px);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+/* Signature logo — shared */
+.sig {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.hero-intro-name.visible {
+.sig-text {
+  font-family: var(--font-script), "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: inherit;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.sig-light .sig-text {
+  color: #ffffff;
+}
+
+.sig-line {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1e52f3, rgba(30, 82, 243, 0.08));
+  width: 100%;
+}
+
+.sig-light .sig-line {
+  background: linear-gradient(90deg, #1e52f3, rgba(255, 255, 255, 0.15));
+}
+
+/* Draw animation */
+.sig-animate .sig-text {
+  clip-path: inset(0 100% 0 0);
+  animation: sigTextDraw 1.4s var(--ease-out) forwards;
+}
+
+.sig-animate .sig-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: sigLineDraw 0.7s var(--ease-out) 1.2s forwards;
+}
+
+@keyframes sigTextDraw {
+  to { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes sigLineDraw {
+  to { transform: scaleX(1); }
+}
+
+/* Signature in intro — large, centered */
+.hero-intro-sig {
+  font-size: 80px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.hero-intro-sig.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Signature in nav — small */
+.nav-logo .sig {
+  font-size: 22px;
+}
+
+.nav-logo .sig-line {
+  height: 2px;
 }
 
 .hero-intro-sub {

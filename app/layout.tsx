@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Nunito, Dancing_Script } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import "./globals.css";
 
@@ -7,6 +7,13 @@ const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-main",
+  display: "swap",
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: "700",
+  variable: "--font-script",
   display: "swap",
 });
 
@@ -34,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={nunito.variable}>
+    <html lang="en" className={`${nunito.variable} ${dancingScript.variable}`}>
       <body>
         <Navigation />
         {children}
