@@ -69,6 +69,18 @@ body {
   overflow-x: hidden;
 }
 
+/* Faint dot grid — graph paper background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(30, 82, 243, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
 ::selection {
   background: var(--accent-glow-strong);
   color: var(--text-primary);
@@ -753,9 +765,17 @@ button {
   white-space: nowrap;
 }
 
+.section-desc {
+  font-size: 16px;
+  color: var(--text-tertiary);
+  margin-top: 14px;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
 .section-header-line {
   height: 2px;
-  margin-top: 24px;
+  margin-top: 20px;
   margin-bottom: 48px;
   border-radius: 1px;
   background: linear-gradient(90deg, var(--accent), transparent 60%);

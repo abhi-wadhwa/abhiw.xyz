@@ -16,6 +16,11 @@ export default function ResearchPage() {
               <span className="section-tagline">Theory &times; Application</span>
             </Reveal>
           </div>
+          <Reveal delay={0.2}>
+            <p className="section-desc">
+              Random matrix theory, stochastic control, convex optimization, and game-theoretic models of human behavior.
+            </p>
+          </Reveal>
           <Reveal delay={0.4} variant="scale">
             <div className="section-header-line" />
           </Reveal>

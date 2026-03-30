@@ -96,6 +96,11 @@ export default function ExperiencePage() {
               <span className="section-tagline">Mathematics &times; Markets</span>
             </Reveal>
           </div>
+          <Reveal delay={0.2}>
+            <p className="section-desc">
+              Quantitative trading, private equity, machine learning, and capital markets — from Chicago to Dubai to New York.
+            </p>
+          </Reveal>
           <Reveal delay={0.4} variant="scale">
             <div className="section-header-line" />
           </Reveal>
