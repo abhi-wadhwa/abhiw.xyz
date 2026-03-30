@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif } from "next/font/google";
-import localFont from "next/font/local";
+import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import "./globals.css";
 
@@ -12,15 +11,11 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const satoshi = localFont({
-  src: [
-    { path: "./fonts/Satoshi-Regular.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/Satoshi-Medium.woff2", weight: "500", style: "normal" },
-    { path: "./fonts/Satoshi-Bold.woff2", weight: "700", style: "normal" },
-  ],
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -49,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${satoshi.variable}`}
+      className={`${instrumentSerif.variable} ${plusJakarta.variable}`}
     >
       <body>
         <Navigation />

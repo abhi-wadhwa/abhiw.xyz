@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import TextReveal from "@/components/TextReveal";
 import { personalData } from "@/data/personal";
 
 const journey = [
@@ -29,35 +30,37 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-function InterestCard({ interest }: { interest: (typeof personalData.interests)[0] }) {
+function InterestCard({ interest, index }: { interest: (typeof personalData.interests)[0]; index: number }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="interest-card" onClick={() => setOpen(!open)}>
-      <div className="interest-header">
-        <span className="interest-title">{interest.title}</span>
-        <Chevron open={open} />
+    <Reveal delay={index * 0.1} direction="right" variant="slide">
+      <div className="interest-card" onClick={() => setOpen(!open)}>
+        <div className="interest-header">
+          <span className="interest-title">{interest.title}</span>
+          <Chevron open={open} />
+        </div>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: "hidden" }}
+            >
+              <p className="interest-body">{interest.body}</p>
+              <div className="interest-refs">
+                {interest.references.map((ref) => (
+                  <span key={ref.title} className="interest-ref">
+                    {ref.title} &mdash; {ref.author}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            style={{ overflow: "hidden" }}
-          >
-            <p className="interest-body">{interest.body}</p>
-            <div className="interest-refs">
-              {interest.references.map((ref) => (
-                <span key={ref.title} className="interest-ref">
-                  {ref.title} &mdash; {ref.author}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    </Reveal>
   );
 }
 
@@ -68,14 +71,17 @@ export default function PersonalPage() {
     <>
       <div className="page-header">
         <div className="container">
-          <Reveal>
-            <h1 className="page-title">Personal</h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          <TextReveal as="h1" className="page-title">
+            Personal
+          </TextReveal>
+          <Reveal delay={0.2}>
             <p className="page-subtitle">
               The story behind the math — where I come from, what I care about,
               and how I see the world.
             </p>
+          </Reveal>
+          <Reveal delay={0.3} variant="scale">
+            <span className="page-header-line" />
           </Reveal>
         </div>
       </div>
@@ -83,18 +89,21 @@ export default function PersonalPage() {
       <div className="page-content">
         <div className="container">
           {/* Journey map */}
-          <Reveal>
-            <div className="journey-map">
-              {journey.map((stop, i) => (
-                <div key={stop.place} className="journey-stop">
-                  {i < journey.length - 1 && <div className="journey-line" />}
-                  <div className="journey-dot" />
-                  <span className="journey-label">{stop.place}</span>
-                  <span className="journey-detail">{stop.detail}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          <div className="journey-map">
+            {journey.map((stop, i) => (
+              <Reveal
+                key={stop.place}
+                delay={0.1 + i * 0.15}
+                variant="scale"
+                className="journey-stop"
+              >
+                {i < journey.length - 1 && <div className="journey-line" />}
+                <div className="journey-dot" />
+                <span className="journey-label">{stop.place}</span>
+                <span className="journey-detail">{stop.detail}</span>
+              </Reveal>
+            ))}
+          </div>
 
           <div className="personal-grid">
             <div>
@@ -102,11 +111,11 @@ export default function PersonalPage() {
                 <h2 className="sub-heading">About</h2>
               </Reveal>
               {personalData.bio.map((p, i) => (
-                <Reveal key={i} delay={i * 0.06}>
+                <Reveal key={i} delay={i * 0.08}>
                   <p className="bio-text">{p}</p>
                 </Reveal>
               ))}
-              <Reveal delay={0.2}>
+              <Reveal delay={0.25} variant="blur">
                 <div style={{ marginTop: 8 }}>
                   <span className="bio-meta">
                     {personalData.pronunciation}
@@ -119,18 +128,16 @@ export default function PersonalPage() {
             </div>
 
             <div>
-              <Reveal>
+              <Reveal direction="right" variant="slide">
                 <h2 className="sub-heading">Areas of Interest</h2>
               </Reveal>
               {personalData.interests.map((interest, i) => (
-                <Reveal key={interest.title} delay={i * 0.08}>
-                  <InterestCard interest={interest} />
-                </Reveal>
+                <InterestCard key={interest.title} interest={interest} index={i} />
               ))}
             </div>
           </div>
 
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} variant="scale">
             <div
               className="interest-card"
               onClick={() => setPhilOpen(!philOpen)}
@@ -148,7 +155,7 @@ export default function PersonalPage() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     style={{ overflow: "hidden" }}
                   >
                     <div className="philosophy-grid">

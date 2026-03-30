@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import TextReveal from "@/components/TextReveal";
 import { courses, Course } from "@/data/courses";
 
 type Filter = "all" | "math" | "cs" | "economics" | "finance" | "graduate" | "undergraduate";
@@ -32,10 +33,10 @@ export default function CoursesPage() {
     <>
       <div className="page-header">
         <div className="container">
-          <Reveal>
-            <h1 className="page-title">Coursework</h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          <TextReveal as="h1" className="page-title">
+            Coursework
+          </TextReveal>
+          <Reveal delay={0.2}>
             <p className="page-subtitle">
               {courses.filter((c) => c.level === "graduate").length} graduate
               and {courses.filter((c) => c.level === "undergraduate").length} undergraduate
@@ -43,12 +44,15 @@ export default function CoursesPage() {
               and quantitative finance.
             </p>
           </Reveal>
+          <Reveal delay={0.3} variant="scale">
+            <span className="page-header-line" />
+          </Reveal>
         </div>
       </div>
 
       <div className="page-content">
         <div className="container">
-          <Reveal>
+          <Reveal delay={0.1}>
             <div className="filter-bar">
               {filters.map((f) => (
                 <button
@@ -64,14 +68,18 @@ export default function CoursesPage() {
 
           <motion.div layout className="course-grid">
             <AnimatePresence mode="popLayout">
-              {filtered.map((course) => (
+              {filtered.map((course, i) => (
                 <motion.div
                   key={course.code}
                   layout
-                  initial={{ opacity: 0, scale: 0.95, y: 12 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -8 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, scale: 0.9, y: 20, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, scale: 0.9, y: -12, filter: "blur(4px)" }}
+                  transition={{
+                    duration: 0.4,
+                    delay: i * 0.03,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   className={`course-card ${course.level === "graduate" ? "course-card-grad" : ""}`}
                 >
                   <div className="course-top">

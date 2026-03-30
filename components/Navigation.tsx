@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { motion, useScroll } from "framer-motion";
 import Link from "next/link";
 
 const links = [
@@ -16,6 +17,7 @@ export default function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -63,6 +65,12 @@ export default function Navigation() {
             </svg>
           )}
         </button>
+
+        {/* Scroll progress bar */}
+        <motion.div
+          className="scroll-progress"
+          style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
+        />
       </nav>
 
       {mobileOpen && (

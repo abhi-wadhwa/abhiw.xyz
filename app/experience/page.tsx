@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import TextReveal from "@/components/TextReveal";
 import { experiences } from "@/data/experience";
 
 export default function ExperiencePage() {
@@ -7,14 +8,17 @@ export default function ExperiencePage() {
     <>
       <div className="page-header">
         <div className="container">
-          <Reveal>
-            <h1 className="page-title">Experience</h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          <TextReveal as="h1" className="page-title">
+            Experience
+          </TextReveal>
+          <Reveal delay={0.2}>
             <p className="page-subtitle">
               From quantitative trading to machine learning research — building
               at the intersection of mathematics and markets.
             </p>
+          </Reveal>
+          <Reveal delay={0.3} variant="scale">
+            <span className="page-header-line" />
           </Reveal>
         </div>
       </div>
@@ -23,7 +27,7 @@ export default function ExperiencePage() {
         <div className="container">
           <div className="feed-list">
             {experiences.map((exp, i) => (
-              <Reveal key={exp.company} delay={i * 0.08}>
+              <Reveal key={exp.company} delay={i * 0.12} variant={i % 2 === 0 ? "fade" : "slide"} direction={i % 2 === 0 ? "up" : "left"}>
                 <div className="feed-entry">
                   <div className="logo-frame">
                     <img

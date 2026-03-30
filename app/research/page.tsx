@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import TextReveal from "@/components/TextReveal";
 import { research } from "@/data/research";
 
 export default function ResearchPage() {
@@ -7,14 +8,17 @@ export default function ResearchPage() {
     <>
       <div className="page-header">
         <div className="container">
-          <Reveal>
-            <h1 className="page-title">Research</h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          <TextReveal as="h1" className="page-title">
+            Research
+          </TextReveal>
+          <Reveal delay={0.2}>
             <p className="page-subtitle">
               Investigating problems in random matrix theory, stochastic control,
               optimization, and behavioral economics.
             </p>
+          </Reveal>
+          <Reveal delay={0.3} variant="scale">
+            <span className="page-header-line" />
           </Reveal>
         </div>
       </div>
@@ -23,10 +27,17 @@ export default function ResearchPage() {
         <div className="container">
           <div className="research-grid">
             {research.map((item, i) => (
-              <Reveal key={`${item.institution}-${item.advisor}`} delay={i * 0.1}>
+              <Reveal
+                key={`${item.institution}-${item.advisor}`}
+                delay={i * 0.12}
+                variant="scale"
+              >
                 <div
                   className="research-card"
-                  style={{ "--card-accent": item.accentColor } as React.CSSProperties}
+                  style={{
+                    "--card-accent": item.accentColor,
+                    "--card-accent-glow": `${item.accentColor}20`,
+                  } as React.CSSProperties}
                 >
                   <div className="research-card-header">
                     <div className="research-card-info">

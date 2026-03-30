@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import TextReveal from "@/components/TextReveal";
 import { awards } from "@/data/awards";
 
 function AwardItem({ title, organization, year }: { title: string; organization: string; year?: string }) {
@@ -28,14 +29,17 @@ export default function AwardsPage() {
     <>
       <div className="page-header">
         <div className="container">
-          <Reveal>
-            <h1 className="page-title">Awards &amp; Honors</h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          <TextReveal as="h1" className="page-title">
+            Awards &amp; Honors
+          </TextReveal>
+          <Reveal delay={0.2}>
             <p className="page-subtitle">
               Competition mathematics, parliamentary debate, and academic
               recognition.
             </p>
+          </Reveal>
+          <Reveal delay={0.3} variant="scale">
+            <span className="page-header-line" />
           </Reveal>
         </div>
       </div>
@@ -43,17 +47,17 @@ export default function AwardsPage() {
       <div className="page-content">
         <div className="container">
           {/* Featured achievements */}
-          <Reveal>
-            <div className="awards-featured">
-              {featured.map((a, i) => (
-                <div key={a.title} className="award-featured-card">
+          <div className="awards-featured">
+            {featured.map((a, i) => (
+              <Reveal key={a.title} delay={i * 0.08} variant="scale">
+                <div className="award-featured-card">
                   <div className="award-featured-title">{a.title}</div>
                   <div className="award-featured-org">{a.organization}</div>
                   {a.year && <div className="award-featured-year">{a.year}</div>}
                 </div>
-              ))}
-            </div>
-          </Reveal>
+              </Reveal>
+            ))}
+          </div>
 
           {/* All awards */}
           <div className="awards-columns">
@@ -62,12 +66,12 @@ export default function AwardsPage() {
               <Reveal>
                 <div className="award-group">
                   <div className="award-group-title">Debate &mdash; Collegiate</div>
-                  {awards.debate.collegiate.map((a) => (
+                  {awards.debate.collegiate.map((a, i) => (
                     <AwardItem key={a.title} {...a} />
                   ))}
                 </div>
               </Reveal>
-              <Reveal delay={0.1}>
+              <Reveal delay={0.15} direction="left" variant="slide">
                 <div className="award-group">
                   <div className="award-group-title">Debate &mdash; High School &amp; International</div>
                   {awards.debate.highSchool.map((a) => (
@@ -79,7 +83,7 @@ export default function AwardsPage() {
 
             {/* Right: Math + Scholarships */}
             <div>
-              <Reveal>
+              <Reveal direction="right" variant="slide">
                 <div className="award-group">
                   <div className="award-group-title">Mathematics</div>
                   {awards.mathematics.filter((a) => !a.featured).map((a) => (
@@ -87,7 +91,7 @@ export default function AwardsPage() {
                   ))}
                 </div>
               </Reveal>
-              <Reveal delay={0.1}>
+              <Reveal delay={0.15} direction="right" variant="slide">
                 <div className="award-group">
                   <div className="award-group-title">Scholarships</div>
                   {awards.scholarships.filter((a) => !a.featured).map((a) => (
