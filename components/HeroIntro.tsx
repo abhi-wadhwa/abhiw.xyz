@@ -62,13 +62,10 @@ export default function HeroIntro() {
   const sizeRef = useRef({ w: 0, h: 0 });
 
   useEffect(() => {
-    const seen = sessionStorage.getItem("heroSeen");
-    if (!seen) {
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!prefersReduced) {
-        setVisible(true);
-        document.body.style.overflow = "hidden";
-      }
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!prefersReduced) {
+      setVisible(true);
+      document.body.style.overflow = "hidden";
     }
   }, []);
 
@@ -77,7 +74,6 @@ export default function HeroIntro() {
     exitedRef.current = true;
     setExiting(true);
     document.body.style.overflow = "";
-    sessionStorage.setItem("heroSeen", "1");
     setTimeout(() => {
       animatingRef.current = false;
       setVisible(false);
@@ -86,7 +82,6 @@ export default function HeroIntro() {
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    sessionStorage.setItem("heroSeen", "1");
     document.body.style.overflow = "";
     animatingRef.current = false;
     setVisible(false);
