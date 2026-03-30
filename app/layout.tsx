@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { Nunito } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
+const nunito = Nunito({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-main",
   display: "swap",
 });
 
@@ -42,10 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${instrumentSerif.variable} ${plusJakarta.variable}`}
-    >
+    <html lang="en" className={nunito.variable}>
       <body>
         <Navigation />
         {children}
