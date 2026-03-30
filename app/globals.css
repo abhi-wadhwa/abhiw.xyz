@@ -147,43 +147,51 @@ button {
   flex-direction: column;
   align-items: flex-end;
   z-index: 50;
+  gap: 0;
 }
 
 .nav-vertical-link {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--text-tertiary);
-  letter-spacing: 0.01em;
-  transition: color 0.2s ease;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.25s ease, transform 0.25s var(--ease-out);
   position: relative;
+  padding: 6px 0;
 }
 
-.nav-vertical-link::after {
+.nav-vertical-link::before {
   content: "";
   position: absolute;
-  bottom: -2px;
-  right: 0;
-  width: 0;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  width: 8px;
   height: 2px;
   border-radius: 1px;
-  background: var(--gradient-accent);
-  transition: width 0.4s var(--ease-out);
+  background: var(--accent);
+  transition: transform 0.3s var(--ease-out);
+  transform-origin: right;
 }
 
 .nav-vertical-link:hover {
-  color: var(--text-primary);
+  color: var(--accent);
+  transform: translateX(-4px);
 }
 
-.nav-vertical-link:hover::after {
-  width: 100%;
+.nav-vertical-link:hover::before {
+  transform: translateY(-50%) scaleX(1);
 }
 
 .nav-vertical-link.active {
   color: var(--accent);
 }
 
-.nav-vertical-link.active::after {
-  width: 100%;
+.nav-vertical-link.active::before {
+  transform: translateY(-50%) scaleX(1);
+  background: var(--gradient-accent);
+  width: 12px;
 }
 
 /* Scroll progress bar */
@@ -239,7 +247,7 @@ button {
 
 .hero-scroll-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 440px;
   gap: 64px;
   padding-top: 40vh;
   align-items: start;
@@ -304,8 +312,8 @@ button {
 .hero-scroll-photo {
   position: sticky;
   top: 40vh;
-  width: 380px;
-  height: 380px;
+  width: 440px;
+  height: 440px;
 }
 
 /* Shared tag + photo styles */
