@@ -1,4 +1,5 @@
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import { awards } from "@/data/awards";
 
 function AwardItem({ title, organization, year }: { title: string; organization: string; year?: string }) {
@@ -13,48 +14,87 @@ function AwardItem({ title, organization, year }: { title: string; organization:
   );
 }
 
+function collectFeatured() {
+  const featured = [];
+  for (const a of awards.mathematics) if (a.featured) featured.push(a);
+  for (const a of awards.scholarships) if (a.featured) featured.push(a);
+  return featured;
+}
+
 export default function AwardsPage() {
+  const featured = collectFeatured();
+
   return (
     <>
       <div className="page-header">
         <div className="container">
-          <h1 className="page-title">Awards &amp; Honors</h1>
+          <Reveal>
+            <h1 className="page-title">Awards &amp; Honors</h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="page-subtitle">
+              Competition mathematics, parliamentary debate, and academic
+              recognition.
+            </p>
+          </Reveal>
         </div>
       </div>
 
       <div className="page-content">
         <div className="container">
+          {/* Featured achievements */}
+          <Reveal>
+            <div className="awards-featured">
+              {featured.map((a, i) => (
+                <div key={a.title} className="award-featured-card">
+                  <div className="award-featured-title">{a.title}</div>
+                  <div className="award-featured-org">{a.organization}</div>
+                  {a.year && <div className="award-featured-year">{a.year}</div>}
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* All awards */}
           <div className="awards-columns">
             {/* Left: Debate */}
             <div>
-              <div className="award-group">
-                <div className="award-group-title">Debate — Collegiate</div>
-                {awards.debate.collegiate.map((a) => (
-                  <AwardItem key={a.title} {...a} />
-                ))}
-              </div>
-              <div className="award-group">
-                <div className="award-group-title">Debate — High School &amp; International</div>
-                {awards.debate.highSchool.map((a) => (
-                  <AwardItem key={a.title} {...a} />
-                ))}
-              </div>
+              <Reveal>
+                <div className="award-group">
+                  <div className="award-group-title">Debate &mdash; Collegiate</div>
+                  {awards.debate.collegiate.map((a) => (
+                    <AwardItem key={a.title} {...a} />
+                  ))}
+                </div>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <div className="award-group">
+                  <div className="award-group-title">Debate &mdash; High School &amp; International</div>
+                  {awards.debate.highSchool.map((a) => (
+                    <AwardItem key={a.title} {...a} />
+                  ))}
+                </div>
+              </Reveal>
             </div>
 
             {/* Right: Math + Scholarships */}
             <div>
-              <div className="award-group">
-                <div className="award-group-title">Mathematics</div>
-                {awards.mathematics.map((a) => (
-                  <AwardItem key={a.title} {...a} />
-                ))}
-              </div>
-              <div className="award-group">
-                <div className="award-group-title">Scholarships</div>
-                {awards.scholarships.map((a) => (
-                  <AwardItem key={a.title} {...a} />
-                ))}
-              </div>
+              <Reveal>
+                <div className="award-group">
+                  <div className="award-group-title">Mathematics</div>
+                  {awards.mathematics.filter((a) => !a.featured).map((a) => (
+                    <AwardItem key={a.title} {...a} />
+                  ))}
+                </div>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <div className="award-group">
+                  <div className="award-group-title">Scholarships</div>
+                  {awards.scholarships.filter((a) => !a.featured).map((a) => (
+                    <AwardItem key={a.title} {...a} />
+                  ))}
+                </div>
+              </Reveal>
             </div>
           </div>
         </div>

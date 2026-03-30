@@ -14,29 +14,22 @@ const links = [
 
 export default function Navigation() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!isHome) {
-      setScrolled(false);
-      return;
-    }
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
+  }, []);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  const theme = isHome ? (scrolled ? "nav-scrolled" : "nav-dark") : "nav-light";
-
   return (
     <>
-      <nav className={`nav ${theme}`}>
+      <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
         <Link href="/" className="nav-logo">
           Abhi Wadhwa
         </Link>

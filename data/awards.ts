@@ -3,6 +3,7 @@ export interface Award {
   organization: string;
   detail?: string;
   year?: string;
+  featured?: boolean;
 }
 
 export interface AwardsData {
@@ -32,16 +33,16 @@ export const awards: AwardsData = {
     ],
   },
   mathematics: [
-    { title: "2x BMO Distinction + Qualifier", organization: "British Mathematical Olympiad", year: "2022–23" },
-    { title: "USAMO Qualifier", organization: "USA Mathematical Olympiad", year: "2022" },
-    { title: "2x AIME Qualifier", organization: "American Invitational Mathematical Examination", year: "2022–23" },
+    { title: "USAMO Qualifier", organization: "USA Mathematical Olympiad", year: "2022", featured: true },
+    { title: "2x BMO Distinction + Qualifier", organization: "British Mathematical Olympiad", year: "2022–23", featured: true },
+    { title: "2x AIME Qualifier", organization: "American Invitational Mathematical Examination", year: "2022–23", featured: true },
     { title: "5x UKMT Gold Medal + Best in School", organization: "United Kingdom Mathematical Trust", year: "2017–23" },
     { title: "UKMT Intermediate Olympiad Medalist", organization: "United Kingdom Mathematical Trust", year: "2022" },
   ],
   scholarships: [
-    { title: "Dean's Scholarship ($70k Merit)", organization: "University of Southern California", year: "2023–" },
+    { title: "Dean's Scholarship ($70k Merit)", organization: "University of Southern California", year: "2023–", featured: true },
     { title: "GEMS Academic Scholarship ($10k Merit)", organization: "GEMS Education", year: "2023–24" },
     { title: "Dean's List (Every Semester)", organization: "University of Southern California", year: "2023–25" },
-    { title: "JHU Study of Exceptional Talent", organization: "Johns Hopkins University", year: "2019" },
+    { title: "JHU Study of Exceptional Talent", organization: "Johns Hopkins University", year: "2019", featured: true },
   ],
 };

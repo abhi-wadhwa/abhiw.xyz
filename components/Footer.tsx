@@ -55,12 +55,15 @@ const icons: Record<string, () => React.JSX.Element> = {
   Substack: ArrowIcon,
 };
 
-export default function Footer({ dark = false }: { dark?: boolean }) {
+export default function Footer() {
   return (
-    <footer className={`footer ${dark ? "footer-dark" : "footer-light"}`}>
+    <footer className="footer">
       <div className="container">
         <div className="footer-inner">
-          <span className="footer-copy">&copy; 2026 Abhi Wadhwa</span>
+          <div className="footer-left">
+            <span className="footer-name">Abhi Wadhwa</span>
+            <span className="footer-copy">&copy; 2026 &middot; abhiw.xyz</span>
+          </div>
           <div className="contact-row">
             {contacts.map((c) => {
               const Icon = icons[c.label];

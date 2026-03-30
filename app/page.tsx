@@ -1,12 +1,33 @@
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 
 const navItems = [
-  { num: "01", title: "Experience", href: "/experience", desc: "Optiver · Iron Pillar Fund · The World Bank · RBC Capital Markets" },
-  { num: "02", title: "Research", href: "/research", desc: "SVD Theory · Random Matrix Theory · Stochastic Control · Behavioral Economics" },
-  { num: "03", title: "Awards", href: "/awards", desc: "Debate · Mathematics · Scholarships" },
-  { num: "04", title: "Coursework", href: "/courses", desc: "22 courses across Mathematics, CS, Economics, and Finance" },
-  { num: "05", title: "Personal", href: "/personal", desc: "Background · Interests · Philosophy" },
+  {
+    title: "Experience",
+    href: "/experience",
+    desc: "Optiver, Iron Pillar Fund, The World Bank, RBC Capital Markets",
+  },
+  {
+    title: "Research",
+    href: "/research",
+    desc: "SVD Theory, Random Matrix Theory, Stochastic Control, Behavioral Economics",
+  },
+  {
+    title: "Awards",
+    href: "/awards",
+    desc: "USAMO, British Mathematical Olympiad, National Debate",
+  },
+  {
+    title: "Coursework",
+    href: "/courses",
+    desc: "22 courses across Mathematics, CS/ML, Economics, and Finance",
+  },
+  {
+    title: "Personal",
+    href: "/personal",
+    desc: "Richmond, Mumbai, Dubai, Los Angeles — the full story",
+  },
 ];
 
 export default function Home() {
@@ -17,36 +38,36 @@ export default function Home() {
         <div className="container">
           <div className="hero-inner">
             <div className="hero-text">
-              <h1 className="hero-name">Abhi Wadhwa</h1>
+              <h1 className="hero-name">
+                Abhi
+                <br />
+                Wadhwa<span className="hero-name-dot">.</span>
+              </h1>
               <p className="hero-subtitle">Applied Mathematics &middot; USC</p>
               <p className="hero-focus">
                 Game Theory &middot; Optimization &middot; Market Design
               </p>
               <p className="hero-desc">
-                I study Applied Mathematics at USC on scholarship. I work on how
-                utility theory and optimization methods enable multi-agent
-                systems to model incentives involving uncertainty and
-                competition — with applications to market and auction design.
+                I study how utility theory and optimization methods enable
+                multi-agent systems to model incentives involving uncertainty
+                and competition — with applications to market and auction design.
               </p>
-              <div className="hero-chips">
-                <span className="hero-chip">
-                  <span className="hero-dot" /> Optiver &rsquo;26
-                </span>
-                <span className="hero-chip">
-                  <span className="hero-dot" /> Random Matrix Theory
-                </span>
-                <span className="hero-chip">
-                  <span className="hero-dot" /> USC Applied Math
-                </span>
+              <div className="hero-tags">
+                <span className="hero-tag hero-tag-active">Optiver &rsquo;26</span>
+                <span className="hero-tag">Random Matrix Theory</span>
+                <span className="hero-tag">USC Applied Math</span>
               </div>
             </div>
 
             <div className="hero-photo-wrap">
-              <img
-                src="/assets/abhi.jpeg"
-                alt="Abhi Wadhwa"
-                className="hero-photo"
-              />
+              <div className="hero-photo-glow" />
+              <div className="hero-photo-ring">
+                <img
+                  src="/assets/abhi.jpeg"
+                  alt="Abhi Wadhwa"
+                  className="hero-photo"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -55,28 +76,26 @@ export default function Home() {
       {/* Navigation to sections */}
       <section className="home-nav">
         <div className="container">
+          <Reveal>
+            <div className="home-nav-divider" />
+          </Reveal>
           <div className="home-nav-list">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="home-nav-item"
-              >
-                <div className="home-nav-left">
-                  <span className="home-nav-num">{item.num}</span>
+            {navItems.map((item, i) => (
+              <Reveal key={item.href} delay={i * 0.08}>
+                <Link href={item.href} className="home-nav-item">
                   <span className="home-nav-title">
                     {item.title}
                     <span className="home-nav-arrow">&rarr;</span>
                   </span>
-                </div>
-                <span className="home-nav-desc">{item.desc}</span>
-              </Link>
+                  <span className="home-nav-desc">{item.desc}</span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <Footer dark />
+      <Footer />
     </>
   );
 }
