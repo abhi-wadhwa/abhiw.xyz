@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import TextReveal from "@/components/TextReveal";
@@ -11,91 +11,49 @@ function ExperienceCard({
   exp,
   index,
   isOpen,
+  anyOpen,
   onToggle,
 }: {
   exp: (typeof experiences)[0];
   index: number;
   isOpen: boolean;
+  anyOpen: boolean;
   onToggle: () => void;
 }) {
+  const dimmed = anyOpen && !isOpen;
+
   return (
     <Reveal delay={index * 0.1}>
-      <motion.div
-        layout
+      <div
         className={`exp-card ${isOpen ? "exp-card-open" : ""}`}
+        style={{
+          opacity: dimmed ? 0.3 : 1,
+          transform: dimmed ? "scale(0.97)" : "scale(1)",
+          filter: dimmed ? "blur(1px)" : "blur(0px)",
+        }}
         onClick={onToggle}
-        transition={{ layout: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
       >
-        {/* Header */}
-        <motion.div layout="position" className="exp-header">
-          <motion.div
-            className="exp-logo"
-            animate={{
-              width: isOpen ? 88 : 56,
-              height: isOpen ? 88 : 56,
-              borderRadius: isOpen ? 20 : 14,
-            }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
+        <div className="exp-header">
+          <div className={`exp-logo ${isOpen ? "exp-logo-lg" : ""}`}>
             <img src={exp.logo} alt={exp.company} loading="lazy" />
-          </motion.div>
+          </div>
           <div className="exp-header-info">
-            <motion.div
-              className="exp-role"
-              animate={{ fontSize: isOpen ? 28 : 20 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {exp.role}
-            </motion.div>
-            <motion.div
-              className="exp-company"
-              animate={{ fontSize: isOpen ? 18 : 15 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {exp.company}
-            </motion.div>
+            <div className="exp-role">{exp.role}</div>
+            <div className="exp-company">{exp.company}</div>
             <div className="exp-meta">
               {exp.location} &middot; {exp.dateRange}
             </div>
           </div>
           <div className={`exp-toggle ${isOpen ? "exp-toggle-open" : ""}`}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <line
-                x1="12"
-                y1="5"
-                x2="12"
-                y2="19"
-                className="exp-toggle-vert"
-              />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" className="exp-toggle-vert" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Summary — only when collapsed */}
-        <AnimatePresence>
-          {!isOpen && (
-            <motion.p
-              className="exp-summary"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {exp.summary}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {!isOpen && <p className="exp-summary">{exp.summary}</p>}
 
-        {/* Expanded content */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -103,13 +61,11 @@ function ExperienceCard({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="exp-body-inner">
                 <div className="exp-section">
-                  <h3 className="exp-section-title">
-                    About {exp.company}
-                  </h3>
+                  <h3 className="exp-section-title">About {exp.company}</h3>
                   <p className="exp-section-text">{exp.companyDesc}</p>
                 </div>
                 <div className="exp-section">
@@ -120,7 +76,7 @@ function ExperienceCard({
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </Reveal>
   );
 }
@@ -149,21 +105,18 @@ export default function ExperiencePage() {
 
       <div className="page-content">
         <div className="container">
-          <LayoutGroup>
-            <div className="exp-list">
-              {experiences.map((exp, i) => (
-                <ExperienceCard
-                  key={exp.company}
-                  exp={exp}
-                  index={i}
-                  isOpen={openIndex === i}
-                  onToggle={() =>
-                    setOpenIndex(openIndex === i ? null : i)
-                  }
-                />
-              ))}
-            </div>
-          </LayoutGroup>
+          <div className="exp-list">
+            {experiences.map((exp, i) => (
+              <ExperienceCard
+                key={exp.company}
+                exp={exp}
+                index={i}
+                isOpen={openIndex === i}
+                anyOpen={openIndex !== null}
+                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
