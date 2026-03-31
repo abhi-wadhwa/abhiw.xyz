@@ -401,7 +401,7 @@ const CSS=`
   padding:${3*RENDER_SCALE}px ${8*RENDER_SCALE}px;border-radius:${5*RENDER_SCALE}px;white-space:nowrap;z-index:5;pointer-events:none}
 
 /* Detail card — rendered in viewport space, not inside scaled canvas */
-.ct-card{position:absolute;transform:translateX(-50%);
+.ct-card{position:absolute;margin-left:-170px;
   width:340px;background:#fff;
   border:1px solid var(--border);border-radius:14px;
   padding:20px 24px;z-index:25;pointer-events:auto;
