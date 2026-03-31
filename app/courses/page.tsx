@@ -197,7 +197,7 @@ export default function CoursesPage(){
                   stroke={ec} strokeWidth={lit?2.5:cross?.8:1.2}
                   strokeDasharray={cross?"6 6":"none"}
                   initial={{pathLength:0,opacity:0}}
-                  animate={{pathLength:1,opacity:dim?.02:lit?.55:cross?.06:.16}}
+                  animate={{pathLength:1,opacity:sel?.02:dim?.02:lit?.55:cross?.06:.16}}
                   transition={{pathLength:{duration:1.5,delay:.4+(na?.tier||0)*.2,ease:[.16,1,.3,1]},opacity:{duration:.3}}}
                 />;
               })}
