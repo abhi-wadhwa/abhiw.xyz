@@ -73,40 +73,40 @@ const NS = 130 * RENDER_SCALE;
 
 // Manual positions — grouped by discipline, left edge at 200*S
 const S = RENDER_SCALE;
-const G = 230*S; // column gap
-const R = 160*S; // row gap (shorter to fit vertically)
-const L = 220*S; // left offset
+const G = 280*S; // column gap — bigger than node size (130*S = 325px)
+const R = 240*S; // row gap
+const L = 350*S; // left offset — clears the floating key
 
 const MANUAL_POS: Record<string, { x: number; y: number }> = {
-  // ═══ MATHEMATICS (left, 3 columns) ═══
+  // ═══ MATHEMATICS (left block) ═══
   m1:  { x: L,       y: R*1 },    // Calc II
   m2:  { x: L+G,     y: R*1 },    // Calc III
+  m7:  { x: L+G*2,   y: R*1 },    // Linear Algebra
   m3:  { x: L,       y: R*2 },    // Diff Eq
   m6:  { x: L+G,     y: R*2 },    // Real Analysis
-  m7:  { x: L+G*2,   y: R*1 },    // Linear Algebra
+  m8:  { x: L+G*2,   y: R*2 },    // Optimization
   m4:  { x: L,       y: R*3 },    // Probability
   m5:  { x: L+G,     y: R*3 },    // Statistics
-  m8:  { x: L+G*2,   y: R*2 },    // Optimization
   m9:  { x: L+G*2,   y: R*3 },    // Numerical Analysis
   m10: { x: L,       y: R*4 },    // Grad Stats
   m11: { x: L+G,     y: R*4 },    // Applied Prob
   m12: { x: L+G*2,   y: R*4 },    // Measure Theory
 
-  // ═══ ECONOMICS + FINANCE (center, vertical) ═══
-  e1:  { x: L+G*3.5, y: R*1 },    // Microeconomics
-  e2:  { x: L+G*3.5, y: R*2 },    // Macroeconomics
-  f1:  { x: L+G*3.5, y: R*3 },    // Accounting
-  f2:  { x: L+G*3.5, y: R*4 },    // Corporate Finance
-  f3:  { x: L+G*4.5, y: R*3 },    // VC & PE
-  f4:  { x: L+G*4.5, y: R*4 },    // Fixed Income
+  // ═══ ECON + FINANCE (center column) ═══
+  e1:  { x: L+G*3,   y: R*1.5 },  // Microeconomics
+  e2:  { x: L+G*3,   y: R*2.5 },  // Macroeconomics
+  f1:  { x: L+G*3,   y: R*3.5 },  // Accounting
+  f2:  { x: L+G*4,   y: R*1.5 },  // Corporate Finance
+  f3:  { x: L+G*4,   y: R*2.5 },  // VC & PE
+  f4:  { x: L+G*4,   y: R*3.5 },  // Fixed Income
 
-  // ═══ CS / ML (right, 2 columns) ═══
-  c1:  { x: L+G*5.5, y: R*1 },    // Algorithms
-  c2:  { x: L+G*5.5, y: R*2 },    // Machine Learning
-  c3:  { x: L+G*6.5, y: R*2 },    // Probabilistic Reasoning
-  c4:  { x: L+G*5.5, y: R*3 },    // Stochastic RL
-  c5:  { x: L+G*6.5, y: R*3 },    // RL & Control
-  c6:  { x: L+G*6,   y: R*4 },    // Decision Theory
+  // ═══ CS / ML (right block) ═══
+  c1:  { x: L+G*5,   y: R*1 },    // Algorithms
+  c2:  { x: L+G*5,   y: R*2 },    // Machine Learning
+  c3:  { x: L+G*6,   y: R*2 },    // Probabilistic Reasoning
+  c4:  { x: L+G*5,   y: R*3 },    // Stochastic RL
+  c5:  { x: L+G*6,   y: R*3 },    // RL & Control
+  c6:  { x: L+G*5.5, y: R*4 },    // Decision Theory
 };
 
 const LAYOUT = (() => {
@@ -135,7 +135,7 @@ export default function CoursesPage(){
   const[vpW,setVpW]=useState(1200);
   const[vpH,setVpH]=useState(800);
   const[pan,setPan]=useState({x:0,y:0});
-  const[manualZoom,setManualZoom]=useState(1.3); // fit 4 rows
+  const[manualZoom,setManualZoom]=useState(1); // fit everything
   const dragRef=useRef({dragging:false,startX:0,startY:0,startPanX:0,startPanY:0});
 
   useEffect(()=>{
