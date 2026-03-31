@@ -111,12 +111,18 @@ export default function CoursesPage(){
     window.addEventListener("keydown",k);return()=>window.removeEventListener("keydown",k);
   },[]);
 
-  // Scroll to zoom (gentle)
+  // Scroll to zoom (gentle) — prevent page scroll
   const onWheel=(e:React.WheelEvent)=>{
-    if(sel)return; // don't scroll-zoom when focused on a node
-    e.preventDefault();
+    if(sel)return;
+    e.stopPropagation();
     setManualZoom(z=>Math.max(0.4,Math.min(2,z-e.deltaY*0.0008)));
   };
+
+  // Lock body scroll while on this page
+  useEffect(()=>{
+    document.body.style.overflow="hidden";
+    return()=>{document.body.style.overflow=""};
+  },[]);
 
   // Drag to pan
   const onPointerDown=(e:React.PointerEvent)=>{
@@ -311,13 +317,14 @@ const CSS=`
 .ct-title-bar{padding:110px 0 20px;background:var(--bg)}
 .ct-page-title{font-size:clamp(36px,5vw,56px);font-weight:800;color:var(--text-primary);letter-spacing:-0.03em}
 
-.ct-page{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--bg)}
+.ct-page{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--bg);touch-action:none}
+.ct-viewport{overscroll-behavior:none}
 
 /* Map key — floating overlay top-left */
 .ct-key{position:absolute;top:16px;left:24px;z-index:20;
   background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
   border:1px solid var(--border);border-radius:14px;
-  padding:18px 20px;width:170px;
+  padding:18px 20px;width:170px;max-height:calc(100% - 32px);overflow-y:auto;
   display:flex;flex-direction:column;gap:14px;
   box-shadow:0 4px 20px rgba(0,0,0,.04)}
 .ct-key-section{display:flex;flex-direction:column;gap:3px}
