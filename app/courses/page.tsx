@@ -4,6 +4,25 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 
+/* ═══════════════════ AREA COLORS ═══════════════════ */
+const AREA_COLORS: Record<string, string> = {
+  "ML / AI": "#7c3aed",
+  "Trading": "#059669",
+  "Statistics": "#1e52f3",
+  "Optimization": "#2563eb",
+  "Theory": "#4f46e5",
+  "Finance": "#059669",
+  "Research": "#7c3aed",
+  "Policy": "#b45309",
+  "Applied": "#b45309",
+  "Control": "#6d28d9",
+  "Modeling": "#1e52f3",
+  "Data": "#0891b2",
+  "Computation": "#1e52f3",
+  "Risk": "#dc2626",
+  "Valtic": "#059669",
+};
+
 /* ═══════════════════ DATA ═══════════════════ */
 const DISCS: Record<string, { label: string; color: string }> = {
   MATH: { label: "Mathematics", color: "#1e52f3" },
@@ -12,98 +31,174 @@ const DISCS: Record<string, { label: string; color: string }> = {
   FIN:  { label: "Finance",     color: "#059669" },
 };
 
-const NODES = [
-  { id:"m1", code:"MATH 226", n:"Calculus II", cat:"MATH", lv:"UG", tier:0, col:0, desc:"Techniques of integration, sequences and series, Taylor and Maclaurin series, parametric equations, and polar coordinates." },
-  { id:"m2", code:"MATH 229", n:"Calculus III", cat:"MATH", lv:"UG", tier:0, col:1, desc:"Multivariable calculus: partial derivatives, multiple integrals, vector calculus, Green, Stokes, and Gauss." },
-  { id:"m3", code:"MATH 245", n:"Math of Physics & Eng.", cat:"MATH", lv:"UG", tier:1, col:0, desc:"Ordinary differential equations, Laplace transforms, Fourier series, and boundary value problems." },
-  { id:"m4", code:"MATH 407", n:"Probability Theory", cat:"MATH", lv:"UG", tier:2, col:0, desc:"Random variables, expectation, moment generating functions, and classical limit theorems." },
-  { id:"m5", code:"MATH 408", n:"Mathematical Statistics", cat:"MATH", lv:"UG", tier:2, col:1, desc:"Statistical inference: estimation, hypothesis testing, confidence intervals, sufficiency, and Bayesian methods." },
-  { id:"m6", code:"MATH 425", n:"Real Analysis", cat:"MATH", lv:"UG", tier:1, col:1, desc:"Completeness, sequences, continuity, differentiability, and Riemann integration." },
-  { id:"m7", code:"MATH 471", n:"Linear Algebra", cat:"MATH", lv:"UG", tier:2, col:2, desc:"Canonical forms, spectral theorem, inner product spaces, and matrix decompositions." },
-  { id:"m8", code:"MATH 467", n:"Optimization", cat:"MATH", lv:"UG", tier:3, col:0, desc:"Convex optimization, duality theory, KKT conditions, and numerical algorithms." },
-  { id:"m9", code:"MATH 501", n:"Numerical Analysis", cat:"MATH", lv:"GR", tier:3, col:1, desc:"Graduate numerical methods: interpolation, quadrature, ODE/PDE solvers, and error analysis." },
-  { id:"m10", code:"MATH 541a", n:"Grad Math Stats", cat:"MATH", lv:"GR", tier:3, col:2, desc:"Sufficiency, completeness, UMVUE, MLE, and asymptotic theory." },
-  { id:"m11", code:"MATH 505b", n:"Applied Probability", cat:"MATH", lv:"GR", tier:4, col:0, desc:"Markov processes, renewal theory, martingales, Brownian motion, and diffusion." },
-  { id:"m12", code:"MATH 525a", n:"Grad Real Analysis", cat:"MATH", lv:"GR", tier:4, col:1, desc:"Measure and integration, Radon-Nikodym, Fubini, convergence theorems." },
+interface Node {
+  id: string; code: string; n: string; cat: string; lv: string;
+  tier: number; col: number; desc: string; areas: string[];
+}
 
-  { id:"c1", code:"CSCI 270", n:"Algorithms", cat:"CS", lv:"UG", tier:0, col:0, desc:"Divide-and-conquer, dynamic programming, graph algorithms, NP-completeness." },
-  { id:"c2", code:"CSCI 567", n:"Machine Learning", cat:"CS", lv:"GR", tier:1, col:0, desc:"Supervised/unsupervised learning, kernel methods, neural networks, ensemble methods." },
-  { id:"c3", code:"CSCI 573", n:"Probabilistic Reasoning", cat:"CS", lv:"GR", tier:1, col:1, desc:"Bayesian networks, Markov random fields, variational inference, and MCMC." },
-  { id:"c4", code:"EE 556", n:"Stochastic Systems & RL", cat:"CS", lv:"GR", tier:2, col:0, desc:"MDPs, dynamic programming, Kalman filtering, and reinforcement learning." },
-  { id:"c5", code:"ISE 615", n:"RL & Control Theory", cat:"CS", lv:"GR", tier:2, col:1, desc:"Stochastic control, RL theory, game theory, and mean-field analysis." },
-  { id:"c6", code:"ISE 662", n:"Decision Theory", cat:"CS", lv:"GR", tier:3, col:0, desc:"Utility functions, distribution theory, copulas, multiattribute utility, and behavioral research." },
+const NODES: Node[] = [
+  { id:"m1", code:"MATH 226", n:"Calculus II", cat:"MATH", lv:"UG", tier:0, col:0, desc:"Techniques of integration, sequences and series, Taylor and Maclaurin series.", areas:["Theory","Computation","Applied"] },
+  { id:"m2", code:"MATH 229", n:"Calculus III", cat:"MATH", lv:"UG", tier:0, col:1, desc:"Multivariable calculus: partial derivatives, multiple integrals, vector calculus.", areas:["Theory","Optimization","Applied"] },
+  { id:"m3", code:"MATH 245", n:"Diff. Equations", cat:"MATH", lv:"UG", tier:1, col:0, desc:"ODEs, Laplace transforms, Fourier series, and boundary value problems.", areas:["Modeling","Control","Applied"] },
+  { id:"m4", code:"MATH 407", n:"Probability", cat:"MATH", lv:"UG", tier:2, col:0, desc:"Random variables, expectation, MGFs, and classical limit theorems.", areas:["ML / AI","Trading","Statistics"] },
+  { id:"m5", code:"MATH 408", n:"Statistics", cat:"MATH", lv:"UG", tier:2, col:1, desc:"Estimation, hypothesis testing, confidence intervals, sufficiency, Bayesian methods.", areas:["Statistics","Research","ML / AI"] },
+  { id:"m6", code:"MATH 425", n:"Real Analysis", cat:"MATH", lv:"UG", tier:1, col:1, desc:"Completeness, sequences, continuity, differentiability, Riemann integration.", areas:["Theory","Research","Optimization"] },
+  { id:"m7", code:"MATH 471", n:"Linear Algebra", cat:"MATH", lv:"UG", tier:2, col:2, desc:"Canonical forms, spectral theorem, inner product spaces, SVD.", areas:["ML / AI","Computation","Research"] },
+  { id:"m8", code:"MATH 467", n:"Optimization", cat:"MATH", lv:"UG", tier:3, col:0, desc:"Convex optimization, duality theory, KKT conditions, numerical algorithms.", areas:["Optimization","ML / AI","Trading"] },
+  { id:"m9", code:"MATH 501", n:"Numerical Analysis", cat:"MATH", lv:"GR", tier:3, col:1, desc:"Interpolation, quadrature, ODE/PDE solvers, and error analysis.", areas:["Computation","Modeling","Research"] },
+  { id:"m10", code:"MATH 541a", n:"Grad Statistics", cat:"MATH", lv:"GR", tier:3, col:2, desc:"Sufficiency, UMVUE, MLE, and asymptotic theory.", areas:["Statistics","Research","ML / AI"] },
+  { id:"m11", code:"MATH 505b", n:"Applied Probability", cat:"MATH", lv:"GR", tier:4, col:0, desc:"Markov processes, martingales, Brownian motion, diffusion.", areas:["Trading","Control","Research"] },
+  { id:"m12", code:"MATH 525a", n:"Measure Theory", cat:"MATH", lv:"GR", tier:4, col:1, desc:"Measure and integration, Radon-Nikodym, Fubini, Lp spaces.", areas:["Theory","Research","Statistics"] },
 
-  { id:"e1", code:"ECON 303", n:"Intermediate Micro", cat:"ECON", lv:"UG", tier:1, col:0, desc:"Consumer/producer theory, market structures, general equilibrium, and welfare." },
-  { id:"e2", code:"ECON 305", n:"Intermediate Macro", cat:"ECON", lv:"UG", tier:2, col:0, desc:"IS-LM model, monetary/fiscal policy, growth, and business cycles." },
+  { id:"c1", code:"CSCI 270", n:"Algorithms", cat:"CS", lv:"UG", tier:0, col:0, desc:"Divide-and-conquer, DP, graph algorithms, NP-completeness.", areas:["Computation","ML / AI","Theory"] },
+  { id:"c2", code:"CSCI 567", n:"Machine Learning", cat:"CS", lv:"GR", tier:1, col:0, desc:"Supervised/unsupervised learning, kernels, neural nets, ensembles.", areas:["ML / AI","Data","Research"] },
+  { id:"c3", code:"CSCI 573", n:"Probabilistic Reasoning", cat:"CS", lv:"GR", tier:1, col:1, desc:"Bayesian nets, MRFs, variational inference, MCMC.", areas:["ML / AI","Statistics","Research"] },
+  { id:"c4", code:"EE 556", n:"Stochastic RL", cat:"CS", lv:"GR", tier:2, col:0, desc:"MDPs, dynamic programming, Kalman filtering, RL.", areas:["Control","Trading","ML / AI"] },
+  { id:"c5", code:"ISE 615", n:"RL & Control", cat:"CS", lv:"GR", tier:2, col:1, desc:"Stochastic control, RL theory, game theory, mean-field.", areas:["Control","ML / AI","Theory"] },
+  { id:"c6", code:"ISE 662", n:"Decision Theory", cat:"CS", lv:"GR", tier:3, col:0, desc:"Utility, copulas, multiattribute utility, game theory.", areas:["Trading","Theory","Policy"] },
 
-  { id:"f1", code:"ACCT 410", n:"Accounting", cat:"FIN", lv:"UG", tier:1, col:0, desc:"Financial statements, accrual accounting, revenue recognition, and reporting." },
-  { id:"f2", code:"BUAD 308", n:"Business Finance", cat:"FIN", lv:"UG", tier:2, col:0, desc:"Capital budgeting, cost of capital, capital structure, and valuation." },
-  { id:"f3", code:"FBE 423", n:"VC & Private Equity", cat:"FIN", lv:"UG", tier:3, col:0, desc:"Fund structures, due diligence, term sheets, and exit strategies." },
-  { id:"f4", code:"FBE 435", n:"Fixed Income", cat:"FIN", lv:"UG", tier:3, col:1, desc:"Bond pricing, yield curves, duration/convexity, MBS, and rate derivatives." },
+  { id:"e1", code:"ECON 303", n:"Microeconomics", cat:"ECON", lv:"UG", tier:1, col:0, desc:"Consumer/producer theory, market structures, equilibrium, welfare.", areas:["Policy","Theory","Trading"] },
+  { id:"e2", code:"ECON 305", n:"Macroeconomics", cat:"ECON", lv:"UG", tier:2, col:0, desc:"IS-LM, monetary/fiscal policy, growth, business cycles.", areas:["Policy","Finance","Modeling"] },
+
+  { id:"f1", code:"ACCT 410", n:"Accounting", cat:"FIN", lv:"UG", tier:1, col:0, desc:"Financial statements, accrual accounting, GAAP, reporting.", areas:["Finance","Applied","Modeling"] },
+  { id:"f2", code:"BUAD 308", n:"Corporate Finance", cat:"FIN", lv:"UG", tier:2, col:0, desc:"Capital budgeting, WACC, capital structure, valuation.", areas:["Finance","Trading","Modeling"] },
+  { id:"f3", code:"FBE 423", n:"VC & PE", cat:"FIN", lv:"UG", tier:3, col:0, desc:"Fund structures, due diligence, term sheets, exits.", areas:["Finance","Applied","Risk"] },
+  { id:"f4", code:"FBE 435", n:"Fixed Income", cat:"FIN", lv:"UG", tier:3, col:1, desc:"Bond pricing, yield curves, duration/convexity, MBS.", areas:["Trading","Risk","Finance"] },
 ];
 
-/* Edges: within + cross-discipline */
 const EDGES: [string, string][] = [
-  // Math internal
   ["m1","m3"],["m2","m3"],["m3","m4"],["m3","m6"],["m4","m5"],["m6","m7"],
   ["m5","m10"],["m7","m8"],["m6","m9"],["m4","m8"],["m4","m11"],["m6","m12"],
-  ["m7","m9"],["m11","m12"],
-  // CS internal
-  ["c1","c2"],["c2","c3"],["c2","c4"],["c3","c5"],["c4","c6"],["c5","c6"],
-  // Cross: Math → CS
-  ["m4","c2"],["m4","c3"],["m8","c4"],["m7","c2"],["m11","c4"],
-  // Cross: Math → Econ
-  ["m6","e1"],
-  // Econ internal + cross
-  ["e1","e2"],["e1","f2"],
-  // Finance internal
-  ["f1","f2"],["f2","f3"],["f2","f4"],
+  ["m7","m9"],["m11","m12"],["m8","m9"],
+  ["c1","c2"],["c2","c3"],["c2","c4"],["c3","c5"],["c4","c6"],["c5","c6"],["c4","c5"],
+  ["m4","c2"],["m4","c3"],["m8","c4"],["m7","c2"],["m11","c4"],["m5","c3"],
+  ["m6","e1"],["m4","e1"],
+  ["e1","e2"],["e1","f2"],["e2","f2"],
+  ["f1","f2"],["f2","f3"],["f2","f4"],["f4","m11"],
 ];
 
 /* ═══════════════════ LAYOUT ═══════════════════ */
 const DISC_ORDER = ["MATH","CS","ECON","FIN"];
-const TIER_GAP = 125;
-const COL_GAP = 160;
-const DISC_GAP = 80;
-const NODE_R = 20;
-const TOP_PAD = 55;
+const TIER_GAP = 190;
+const COL_GAP = 200;
+const DISC_GAP = 100;
+const R_OUTER = 44;
+const R_INNER = 27;
+const TOP_PAD = 65;
 
 function computePositions() {
   const discWidths: Record<string, number> = {};
   const discX: Record<string, number> = {};
-
   DISC_ORDER.forEach(d => {
-    const ns = NODES.filter(n => n.cat === d);
-    const maxCol = Math.max(...ns.map(n => n.col), 0);
+    const maxCol = Math.max(...NODES.filter(n => n.cat === d).map(n => n.col), 0);
     discWidths[d] = (maxCol + 1) * COL_GAP;
   });
-
-  let xOffset = 80;
-  DISC_ORDER.forEach(d => {
-    discX[d] = xOffset;
-    xOffset += discWidths[d] + DISC_GAP;
-  });
-
+  let xOff = 90;
+  DISC_ORDER.forEach(d => { discX[d] = xOff; xOff += discWidths[d] + DISC_GAP; });
   const pos: Record<string, { x: number; y: number }> = {};
-  NODES.forEach(n => {
-    pos[n.id] = { x: discX[n.cat] + n.col * COL_GAP, y: TOP_PAD + n.tier * TIER_GAP };
-  });
+  NODES.forEach(n => { pos[n.id] = { x: discX[n.cat] + n.col * COL_GAP, y: TOP_PAD + n.tier * TIER_GAP }; });
+  const maxT = Math.max(...NODES.map(n => n.tier));
+  return { pos, totalW: xOff + 50, totalH: TOP_PAD + maxT * TIER_GAP + 110, discX, discWidths };
+}
 
-  const maxTier = Math.max(...NODES.map(n => n.tier));
-  return { pos, totalW: xOffset + 40, totalH: TOP_PAD + maxTier * TIER_GAP + 100, discX, discWidths };
+/* SVG arc segment for the outer ring */
+function arcPath(cx: number, cy: number, r1: number, r2: number, a1: number, a2: number) {
+  const gap = 0.04; // small gap between segments
+  const sa = a1 + gap, ea = a2 - gap;
+  const x1o = cx + r2 * Math.cos(sa), y1o = cy + r2 * Math.sin(sa);
+  const x2o = cx + r2 * Math.cos(ea), y2o = cy + r2 * Math.sin(ea);
+  const x1i = cx + r1 * Math.cos(ea), y1i = cy + r1 * Math.sin(ea);
+  const x2i = cx + r1 * Math.cos(sa), y2i = cy + r1 * Math.sin(sa);
+  const lg = ea - sa > Math.PI ? 1 : 0;
+  return `M${x1o},${y1o} A${r2},${r2} 0 ${lg} 1 ${x2o},${y2o} L${x1i},${y1i} A${r1},${r1} 0 ${lg} 0 ${x2i},${y2i} Z`;
 }
 
 function curvePath(x1: number, y1: number, x2: number, y2: number) {
-  const midY = (y1 + y2) / 2;
-  return `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`;
+  const my = (y1 + y2) / 2;
+  return `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`;
+}
+
+/* ═══════════════════ NODE COMPONENT ═══════════════════ */
+function CourseNode({ node, p, isHov, isSel, dim, onHover, onSelect }: {
+  node: Node; p: { x: number; y: number }; isHov: boolean; isSel: boolean; dim: boolean;
+  onHover: (id: string | null) => void; onSelect: (n: Node | null) => void;
+}) {
+  const c = DISCS[node.cat].color;
+  const active = isHov || isSel;
+  const sliceAngle = (2 * Math.PI) / node.areas.length;
+
+  return (
+    <g onClick={() => onSelect(isSel ? null : node)}
+      onMouseEnter={() => onHover(node.id)}
+      onMouseLeave={() => onHover(null)}
+      style={{ cursor: "pointer", opacity: dim ? 0.1 : 1, transition: "opacity 0.3s" }}>
+
+      {/* Outer glow on active */}
+      {active && (
+        <circle cx={p.x} cy={p.y} r={R_OUTER + 8} fill={c} opacity={0.08} />
+      )}
+
+      {/* Outer ring segments */}
+      {node.areas.map((area, i) => {
+        const a1 = -Math.PI / 2 + i * sliceAngle;
+        const a2 = a1 + sliceAngle;
+        const ac = AREA_COLORS[area] || "#888";
+        return (
+          <path key={i} d={arcPath(p.x, p.y, R_INNER + 2, R_OUTER, a1, a2)}
+            fill={ac} opacity={active ? 0.35 : 0.15}
+            style={{ transition: "opacity 0.3s" }} />
+        );
+      })}
+
+      {/* Inner circle */}
+      <circle cx={p.x} cy={p.y} r={R_INNER}
+        fill="#fff" stroke={c} strokeWidth={active ? 2 : 1}
+        style={{ transition: "all 0.25s" }} />
+
+      {/* Course name inside */}
+      <text x={p.x} y={p.y - 4} textAnchor="middle" fontSize="9.5"
+        fontWeight="700" fill={c}
+        style={{ transition: "all 0.2s" }}>
+        {node.n}
+      </text>
+      <text x={p.x} y={p.y + 8} textAnchor="middle" fontSize="7.5"
+        fill="#888" fontFamily="'JetBrains Mono',monospace" letterSpacing="0.3">
+        {node.code}
+      </text>
+
+      {/* Grad star */}
+      {node.lv === "GR" && (
+        <text x={p.x} y={p.y - R_INNER - 4} textAnchor="middle"
+          fontSize="9" fill={c} opacity="0.6">&#9733;</text>
+      )}
+
+      {/* Area labels on hover */}
+      {active && node.areas.map((area, i) => {
+        const a = -Math.PI / 2 + i * sliceAngle + sliceAngle / 2;
+        const lr = R_OUTER + 18;
+        const lx = p.x + lr * Math.cos(a);
+        const ly = p.y + lr * Math.sin(a);
+        const ac = AREA_COLORS[area] || "#888";
+        return (
+          <g key={i}>
+            <rect x={lx - 24} y={ly - 7} width={48} height={14} rx={3}
+              fill={ac} opacity={0.9} />
+            <text x={lx} y={ly + 3.5} textAnchor="middle" fontSize="7.5"
+              fontWeight="700" fill="#fff" letterSpacing="0.3">
+              {area}
+            </text>
+          </g>
+        );
+      })}
+    </g>
+  );
 }
 
 /* ═══════════════════ PAGE ═══════════════════ */
 export default function CoursesPage() {
-  const [selected, setSelected] = useState<typeof NODES[0] | null>(null);
+  const [selected, setSelected] = useState<Node | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const { pos, totalW, totalH, discX, discWidths } = computePositions();
-
   const hovCat = hovered ? NODES.find(n => n.id === hovered)?.cat : null;
 
   return (
@@ -115,7 +210,7 @@ export default function CoursesPage() {
           <h1 className="sk-title">Coursework</h1>
           <p className="sk-sub">
             {NODES.filter(n => n.lv === "GR").length} graduate + {NODES.filter(n => n.lv === "UG").length} undergraduate.
-            Click any node.
+            Each node shows the course and its areas of relevance. Click to expand.
           </p>
         </div>
       </div>
@@ -128,14 +223,20 @@ export default function CoursesPage() {
               <span>{DISCS[d].label}</span>
             </div>
           ))}
-          <span className="sk-leg-hint">&#9733; = graduate</span>
+          <span className="sk-leg-sep">|</span>
+          {["ML / AI","Trading","Statistics","Theory","Optimization","Policy"].map(a => (
+            <div key={a} className="sk-leg">
+              <div className="sk-leg-dot" style={{ background: AREA_COLORS[a] }} />
+              <span>{a}</span>
+            </div>
+          ))}
         </div>
 
         <div className="sk-scroll">
           <svg width={totalW} height={totalH}>
             {/* Disc column labels */}
             {DISC_ORDER.map(d => (
-              <text key={d} x={discX[d] + (discWidths[d] - COL_GAP) / 2} y={20}
+              <text key={d} x={discX[d] + (discWidths[d] - COL_GAP) / 2} y={24}
                 fill={DISCS[d].color} fontSize="10" fontWeight="700"
                 textAnchor="middle" letterSpacing="3" opacity="0.2"
                 style={{ textTransform: "uppercase" } as React.CSSProperties}>
@@ -143,22 +244,23 @@ export default function CoursesPage() {
               </text>
             ))}
 
-            {/* Edges — curved bezier */}
+            {/* Edges */}
             {EDGES.map(([a, b], i) => {
               const pa = pos[a], pb = pos[b];
               if (!pa || !pb) return null;
               const na = NODES.find(n => n.id === a);
               const nb = NODES.find(n => n.id === b);
               const cross = na?.cat !== nb?.cat;
-              const c = cross ? "#999" : DISCS[na?.cat || "MATH"].color;
+              const c = cross ? "#aaa" : DISCS[na?.cat || "MATH"].color;
               const dim = hovCat && na?.cat !== hovCat && nb?.cat !== hovCat;
+              const active = hovered && (a === hovered || b === hovered);
               return (
                 <path key={i} d={curvePath(pa.x, pa.y, pb.x, pb.y)}
-                  fill="none" stroke={c}
-                  strokeWidth={cross ? 1 : 1.5}
-                  opacity={dim ? 0.04 : cross ? 0.12 : 0.2}
+                  fill="none" stroke={active ? c : c}
+                  strokeWidth={active ? 2.5 : cross ? 0.8 : 1.2}
+                  opacity={dim ? 0.03 : active ? 0.5 : cross ? 0.08 : 0.14}
                   strokeDasharray={cross ? "4 4" : "none"}
-                  className="sk-edge" />
+                  style={{ transition: "all 0.3s" }} />
               );
             })}
 
@@ -166,56 +268,25 @@ export default function CoursesPage() {
             {NODES.map(n => {
               const p = pos[n.id];
               if (!p) return null;
-              const c = DISCS[n.cat].color;
-              const isHov = hovered === n.id;
-              const isSel = selected?.id === n.id;
-              const dim = hovCat && n.cat !== hovCat;
+              const dim = !!(hovCat && n.cat !== hovCat);
               return (
-                <g key={n.id}
-                  onClick={() => setSelected(isSel ? null : n)}
-                  onMouseEnter={() => setHovered(n.id)}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{ cursor: "pointer", opacity: dim ? 0.12 : 1, transition: "opacity 0.3s" }}>
-                  <circle cx={p.x} cy={p.y} r={isHov || isSel ? 30 : 24}
-                    fill={c} opacity={isHov || isSel ? 0.1 : 0.03}
-                    style={{ transition: "all 0.3s" }} />
-                  <circle cx={p.x} cy={p.y} r={NODE_R}
-                    fill={n.lv === "GR" ? c + "10" : "#fff"}
-                    stroke={c} strokeWidth={isHov || isSel ? 2.5 : 1.5}
-                    opacity={isHov || isSel ? 1 : 0.45}
-                    style={{ transition: "all 0.25s" }} />
-                  <circle cx={p.x} cy={p.y} r={isHov || isSel ? 6 : 4}
-                    fill={c} opacity={isHov || isSel ? 1 : 0.6}
-                    style={{ transition: "all 0.25s" }} />
-                  {n.lv === "GR" && (
-                    <text x={p.x} y={p.y - NODE_R - 5} textAnchor="middle"
-                      fontSize="9" fill={c} opacity="0.55">&#9733;</text>
-                  )}
-                  <text x={p.x} y={p.y + NODE_R + 15} textAnchor="middle"
-                    fontSize="11" fill={isHov || isSel ? "#252525" : "#555"}
-                    fontWeight={isHov || isSel ? "700" : "500"}
-                    style={{ transition: "all 0.2s" }}>{n.n}</text>
-                  <text x={p.x} y={p.y + NODE_R + 28} textAnchor="middle"
-                    fontSize="9" fill="#999" fontFamily="'JetBrains Mono',monospace"
-                    letterSpacing="0.5">{n.code}</text>
-                </g>
+                <CourseNode key={n.id} node={n} p={p}
+                  isHov={hovered === n.id} isSel={selected?.id === n.id} dim={dim}
+                  onHover={setHovered} onSelect={setSelected} />
               );
             })}
           </svg>
         </div>
 
-        {/* Inline detail panel — like Experience cards */}
+        {/* Detail panel */}
         <div className="container">
           <AnimatePresence>
             {selected && (
-              <motion.div
-                key={selected.id}
-                className="sk-detail"
+              <motion.div key={selected.id} className="sk-detail"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}>
                 <div className="sk-detail-inner" style={{ borderLeftColor: DISCS[selected.cat].color }}>
                   <div className="sk-detail-head">
                     <div>
@@ -230,7 +301,13 @@ export default function CoursesPage() {
                   </div>
                   <h3 className="sk-detail-name">{selected.n}</h3>
                   <p className="sk-detail-desc">{selected.desc}</p>
-                  <span className="sk-detail-cat" style={{ color: DISCS[selected.cat].color }}>{DISCS[selected.cat].label}</span>
+                  <div className="sk-detail-areas">
+                    {selected.areas.map(a => (
+                      <span key={a} className="sk-detail-area" style={{ color: AREA_COLORS[a], borderColor: AREA_COLORS[a] + "44", background: AREA_COLORS[a] + "08" }}>
+                        {a}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -243,45 +320,36 @@ export default function CoursesPage() {
   );
 }
 
-/* ═══════════════════ CSS ═══════════════════ */
 const CSS = `
-.sk-header { padding: 120px 0 32px; background: var(--bg); }
+.sk-header { padding: 120px 0 24px; background: var(--bg); }
 .sk-title { font-size: clamp(40px,6vw,64px); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; }
-.sk-sub { font-size: 16px; color: var(--text-tertiary); margin-top: 8px; }
+.sk-sub { font-size: 15px; color: var(--text-tertiary); margin-top: 8px; max-width: 600px; line-height: 1.6; }
 
 .sk-body { padding: 0 0 80px; }
 
-.sk-legend { display: flex; gap: 20px; padding: 16px 48px 20px; align-items: center; flex-wrap: wrap; }
-.sk-leg { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--text-tertiary); }
-.sk-leg-dot { width: 8px; height: 8px; border-radius: 50%; }
-.sk-leg-hint { font-size: 11px; color: var(--text-tertiary); margin-left: auto; opacity: 0.5; }
+.sk-legend { display: flex; gap: 14px; padding: 16px 48px 16px; align-items: center; flex-wrap: wrap; }
+.sk-leg { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
+.sk-leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+.sk-leg-sep { color: var(--border-hover); font-size: 14px; }
 
 .sk-scroll { overflow-x: auto; padding: 0 48px 20px; }
 .sk-scroll svg { display: block; }
 
-.sk-edge { transition: opacity 0.3s, stroke-width 0.3s; }
-
-/* Detail panel — light, inline */
 .sk-detail { overflow: hidden; margin-top: 24px; }
-.sk-detail-inner {
-  padding: 28px 32px;
-  border: 1px solid var(--border);
-  border-left: 4px solid;
-  border-radius: 14px;
-  background: var(--bg);
-}
+.sk-detail-inner { padding: 28px 32px; border: 1px solid var(--border); border-left: 4px solid; border-radius: 14px; background: var(--bg); }
 .sk-detail-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .sk-detail-code { font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono',monospace; letter-spacing: 0.04em; }
 .sk-detail-grad { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-left: 12px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 4px; }
 .sk-detail-close { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); transition: all 0.2s; }
 .sk-detail-close:hover { color: var(--text-primary); background: var(--surface); }
 .sk-detail-name { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 10px; }
-.sk-detail-desc { font-size: 16px; line-height: 1.8; color: var(--text-secondary); max-width: 680px; margin-bottom: 12px; }
-.sk-detail-cat { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.sk-detail-desc { font-size: 16px; line-height: 1.8; color: var(--text-secondary); max-width: 680px; margin-bottom: 14px; }
+.sk-detail-areas { display: flex; gap: 8px; flex-wrap: wrap; }
+.sk-detail-area { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 6px; border: 1px solid; }
 
 @media (max-width: 900px) {
   .sk-scroll { padding: 0 16px; }
-  .sk-legend { padding: 16px 24px; }
+  .sk-legend { padding: 16px 24px; gap: 10px; }
   .sk-detail-inner { padding: 20px 24px; }
   .sk-detail-name { font-size: 20px; }
 }
