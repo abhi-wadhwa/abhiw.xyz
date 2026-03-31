@@ -128,10 +128,10 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Zoom 3x when selected, centered on node. Shift up slightly so card below is visible
-  const zs=sel?3:fit;
-  const zx=sel&&sp?vpW/2-sp.x*zs:(vpW-cW*fit)/2+pan.x;
-  const zy=sel&&sp?vpH*0.38-sp.y*zs:(vpH-cH*fit)/2+pan.y;
+  // Zoom 2.5x when selected, node centered with room for card below
+  const zs=sel?2.5:fit;
+  const zx=sel&&sp?vpW/2-sp.x*zs+pan.x:(vpW-cW*fit)/2+pan.x;
+  const zy=sel&&sp?vpH/3-sp.y*zs+pan.y:(vpH-cH*fit)/2+pan.y;
 
   return(
     <>
@@ -198,7 +198,7 @@ export default function CoursesPage(){
               const np=pos[course.id];if(!np)return null;
               const dc=DISCIPLINES[course.category].color;
               const isH=hov===course.id,isS=sel?.id===course.id,act=isH||isS;
-              const dim=!!(hovCat&&course.category!==hovCat&&!conn.has(course.id));
+              const dim=!!(hovCat&&course.category!==hovCat&&!conn.has(course.id))&&!isS;
               return(
                 <motion.div key={course.id} className="ct-node" style={{left:np.x,top:np.y}}
                   initial={{opacity:0,scale:.4}}
@@ -303,21 +303,21 @@ const CSS=`
   padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
 
 /* Detail card — tooltip pointing at selected node */
-.ct-card{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
-  width:200px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
-  border:1px solid var(--border);border-radius:10px;
-  padding:10px 12px;z-index:10;pointer-events:auto;
-  box-shadow:0 8px 32px rgba(0,0,0,.1)}
-.ct-card-arrow{position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);
-  width:10px;height:10px;background:rgba(255,255,255,.95);border-left:1px solid var(--border);border-top:1px solid var(--border)}
-.ct-card-code{font-size:5.5px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;margin-bottom:1px}
-.ct-card-name{font-size:8px;font-weight:800;color:var(--text-primary);margin-bottom:2px;line-height:1.3}
-.ct-card-grad{font-size:4px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;
-  padding:1px 4px;border:1px solid var(--accent);border-radius:2px;display:inline-block;margin-bottom:3px}
-.ct-card-desc{font-size:5px;line-height:1.7;color:var(--text-secondary);margin-bottom:4px}
-.ct-card-foot{font-size:4.5px;color:var(--text-tertiary);font-weight:600;display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.ct-card{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  width:160px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:6px;
+  padding:8px 10px;z-index:10;pointer-events:auto;
+  box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.ct-card-arrow{position:absolute;top:-4px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:7px;height:7px;background:rgba(255,255,255,.96);border-left:1px solid var(--border);border-top:1px solid var(--border)}
+.ct-card-code{font-size:4.5px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.4px;margin-bottom:1px}
+.ct-card-name{font-size:6.5px;font-weight:800;color:var(--text-primary);margin-bottom:2px;line-height:1.3}
+.ct-card-grad{font-size:3.5px;font-weight:700;color:var(--accent);letter-spacing:.6px;text-transform:uppercase;
+  padding:1px 3px;border:.5px solid var(--accent);border-radius:2px;display:inline-block;margin-bottom:2px}
+.ct-card-desc{font-size:4.5px;line-height:1.65;color:var(--text-secondary);margin-bottom:3px}
+.ct-card-foot{font-size:3.5px;color:var(--text-tertiary);font-weight:600;display:flex;gap:3px;flex-wrap:wrap;margin-bottom:3px}
 .ct-card-areas{display:flex;gap:2px;flex-wrap:wrap}
-.ct-card-area{font-size:4px;font-weight:700;padding:1px 4px;border-radius:3px;border:1px solid}
+.ct-card-area{font-size:3.5px;font-weight:700;padding:1px 3px;border-radius:2px;border:.5px solid}
 
 @media(max-width:900px){
   .ct-page{height:auto;min-height:100vh}
