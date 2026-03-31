@@ -87,7 +87,7 @@ function conicGrad(areas:string[]){
   const n=areas.length,g=4,s=360/n,stops:string[]=[];
   areas.forEach((a,i)=>{const c=AREA_COLORS[a]||"#888",st=i*s+g,en=(i+1)*s-g;
     stops.push(`transparent ${st}deg`,`${c} ${st}deg ${en}deg`,`transparent ${en}deg`);});
-  return`conic-gradient(from -90deg,${stops.join(",")})`;
+  return`conic-gradient(from 0deg,${stops.join(",")})`;
 }
 
 /* ═══════════════════ PAGE ═══════════════════ */
@@ -130,12 +130,13 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Default: scale down to fit viewport. Zoom: scale to 1x (native = crisp).
+  // Default: scale down. Zoom: scale to 0.7 (1.75x native — crisp and big).
   const defaultScale = Math.min(vpW / cW, vpH / cH, 1/RENDER_SCALE);
-  const zoomedScale = 1 / RENDER_SCALE; // 1x native
+  const zoomedScale = 0.7 / RENDER_SCALE;
   const zs = sel ? zoomedScale : defaultScale;
+  // When zoomed, center node at viewport center, offset down for card space above
   const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*defaultScale)/2 + pan.x;
-  const zy = sel && sp ? vpH/2 - sp.y*zs - 50 : (vpH - cH*defaultScale)/2 + pan.y;
+  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*defaultScale)/2 + pan.y;
 
   return(
     <>
@@ -206,7 +207,11 @@ export default function CoursesPage(){
               return(
                 <motion.div key={course.id} className="ct-node" style={{left:np.x,top:np.y}}
                   initial={{opacity:0,scale:.4}}
-                  animate={{opacity:dim?.15:1,scale:dim?.92:act?1.12:1}}
+                  animate={{
+                    opacity: sel&&!isS ? 0.15 : dim ? 0.15 : 1,
+                    scale: dim ? 0.92 : act ? 1.12 : 1,
+                    filter: sel&&!isS ? "blur(3px)" : "blur(0px)",
+                  }}
                   transition={{scale:{duration:.35,ease:[.16,1,.3,1]},opacity:{duration:.3},delay:.15+course.tier*.12}}
                   onMouseEnter={()=>setHov(course.id)} onMouseLeave={()=>setHov(null)}
                   onClick={e=>{e.stopPropagation();setSel(isS?null:course)}}>
@@ -220,18 +225,19 @@ export default function CoursesPage(){
                   </div>
                   {course.level==="GR"&&<div className="ct-star" style={{color:dc}}>&#9733;</div>}
 
-                  {/* Area pills — positioned as absolute offsets from node center */}
+                  {/* Area pills — positioned to match clockwise conic-gradient */}
                   <AnimatePresence>
                     {act&&course.areas.map((a,ai)=>{
-                      const angleDeg=-90+(ai+.5)*(360/course.areas.length);
-                      const angleRad=angleDeg*Math.PI/180;
-                      const labelR=NS/2+28*RENDER_SCALE;
-                      const cx=NS/2; // node center in local coords
-                      const cy=NS/2;
-                      const lx=cx+Math.cos(angleRad)*labelR;
-                      const ly=cy+Math.sin(angleRad)*labelR;
+                      // conic-gradient: 0deg = top, goes clockwise.
+                      // In screen coords: x = sin(angle), y = -cos(angle)
+                      const sliceDeg = 360 / course.areas.length;
+                      const cssDeg = ai * sliceDeg + sliceDeg / 2; // center of segment (from top, CW)
+                      const rad = cssDeg * Math.PI / 180;
+                      const labelR = NS/2 + 28*RENDER_SCALE;
+                      const px = NS/2 + Math.sin(rad) * labelR;
+                      const py = NS/2 - Math.cos(rad) * labelR;
                       return<motion.div key={a} className="ct-pill"
-                        style={{left:lx,top:ly,background:AREA_COLORS[a]||"#888"}}
+                        style={{left:px,top:py,background:AREA_COLORS[a]||"#888"}}
                         initial={{opacity:0,scale:.6}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.6}}
                         transition={{duration:.2,delay:ai*.05}}>
                         {a}
@@ -248,7 +254,7 @@ export default function CoursesPage(){
           <AnimatePresence>
             {sel&&sp&&(
               <motion.div className="ct-card"
-                style={{left:vpW/2,top:vpH/2-50+(NS/2)*zoomedScale+16}}
+                style={{left:vpW/2,top:vpH*0.35+(NS/2)*zoomedScale+20}}
                 initial={{opacity:0,y:12}}
                 animate={{opacity:1,y:0}}
                 exit={{opacity:0,y:12}}
