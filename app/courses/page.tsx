@@ -243,7 +243,7 @@ export default function CoursesPage(){
                       // Offset by -NS*0.06 to compensate for scale transform origin
                       const cx = NS * 0.36;
                       const cy = NS * 0.36;
-                      const labelR2 = NS/2 + 10*RENDER_SCALE;
+                      const labelR2 = NS/2 + 16*RENDER_SCALE;
                       const px = cx + Math.sin(rad) * labelR2;
                       const py = cy - Math.cos(rad) * labelR2;
                       return<motion.div key={a} className="ct-pill"
