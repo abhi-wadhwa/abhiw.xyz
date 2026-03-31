@@ -238,7 +238,7 @@ export default function CoursesPage(){
                       const sliceDeg = 360 / course.areas.length;
                       const cssDeg = ai * sliceDeg + sliceDeg / 2; // center of segment (from top, CW)
                       const rad = cssDeg * Math.PI / 180;
-                      const labelR = NS/2 + 12*RENDER_SCALE;
+                      const labelR = NS/2 + 6*RENDER_SCALE;
                       const px = NS/2 + Math.sin(rad) * labelR;
                       const py = NS/2 - Math.cos(rad) * labelR;
                       return<motion.div key={a} className="ct-pill"
@@ -259,7 +259,7 @@ export default function CoursesPage(){
           <AnimatePresence>
             {sel&&sp&&(
               <motion.div className="ct-card"
-                style={{left:nodeScreenX,top:nodeScreenY+(NS/2)*zoomedScale+20}}
+                style={{left:zx+sp.x*zs,top:zy+sp.y*zs+(NS/2)*zs+16}}
                 initial={{opacity:0,y:12}}
                 animate={{opacity:1,y:0}}
                 exit={{opacity:0,y:12}}
