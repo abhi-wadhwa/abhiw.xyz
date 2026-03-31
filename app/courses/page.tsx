@@ -120,10 +120,15 @@ export default function CoursesPage(){
   return(
     <>
       <style>{CSS}</style>
+      <div className="section-header">
+        <div className="container">
+          <h1 className="section-title">Coursework</h1>
+        </div>
+      </div>
+
       <div className="ct-page">
         {/* Left sidebar key */}
         <div className="ct-sidebar">
-          <h1 className="ct-sidebar-title">Coursework</h1>
           <div className="ct-key-section">
             <div className="ct-key-label">Disciplines</div>
             {DISC_ORDER.map(d=>(
@@ -236,12 +241,11 @@ export default function CoursesPage(){
 }
 
 const CSS=`
-.ct-page{display:flex;height:100vh;overflow:hidden;background:var(--bg)}
+.ct-page{display:flex;height:calc(100vh - 160px);overflow:hidden;background:var(--bg)}
 
 /* Left sidebar */
-.ct-sidebar{width:200px;flex-shrink:0;padding:100px 24px 24px;border-right:1px solid var(--border);
+.ct-sidebar{width:200px;flex-shrink:0;padding:24px;border-right:1px solid var(--border);
   overflow-y:auto;display:flex;flex-direction:column;gap:24px}
-.ct-sidebar-title{font-size:28px;font-weight:800;color:var(--text-primary);letter-spacing:-0.03em}
 .ct-key-section{display:flex;flex-direction:column;gap:6px}
 .ct-key-label{font-size:9px;font-weight:700;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
 .ct-key-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--text-secondary)}
@@ -276,8 +280,8 @@ const CSS=`
 
 @media(max-width:900px){
   .ct-page{flex-direction:column;height:auto}
-  .ct-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:100px 24px 16px;border-right:none;border-bottom:1px solid var(--border);gap:16px}
-  .ct-sidebar-title{font-size:24px}
+  .ct-page{height:auto}
+  .ct-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:16px 24px;border-right:none;border-bottom:1px solid var(--border);gap:16px}
   .ct-viewport{height:70vh;min-height:400px}
   .ct-canvas{transform:none!important}
 }
