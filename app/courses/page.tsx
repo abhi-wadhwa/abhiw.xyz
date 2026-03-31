@@ -128,10 +128,12 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // No zoom — just pan. Card appears at node's screen position.
+  // Pan to center selected node (no scale change = no blur)
   const zs=fit;
-  const zx=(vpW - cW*fit)/2 + pan.x;
-  const zy=(vpH - cH*fit)/2 + pan.y;
+  const defaultX=(vpW - cW*fit)/2;
+  const defaultY=(vpH - cH*fit)/2;
+  const zx=sel&&sp? vpW/2 - sp.x*zs : defaultX + pan.x;
+  const zy=sel&&sp? vpH/2 - sp.y*zs - 60 : defaultY + pan.y;
 
   return(
     <>
@@ -240,37 +242,68 @@ export default function CoursesPage(){
             })}
           </motion.div>
 
-          {/* Detail card — at node's screen position, no zoom */}
+          {/* Blur overlay when a node is selected */}
+          <AnimatePresence>
+            {sel&&(
+              <motion.div className="ct-blur-overlay"
+                initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+                transition={{duration:.3}}
+                onClick={()=>{setSel(null);setPan({x:0,y:0})}}/>
+            )}
+          </AnimatePresence>
+
+          {/* Selected node highlight — rendered crisp above the blur */}
           <AnimatePresence>
             {sel&&sp&&(()=>{
-              const screenX = zx + sp.x * zs;
-              const screenY = zy + sp.y * zs;
-              const cardBelow = screenY < vpH * 0.55;
+              const dc=DISCIPLINES[sel.category].color;
+              const nodeScreenX=vpW/2;
+              const nodeScreenY=vpH/2-60;
               return(
-                <motion.div className="ct-card"
-                  style={{
-                    left: screenX,
-                    top: cardBelow ? screenY + (NS/2)*zs + 16 : undefined,
-                    bottom: !cardBelow ? vpH - screenY + (NS/2)*zs + 16 : undefined,
-                  }}
-                  initial={{opacity:0,y:cardBelow?10:-10}}
-                  animate={{opacity:1,y:0}}
-                  exit={{opacity:0,y:cardBelow?10:-10}}
-                  transition={{duration:.3,delay:.1,ease:[.16,1,.3,1]}}
-                  onClick={e=>e.stopPropagation()}>
-                  <div className={`ct-card-arrow ${cardBelow?"ct-card-arrow-top":"ct-card-arrow-bottom"}`}/>
-                  <div className="ct-card-code" style={{color:DISCIPLINES[sel.category].color}}>{sel.code}</div>
-                  <div className="ct-card-name">{sel.name}</div>
-                  {sel.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
-                  <p className="ct-card-desc">{sel.desc}</p>
-                  <div className="ct-card-foot">
-                    {sel.semester&&<span>{sel.semester}</span>}
-                    {sel.textbook&&<span>Textbook: {sel.textbook}</span>}
+                <>
+                  {/* The node itself, re-rendered above the blur */}
+                  <div className="ct-highlight-node" style={{left:nodeScreenX,top:nodeScreenY}}>
+                    <div className="ct-glow" style={{boxShadow:`0 0 28px ${dc}20,0 0 56px ${dc}10`}}/>
+                    <div className="ct-ring" style={{background:conicGrad(sel.areas),opacity:.75}}/>
+                    <div className="ct-gap"/>
+                    <div className="ct-inner" style={{background:dc,opacity:1,borderColor:"#fff3"}}>
+                      <span className="ct-nm">{sel.name}</span>
+                      <span className="ct-cd">{sel.code}</span>
+                    </div>
+                    {sel.level==="GR"&&<div className="ct-star" style={{color:dc}}>&#9733;</div>}
+                    {/* Area pills */}
+                    {sel.areas.map((a,ai)=>{
+                      const angleDeg=-90+(ai+.5)*(360/sel.areas.length);
+                      const angleRad=angleDeg*Math.PI/180;
+                      const labelR=NS/2+28;
+                      return<div key={a} className="ct-pill"
+                        style={{left:NS/2+Math.cos(angleRad)*labelR,top:NS/2+Math.sin(angleRad)*labelR,background:AREA_COLORS[a]||"#888"}}>
+                        {a}
+                      </div>;
+                    })}
                   </div>
-                  <div className="ct-card-areas">
-                    {sel.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
-                  </div>
-                </motion.div>
+
+                  {/* Card below the highlighted node */}
+                  <motion.div className="ct-card"
+                    style={{left:nodeScreenX,top:nodeScreenY+(NS/2)*1+20}}
+                    initial={{opacity:0,y:10}}
+                    animate={{opacity:1,y:0}}
+                    exit={{opacity:0,y:10}}
+                    transition={{duration:.3,delay:.15,ease:[.16,1,.3,1]}}
+                    onClick={e=>e.stopPropagation()}>
+                    <div className="ct-card-arrow-top"/>
+                    <div className="ct-card-code" style={{color:dc}}>{sel.code}</div>
+                    <div className="ct-card-name">{sel.name}</div>
+                    {sel.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
+                    <p className="ct-card-desc">{sel.desc}</p>
+                    <div className="ct-card-foot">
+                      {sel.semester&&<span>{sel.semester}</span>}
+                      {sel.textbook&&<span>Textbook: {sel.textbook}</span>}
+                    </div>
+                    <div className="ct-card-areas">
+                      {sel.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
+                    </div>
+                  </motion.div>
+                </>
               );
             })()}
           </AnimatePresence>
@@ -318,11 +351,17 @@ const CSS=`
 .ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#fff;
   padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
 
+/* Blur overlay */
+.ct-blur-overlay{position:absolute;inset:0;z-index:20;background:rgba(255,255,255,.5);backdrop-filter:blur(6px)}
+
+/* Highlighted node above blur */
+.ct-highlight-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);z-index:25;pointer-events:none}
+
 /* Detail card — rendered in viewport space, not inside scaled canvas */
 .ct-card{position:absolute;transform:translateX(-50%);
   width:340px;background:#fff;
   border:1px solid var(--border);border-radius:14px;
-  padding:20px 24px;z-index:30;pointer-events:auto;
+  padding:20px 24px;z-index:25;pointer-events:auto;
   box-shadow:0 12px 40px rgba(0,0,0,.1)}
 .ct-card-arrow-top{position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(45deg);
   width:12px;height:12px;background:#fff;border-left:1px solid var(--border);border-top:1px solid var(--border)}
