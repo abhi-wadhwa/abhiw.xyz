@@ -7,32 +7,22 @@ import Reveal from "@/components/Reveal";
 import TextReveal from "@/components/TextReveal";
 import { courses, Course } from "@/data/courses";
 
-type Filter = "all" | "math" | "cs" | "economics" | "finance";
-
-const FILTERS: { label: string; value: Filter; color: string }[] = [
-  { label: "All", value: "all", color: "var(--text-primary)" },
-  { label: "Mathematics", value: "math", color: "#1e52f3" },
-  { label: "CS / ML", value: "cs", color: "#7c3aed" },
-  { label: "Economics", value: "economics", color: "#b45309" },
-  { label: "Finance", value: "finance", color: "#059669" },
+const LANES: { key: string; label: string; color: string }[] = [
+  { key: "math", label: "Mathematics", color: "#1e52f3" },
+  { key: "cs", label: "CS / ML", color: "#7c3aed" },
+  { key: "economics", label: "Economics", color: "#b45309" },
+  { key: "finance", label: "Finance", color: "#059669" },
 ];
 
-const CAT_COLORS: Record<string, string> = {
-  math: "#1e52f3",
-  cs: "#7c3aed",
-  economics: "#b45309",
-  finance: "#059669",
-};
-
-function filterCourses(list: Course[], f: Filter): Course[] {
-  if (f === "all") return list;
-  return list.filter((c) => c.category === f);
+function sortCourses(list: Course[]): Course[] {
+  return [...list].sort((a, b) => {
+    if (a.level !== b.level) return a.level === "undergraduate" ? -1 : 1;
+    return a.code.localeCompare(b.code);
+  });
 }
 
 export default function CoursesPage() {
-  const [filter, setFilter] = useState<Filter>("all");
-  const [openCode, setOpenCode] = useState<string | null>(null);
-  const filtered = filterCourses(courses, filter);
+  const [selected, setSelected] = useState<Course | null>(null);
 
   const gradCount = courses.filter((c) => c.level === "graduate").length;
   const undergradCount = courses.filter((c) => c.level === "undergraduate").length;
@@ -57,73 +47,107 @@ export default function CoursesPage() {
 
       <div className="page-content">
         <div className="container">
+          {/* Legend */}
           <Reveal>
-            <div className="crs-filters">
-              {FILTERS.map((f) => (
-                <button
-                  key={f.value}
-                  className={`aw-filter ${filter === f.value ? "aw-filter-active" : ""}`}
-                  onClick={() => { setFilter(f.value); setOpenCode(null); }}
-                  style={filter === f.value && f.value !== "all" ? { color: f.color } : {}}
-                >
-                  {f.label}
-                  {f.value !== "all" && (
-                    <span className="aw-filter-count">
-                      {courses.filter((c) => c.category === f.value).length}
-                    </span>
-                  )}
-                </button>
-              ))}
+            <div className="tree-legend">
+              <span className="tree-legend-item">
+                <span className="tree-legend-dot" /> Undergraduate
+              </span>
+              <span className="tree-legend-item">
+                <span className="tree-legend-dot tree-legend-dot-grad" /> Graduate
+              </span>
             </div>
           </Reveal>
 
-          <div className="crs-grid">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((course, i) => {
-                const isOpen = openCode === course.code;
-                const color = CAT_COLORS[course.category];
-                return (
-                  <motion.div
-                    key={course.code}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3, delay: i * 0.02, ease: [0.16, 1, 0.3, 1] }}
-                    className={`crs-tile ${isOpen ? "crs-tile-open" : ""} ${course.level === "graduate" ? "crs-tile-grad" : ""}`}
-                    style={{ "--crs-accent": color } as React.CSSProperties}
-                    onClick={() => setOpenCode(isOpen ? null : course.code)}
-                  >
-                    <div className="crs-tile-head">
-                      <span className="crs-code">{course.code}</span>
-                      {course.level === "graduate" && (
-                        <span className="crs-grad-badge">GRAD</span>
+          {/* Lanes */}
+          <div className="tree-map">
+            {LANES.map((lane, li) => {
+              const laneCourses = sortCourses(
+                courses.filter((c) => c.category === lane.key)
+              );
+              if (laneCourses.length === 0) return null;
+
+              return (
+                <Reveal key={lane.key} delay={li * 0.1}>
+                  <div className="tree-lane">
+                    <div
+                      className="tree-lane-label"
+                      style={{ color: lane.color }}
+                    >
+                      {lane.label}
+                    </div>
+                    <div className="tree-track">
+                      {/* The line */}
+                      <div
+                        className="tree-line"
+                        style={{ background: lane.color }}
+                      />
+                      {/* Stations */}
+                      <div className="tree-stations">
+                        {laneCourses.map((c) => {
+                          const isActive = selected?.code === c.code;
+                          const isGrad = c.level === "graduate";
+                          return (
+                            <button
+                              key={c.code}
+                              className={`tree-station ${isActive ? "tree-station-active" : ""} ${isGrad ? "tree-station-grad" : ""}`}
+                              style={{
+                                "--station-color": lane.color,
+                              } as React.CSSProperties}
+                              onClick={() =>
+                                setSelected(isActive ? null : c)
+                              }
+                            >
+                              <span className="tree-dot" />
+                              <span className="tree-station-name">
+                                {c.name}
+                              </span>
+                              <span className="tree-station-code">
+                                {c.code}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+
+          {/* Detail panel */}
+          <AnimatePresence>
+            {selected && (
+              <motion.div
+                key={selected.code}
+                className="tree-detail"
+                initial={{ opacity: 0, y: 16, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -8, height: 0 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="tree-detail-inner">
+                  <div className="tree-detail-head">
+                    <div>
+                      <span className="tree-detail-code">{selected.code}</span>
+                      {selected.level === "graduate" && (
+                        <span className="tree-detail-grad">Graduate</span>
                       )}
                     </div>
-                    <div className="crs-name">{course.name}</div>
-                    <div className="crs-semester">{course.semester}</div>
-
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          className="crs-expand"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                          <p className="crs-desc">{course.description}</p>
-                          {course.textbook && (
-                            <span className="crs-textbook">Textbook: {course.textbook}</span>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
+                    <span className="tree-detail-sem">{selected.semester}</span>
+                  </div>
+                  <h3 className="tree-detail-name">{selected.name}</h3>
+                  <p className="tree-detail-desc">{selected.description}</p>
+                  {selected.textbook && (
+                    <span className="tree-detail-book">
+                      Textbook: {selected.textbook}
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
