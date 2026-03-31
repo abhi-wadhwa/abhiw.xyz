@@ -216,13 +216,18 @@ export default function CoursesPage(){
                   </div>
                   {course.level==="GR"&&<div className="ct-star" style={{color:dc}}>&#9733;</div>}
 
-                  {/* Area pills */}
+                  {/* Area pills — positioned as absolute offsets from node center */}
                   <AnimatePresence>
                     {act&&course.areas.map((a,ai)=>{
-                      const ang=(-90+(ai+.5)*(360/course.areas.length))*Math.PI/180;
-                      const r=NS/2+22;
+                      const angleDeg=-90+(ai+.5)*(360/course.areas.length);
+                      const angleRad=angleDeg*Math.PI/180;
+                      const labelR=NS/2+28;
+                      const cx=NS/2; // node center in local coords
+                      const cy=NS/2;
+                      const lx=cx+Math.cos(angleRad)*labelR;
+                      const ly=cy+Math.sin(angleRad)*labelR;
                       return<motion.div key={a} className="ct-pill"
-                        style={{left:`calc(50% + ${Math.cos(ang)*r}px)`,top:`calc(50% + ${Math.sin(ang)*r}px)`,background:AREA_COLORS[a]||"#888"}}
+                        style={{left:lx,top:ly,background:AREA_COLORS[a]||"#888"}}
                         initial={{opacity:0,scale:.6}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.6}}
                         transition={{duration:.2,delay:ai*.05}}>
                         {a}
@@ -241,7 +246,7 @@ export default function CoursesPage(){
               <motion.div className="ct-card"
                 style={{
                   left: zx + sp.x * zs,
-                  top: zy + sp.y * zs + (NS/2)*zs + 12,
+                  top: zy + sp.y * zs + (NS/2)*zs + 24,
                 }}
                 initial={{opacity:0,y:10}}
                 animate={{opacity:1,y:0}}
@@ -294,13 +299,13 @@ const CSS=`
 .ct-edges{position:absolute;inset:0;pointer-events:none;z-index:0}
 
 /* Node */
-.ct-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);cursor:pointer;z-index:2}
+.ct-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);cursor:pointer;z-index:2;will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .ct-glow{position:absolute;inset:-12px;border-radius:50%;pointer-events:none;z-index:0;transition:opacity .35s}
 .ct-ring{position:absolute;inset:0;border-radius:50%;transition:opacity .35s;z-index:1;box-shadow:0 3px 16px rgba(0,0,0,.05)}
 .ct-gap{position:absolute;inset:10px;border-radius:50%;background:var(--bg);z-index:2}
 .ct-inner{position:absolute;inset:14px;border-radius:50%;border:2px solid;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:3;transition:all .3s;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  z-index:3;transition:all .3s;box-shadow:0 2px 12px rgba(0,0,0,.08);-webkit-font-smoothing:antialiased}
 .ct-nm{font-size:11px;font-weight:800;text-align:center;line-height:1.25;padding:0 8px;color:#fff}
 .ct-cd{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;margin-top:2px}
 .ct-star{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:11px;z-index:4}
