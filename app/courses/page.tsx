@@ -128,10 +128,11 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Zoom 2.5x when selected, node centered with room for card below
+  // Zoom uses CSS zoom (crisp) + Framer Motion translate (smooth)
+  // CSS zoom changes the coordinate space: translate values are pre-zoom
   const zs=sel?2.5:fit;
-  const zx=sel&&sp?vpW/2-sp.x*zs+pan.x:(vpW-cW*fit)/2+pan.x;
-  const zy=sel&&sp?vpH/3-sp.y*zs+pan.y:(vpH-cH*fit)/2+pan.y;
+  const zx=sel&&sp?(vpW/zs)/2-sp.x+pan.x/zs:(vpW/fit-cW)/2+pan.x/fit;
+  const zy=sel&&sp?(vpH/zs)/3-sp.y+pan.y/zs:(vpH/fit-cH)/2+pan.y/fit;
 
   return(
     <>
@@ -170,9 +171,11 @@ export default function CoursesPage(){
           onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
           style={{cursor:dragRef.current.dragging?"grabbing":"grab"}}>
           <motion.div className="ct-canvas" style={{width:cW,height:cH}}
-            animate={{scale:zs,x:zx,y:zy}}
+            animate={{x:zx,y:zy}}
             transition={{duration:0.7,ease:[0.16,1,0.3,1]}}
-            onClick={()=>{setSel(null);setPan({x:0,y:0})}}>
+            onClick={()=>{setSel(null);setPan({x:0,y:0})}}
+            >{/* zoom applied via CSS for crisp rendering */}
+            <div style={{zoom:zs,transformOrigin:"0 0",transition:"zoom 0.7s cubic-bezier(0.16,1,0.3,1)"}}>
 
             {/* Edges */}
             <svg className="ct-edges" width={cW} height={cH}>
@@ -238,6 +241,7 @@ export default function CoursesPage(){
                 </motion.div>
               );
             })}
+          </div>{/* close zoom div */}
           </motion.div>
 
           {/* Detail card — rendered in viewport space (not inside the scaled canvas) */}
@@ -245,8 +249,8 @@ export default function CoursesPage(){
             {sel&&sp&&(
               <motion.div className="ct-card"
                 style={{
-                  left: zx + sp.x * zs,
-                  top: zy + sp.y * zs + (NS/2)*zs + 24,
+                  left: (zx + sp.x) * zs,
+                  top: (zy + sp.y + NS/2 + 16) * zs,
                 }}
                 initial={{opacity:0,y:10}}
                 animate={{opacity:1,y:0}}
