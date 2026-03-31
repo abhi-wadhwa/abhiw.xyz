@@ -111,11 +111,24 @@ export default function CoursesPage(){
     window.addEventListener("keydown",k);return()=>window.removeEventListener("keydown",k);
   },[]);
 
-  // Scroll to zoom (gentle) — prevent page scroll
+  // Scroll to zoom at cursor position
   const onWheel=(e:React.WheelEvent)=>{
     if(sel)return;
     e.stopPropagation();
-    setManualZoom(z=>Math.max(0.4,Math.min(2,z-e.deltaY*0.0008)));
+    const rect=vpRef.current?.getBoundingClientRect();
+    if(!rect)return;
+    const mx=e.clientX-rect.left;
+    const my=e.clientY-rect.top;
+    const oldZ=manualZoom;
+    const newZ=Math.max(0.4,Math.min(2,oldZ-e.deltaY*0.0008));
+    const oldS=fitScale*oldZ;
+    const newS=fitScale*newZ;
+    // Adjust pan so the point under the cursor stays fixed
+    setPan(p=>({
+      x:p.x-(mx-p.x-(vpW-cW*oldS)/2-120)*(newS/oldS-1),
+      y:p.y-(my-p.y-(vpH-cH*oldS)/2+40)*(newS/oldS-1),
+    }));
+    setManualZoom(newZ);
   };
 
   // Lock body scroll while on this page
@@ -137,14 +150,13 @@ export default function CoursesPage(){
   };
   const onPointerUp=()=>{dragRef.current.dragging=false};
 
+  const{pos,w:cW,h:cH}=LAYOUT;
+  const fitScale = Math.min(vpW / cW, vpH / cH);
+
   const hovCat=hov?COURSES.find(c=>c.id===hov)?.category:null;
   const conn=useMemo(()=>{const s=new Set<string>();if(hov)EDGES.forEach(([a,b])=>{if(a===hov||b===hov){s.add(a);s.add(b)}});return s},[hov]);
 
-  const{pos,w:cW,h:cH}=LAYOUT;
   const sp=sel?pos[sel.id]:null;
-  const fit=Math.min(1,vpW/cW);
-
-  const fitScale = Math.min(vpW / cW, vpH / cH);
   const browseScale = fitScale * manualZoom;
   const zoomedScale = fitScale * 3;
   const zs = sel ? zoomedScale : browseScale;
