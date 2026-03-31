@@ -240,8 +240,11 @@ export default function CoursesPage(){
                       const rad = cssDeg * Math.PI / 180;
                       // Place pills exactly at the outer edge of the ring
                       const labelR = NS/2 + 4*RENDER_SCALE;
-                      const px = NS/2 + Math.sin(rad) * labelR;
-                      const py = NS/2 - Math.cos(rad) * labelR;
+                      // Offset by -NS*0.06 to compensate for scale transform origin
+                      const cx = NS * 0.44;
+                      const cy = NS * 0.44;
+                      const px = cx + Math.sin(rad) * labelR;
+                      const py = cy - Math.cos(rad) * labelR;
                       return<motion.div key={a} className="ct-pill"
                         style={{left:px,top:py,background:AREA_COLORS[a]||"#888"}}
                         initial={{opacity:0,scale:.6}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.6}}
