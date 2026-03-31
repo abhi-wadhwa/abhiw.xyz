@@ -12,12 +12,13 @@ const DISCIPLINES: Record<string, { label: string; color: string }> = {
   FIN:  { label: "Finance",     color: "#059669" },
 };
 
+// Maximally differentiated colors — no two areas look alike
 const AREA_COLORS: Record<string, string> = {
-  "ML/AI":"#7c3aed","Trading":"#059669","Statistics":"#1e52f3",
-  "Optimization":"#2563eb","Theory":"#4f46e5","Finance":"#059669",
-  "Research":"#7c3aed","Policy":"#b45309","Applied":"#b45309",
-  "Control":"#6d28d9","Modeling":"#1e52f3","Data":"#0891b2",
-  "Computation":"#1e52f3","Risk":"#dc2626",
+  "ML/AI":"#7c3aed","Trading":"#059669","Statistics":"#e11d48",
+  "Optimization":"#f59e0b","Theory":"#1e52f3","Finance":"#10b981",
+  "Research":"#8b5cf6","Policy":"#ea580c","Applied":"#d97706",
+  "Control":"#0891b2","Modeling":"#6366f1","Data":"#06b6d4",
+  "Computation":"#64748b","Risk":"#dc2626",
 };
 
 const DISC_ORDER = ["MATH","CS","ECON","FIN"];
@@ -94,6 +95,8 @@ export default function CoursesPage(){
   const vpRef=useRef<HTMLDivElement>(null);
   const[vpW,setVpW]=useState(1200);
   const[vpH,setVpH]=useState(800);
+  const[pan,setPan]=useState({x:0,y:0});
+  const dragRef=useRef({dragging:false,startX:0,startY:0,startPanX:0,startPanY:0});
 
   useEffect(()=>{
     const m=()=>{if(vpRef.current){setVpW(vpRef.current.offsetWidth);setVpH(vpRef.current.offsetHeight)}};
@@ -101,9 +104,22 @@ export default function CoursesPage(){
   },[]);
 
   useEffect(()=>{
-    const k=(e:KeyboardEvent)=>{if(e.key==="Escape")setSel(null)};
+    const k=(e:KeyboardEvent)=>{if(e.key==="Escape"){setSel(null);setPan({x:0,y:0})}};
     window.addEventListener("keydown",k);return()=>window.removeEventListener("keydown",k);
   },[]);
+
+  // Drag to pan
+  const onPointerDown=(e:React.PointerEvent)=>{
+    dragRef.current={dragging:true,startX:e.clientX,startY:e.clientY,startPanX:pan.x,startPanY:pan.y};
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const onPointerMove=(e:React.PointerEvent)=>{
+    if(!dragRef.current.dragging)return;
+    const dx=e.clientX-dragRef.current.startX;
+    const dy=e.clientY-dragRef.current.startY;
+    setPan({x:dragRef.current.startPanX+dx,y:dragRef.current.startPanY+dy});
+  };
+  const onPointerUp=()=>{dragRef.current.dragging=false};
 
   const hovCat=hov?COURSES.find(c=>c.id===hov)?.category:null;
   const conn=useMemo(()=>{const s=new Set<string>();if(hov)EDGES.forEach(([a,b])=>{if(a===hov||b===hov){s.add(a);s.add(b)}});return s},[hov]);
@@ -112,11 +128,10 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Zoom: 2x when selected — node centered in viewport
-  const zs=sel?2:fit;
-  // When zoomed, translate so the node position * scale lands at viewport center
-  const zx=sel&&sp?vpW/2-sp.x*zs:(vpW-cW*fit)/2;
-  const zy=sel&&sp?vpH/2-sp.y*zs:(vpH-cH*fit)/2;
+  // Zoom 3x when selected, centered on node. Shift up slightly so card below is visible
+  const zs=sel?3:fit;
+  const zx=sel&&sp?vpW/2-sp.x*zs:(vpW-cW*fit)/2+pan.x;
+  const zy=sel&&sp?vpH*0.38-sp.y*zs:(vpH-cH*fit)/2+pan.y;
 
   return(
     <>
@@ -151,11 +166,13 @@ export default function CoursesPage(){
         </div>
 
         {/* Viewport */}
-        <div className="ct-viewport" ref={vpRef}>
+        <div className="ct-viewport" ref={vpRef}
+          onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+          style={{cursor:dragRef.current.dragging?"grabbing":"grab"}}>
           <motion.div className="ct-canvas" style={{width:cW,height:cH}}
             animate={{scale:zs,x:zx,y:zy}}
             transition={{duration:0.7,ease:[0.16,1,0.3,1]}}
-            onClick={()=>setSel(null)}>
+            onClick={()=>{setSel(null);setPan({x:0,y:0})}}>
 
             {/* Edges */}
             <svg className="ct-edges" width={cW} height={cH}>
@@ -185,15 +202,15 @@ export default function CoursesPage(){
               return(
                 <motion.div key={course.id} className="ct-node" style={{left:np.x,top:np.y}}
                   initial={{opacity:0,scale:.4}}
-                  animate={{opacity:dim?.1:1,scale:dim?.88:act?1.15:1,filter:dim?"blur(2px)":"blur(0px)"}}
-                  transition={{scale:{duration:.35,ease:[.16,1,.3,1]},opacity:{duration:.25},delay:.15+course.tier*.12}}
+                  animate={{opacity:dim?.15:1,scale:dim?.92:act?1.12:1}}
+                  transition={{scale:{duration:.35,ease:[.16,1,.3,1]},opacity:{duration:.3},delay:.15+course.tier*.12}}
                   onMouseEnter={()=>setHov(course.id)} onMouseLeave={()=>setHov(null)}
                   onClick={e=>{e.stopPropagation();setSel(isS?null:course)}}>
 
                   {act&&<div className="ct-glow" style={{boxShadow:`0 0 28px ${dc}20,0 0 56px ${dc}10`}}/>}
-                  <div className="ct-ring" style={{background:conicGrad(course.areas),opacity:act?.65:.35}}/>
+                  <div className="ct-ring" style={{background:conicGrad(course.areas),opacity:act?.75:.45}}/>
                   <div className="ct-gap"/>
-                  <div className="ct-inner" style={{background:dc,opacity:act?.95:.75,borderColor:act?"#fff3":dc}}>
+                  <div className="ct-inner" style={{background:dc,opacity:act?1:.9,borderColor:act?"#fff3":dc}}>
                     <span className="ct-nm">{course.name}</span>
                     <span className="ct-cd">{course.code}</span>
                   </div>
