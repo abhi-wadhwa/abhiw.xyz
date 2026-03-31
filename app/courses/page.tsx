@@ -130,13 +130,18 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Default: scale down. Zoom: scale to 0.7 (1.75x native — crisp and big).
-  const defaultScale = Math.min(vpW / cW, vpH / cH, 1/RENDER_SCALE);
-  const zoomedScale = 0.7 / RENDER_SCALE;
+  // Default: scale down to fit. Zoomed: 3x the default scale.
+  const defaultScale = Math.min(vpW / cW, vpH / cH);
+  const zoomedScale = defaultScale * 3;
   const zs = sel ? zoomedScale : defaultScale;
-  // When zoomed, center node at viewport center, offset down for card space above
+  // Zoomed: node at (sp.x*zs, sp.y*zs) in canvas space.
+  // transform-origin is 0,0 so translate shifts the canvas.
+  // To place node at viewport center: translate = vpCenter - nodePos*scale
   const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*defaultScale)/2 + pan.x;
   const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*defaultScale)/2 + pan.y;
+  // Where the selected node actually lands on screen:
+  const nodeScreenX = sel && sp ? vpW/2 : 0;
+  const nodeScreenY = sel && sp ? vpH*0.35 : 0;
 
   return(
     <>
@@ -254,7 +259,7 @@ export default function CoursesPage(){
           <AnimatePresence>
             {sel&&sp&&(
               <motion.div className="ct-card"
-                style={{left:vpW/2,top:vpH*0.35+(NS/2)*zoomedScale+20}}
+                style={{left:nodeScreenX,top:nodeScreenY+(NS/2)*zoomedScale+20}}
                 initial={{opacity:0,y:12}}
                 animate={{opacity:1,y:0}}
                 exit={{opacity:0,y:12}}
