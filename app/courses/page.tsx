@@ -73,9 +73,9 @@ const NS = 130 * RENDER_SCALE;
 
 // Manual positions — grouped by discipline, left edge at 200*S
 const S = RENDER_SCALE;
-const G = 220*S; // column gap
-const R = 200*S; // row gap
-const L = 200*S; // left offset
+const G = 250*S; // column gap (wider)
+const R = 220*S; // row gap (taller)
+const L = 250*S; // left offset (push right of key)
 
 const MANUAL_POS: Record<string, { x: number; y: number }> = {
   // ═══ MATHEMATICS (left cluster) ═══
@@ -142,7 +142,7 @@ export default function CoursesPage(){
   const[vpW,setVpW]=useState(1200);
   const[vpH,setVpH]=useState(800);
   const[pan,setPan]=useState({x:0,y:0});
-  const[manualZoom,setManualZoom]=useState(0.85); // start slightly zoomed out
+  const[manualZoom,setManualZoom]=useState(1.2); // start zoomed in a bit
   const dragRef=useRef({dragging:false,startX:0,startY:0,startPanX:0,startPanY:0});
 
   useEffect(()=>{
@@ -155,22 +155,22 @@ export default function CoursesPage(){
     window.addEventListener("keydown",k);return()=>window.removeEventListener("keydown",k);
   },[]);
 
-  // Scroll to zoom at cursor position
+  // Scroll to zoom centered on cursor
   const onWheel=(e:React.WheelEvent)=>{
     if(sel)return;
     e.stopPropagation();
     const rect=vpRef.current?.getBoundingClientRect();
     if(!rect)return;
+    // Mouse position in viewport
     const mx=e.clientX-rect.left;
     const my=e.clientY-rect.top;
     const oldZ=manualZoom;
-    const newZ=Math.max(0.4,Math.min(2,oldZ-e.deltaY*0.0008));
-    const oldS=fitScale*oldZ;
-    const newS=fitScale*newZ;
-    // Adjust pan so the point under the cursor stays fixed
+    const newZ=Math.max(0.3,Math.min(2.5,oldZ-e.deltaY*0.001));
+    const ratio=newZ/oldZ;
+    // Pan so cursor point stays fixed: newPan = cursor - (cursor - oldPan) * ratio
     setPan(p=>({
-      x:p.x-(mx-p.x-(vpW-cW*oldS)/2)*(newS/oldS-1),
-      y:p.y-(my-p.y-(vpH-cH*oldS)/2)*(newS/oldS-1),
+      x: mx - (mx - p.x) * ratio,
+      y: my - (my - p.y) * ratio,
     }));
     setManualZoom(newZ);
   };
