@@ -398,11 +398,14 @@ const CSS=`
 .ct-inner{position:absolute;inset:${14*RENDER_SCALE}px;border-radius:50%;border:${2*RENDER_SCALE}px solid;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   z-index:3;transition:all .3s;box-shadow:0 ${2*RENDER_SCALE}px ${12*RENDER_SCALE}px rgba(0,0,0,.08);-webkit-font-smoothing:antialiased}
-.ct-nm{font-size:${11*RENDER_SCALE}px;font-weight:800;text-align:center;line-height:1.25;padding:0 ${8*RENDER_SCALE}px;color:#fff}
-.ct-cd{font-size:${8.5*RENDER_SCALE}px;font-weight:600;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;margin-top:${2*RENDER_SCALE}px}
+.ct-nm{font-size:${13*RENDER_SCALE}px;font-weight:800;text-align:center;line-height:1.2;padding:0 ${10*RENDER_SCALE}px;color:#fff;
+  text-shadow:0 ${1*RENDER_SCALE}px ${2*RENDER_SCALE}px rgba(0,0,0,.15);-webkit-font-smoothing:antialiased}
+.ct-cd{font-size:${10*RENDER_SCALE}px;font-weight:700;color:rgba(255,255,255,.7);font-family:'JetBrains Mono',monospace;margin-top:${3*RENDER_SCALE}px;
+  -webkit-font-smoothing:antialiased}
 .ct-star{position:absolute;top:${-4*RENDER_SCALE}px;left:50%;transform:translateX(-50%);font-size:${11*RENDER_SCALE}px;z-index:4}
-.ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:${8*RENDER_SCALE}px;font-weight:700;color:#fff;
-  padding:${3*RENDER_SCALE}px ${8*RENDER_SCALE}px;border-radius:${5*RENDER_SCALE}px;white-space:nowrap;z-index:5;pointer-events:none}
+.ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:${10*RENDER_SCALE}px;font-weight:800;color:#fff;
+  padding:${4*RENDER_SCALE}px ${10*RENDER_SCALE}px;border-radius:${6*RENDER_SCALE}px;white-space:nowrap;z-index:5;pointer-events:none;
+  text-shadow:0 ${1*RENDER_SCALE}px ${2*RENDER_SCALE}px rgba(0,0,0,.2);-webkit-font-smoothing:antialiased}
 
 /* Detail card — rendered in viewport space, not inside scaled canvas */
 .ct-card{position:absolute;margin-left:-170px;
