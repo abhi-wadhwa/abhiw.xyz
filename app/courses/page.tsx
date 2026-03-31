@@ -98,6 +98,7 @@ export default function CoursesPage(){
   const[vpW,setVpW]=useState(1200);
   const[vpH,setVpH]=useState(800);
   const[pan,setPan]=useState({x:0,y:0});
+  const[manualZoom,setManualZoom]=useState(0.85); // start slightly zoomed out
   const dragRef=useRef({dragging:false,startX:0,startY:0,startPanX:0,startPanY:0});
 
   useEffect(()=>{
@@ -109,6 +110,13 @@ export default function CoursesPage(){
     const k=(e:KeyboardEvent)=>{if(e.key==="Escape"){setSel(null);setPan({x:0,y:0})}};
     window.addEventListener("keydown",k);return()=>window.removeEventListener("keydown",k);
   },[]);
+
+  // Scroll to zoom (gentle)
+  const onWheel=(e:React.WheelEvent)=>{
+    if(sel)return; // don't scroll-zoom when focused on a node
+    e.preventDefault();
+    setManualZoom(z=>Math.max(0.4,Math.min(2,z-e.deltaY*0.0008)));
+  };
 
   // Drag to pan
   const onPointerDown=(e:React.PointerEvent)=>{
@@ -130,15 +138,12 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Default: scale down to fit. Zoomed: 3x the default scale.
-  const defaultScale = Math.min(vpW / cW, vpH / cH);
-  const zoomedScale = defaultScale * 3;
-  const zs = sel ? zoomedScale : defaultScale;
-  // Zoomed: node at (sp.x*zs, sp.y*zs) in canvas space.
-  // transform-origin is 0,0 so translate shifts the canvas.
-  // To place node at viewport center: translate = vpCenter - nodePos*scale
-  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*defaultScale)/2 + pan.x;
-  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*defaultScale)/2 + pan.y;
+  const fitScale = Math.min(vpW / cW, vpH / cH);
+  const browseScale = fitScale * manualZoom;
+  const zoomedScale = fitScale * 3;
+  const zs = sel ? zoomedScale : browseScale;
+  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*browseScale)/2 + pan.x;
+  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*browseScale)/2 + pan.y;
   // Where the selected node actually lands on screen:
   const nodeScreenX = sel && sp ? vpW/2 : 0;
   const nodeScreenY = sel && sp ? vpH*0.35 : 0;
@@ -146,10 +151,15 @@ export default function CoursesPage(){
   return(
     <>
       <style>{CSS}</style>
+      <div className="ct-title-bar">
+        <div className="container">
+          <h1 className="ct-page-title">Coursework</h1>
+        </div>
+      </div>
+
       <div className="ct-page">
         {/* Map key — overlaid on the viewport */}
         <div className="ct-key">
-          <h1 className="ct-key-title">Coursework</h1>
           <div className="ct-key-section">
             <div className="ct-key-label">Disciplines</div>
             {DISC_ORDER.map(d=>(
@@ -178,6 +188,7 @@ export default function CoursesPage(){
         {/* Viewport */}
         <div className="ct-viewport" ref={vpRef}
           onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+          onWheel={onWheel}
           style={{cursor:dragRef.current.dragging?"grabbing":"grab"}}>
           <motion.div className="ct-canvas" style={{width:cW,height:cH}}
             animate={{scale:zs,x:zx,y:zy}}
@@ -296,16 +307,19 @@ export default function CoursesPage(){
 }
 
 const CSS=`
-.ct-page{position:relative;height:100vh;overflow:hidden;background:var(--bg)}
+/* Title bar */
+.ct-title-bar{padding:110px 0 20px;background:var(--bg)}
+.ct-page-title{font-size:clamp(36px,5vw,56px);font-weight:800;color:var(--text-primary);letter-spacing:-0.03em}
+
+.ct-page{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--bg)}
 
 /* Map key — floating overlay top-left */
-.ct-key{position:absolute;top:84px;left:24px;z-index:20;
+.ct-key{position:absolute;top:16px;left:24px;z-index:20;
   background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
   border:1px solid var(--border);border-radius:14px;
   padding:18px 20px;width:170px;
   display:flex;flex-direction:column;gap:14px;
   box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.ct-key-title{font-size:20px;font-weight:800;color:var(--text-primary);letter-spacing:-0.02em}
 .ct-key-section{display:flex;flex-direction:column;gap:3px}
 .ct-key-label{font-size:8px;font-weight:700;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1px}
 .ct-key-item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--text-secondary)}
