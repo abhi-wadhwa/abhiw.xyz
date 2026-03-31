@@ -233,7 +233,21 @@ export default function CoursesPage() {
         </div>
 
         <div className="sk-scroll">
-          <svg width={totalW} height={totalH}>
+          <svg
+            width={totalW}
+            height={selected ? totalH + 160 : totalH}
+            viewBox={
+              selected && pos[selected.id]
+                ? `${pos[selected.id].x - 280} ${pos[selected.id].y - 120} 560 400`
+                : `0 0 ${totalW} ${totalH}`
+            }
+            style={{ transition: "viewBox 0.6s", transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
+            className={selected ? "sk-svg-zoomed" : ""}
+          >
+            {/* Click background to deselect */}
+            <rect x="0" y="0" width={totalW} height={totalH + 160} fill="transparent"
+              onClick={() => setSelected(null)} />
+
             {/* Disc column labels */}
             {DISC_ORDER.map(d => (
               <text key={d} x={discX[d] + (discWidths[d] - COL_GAP) / 2} y={24}
@@ -275,43 +289,39 @@ export default function CoursesPage() {
                   onHover={setHovered} onSelect={setSelected} />
               );
             })}
-          </svg>
-        </div>
-
-        {/* Detail panel */}
-        <div className="container">
-          <AnimatePresence>
-            {selected && (
-              <motion.div key={selected.id} className="sk-detail"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}>
-                <div className="sk-detail-inner" style={{ borderLeftColor: DISCS[selected.cat].color }}>
-                  <div className="sk-detail-head">
-                    <div>
-                      <span className="sk-detail-code" style={{ color: DISCS[selected.cat].color }}>{selected.code}</span>
-                      {selected.lv === "GR" && <span className="sk-detail-grad">Graduate</span>}
-                    </div>
-                    <button className="sk-detail-close" onClick={() => setSelected(null)}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </button>
+            {/* Inline detail below selected node */}
+            {selected && pos[selected.id] && (
+              <foreignObject
+                x={pos[selected.id].x - 200}
+                y={pos[selected.id].y + R_OUTER + 20}
+                width={400}
+                height={180}
+              >
+                <div className="sk-inline-detail" style={{ borderColor: DISCS[selected.cat].color + "44" }}>
+                  <div className="sk-inline-head">
+                    <span style={{ color: DISCS[selected.cat].color, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>
+                      {selected.code}
+                    </span>
+                    {selected.lv === "GR" && (
+                      <span style={{ fontSize: 9, fontWeight: 700, color: DISCS[selected.cat].color, letterSpacing: 1, textTransform: "uppercase" as const, marginLeft: 8, padding: "1px 6px", border: `1px solid ${DISCS[selected.cat].color}`, borderRadius: 3 }}>
+                        GRAD
+                      </span>
+                    )}
                   </div>
-                  <h3 className="sk-detail-name">{selected.n}</h3>
-                  <p className="sk-detail-desc">{selected.desc}</p>
-                  <div className="sk-detail-areas">
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "#252525", marginBottom: 6 }}>{selected.n}</div>
+                  <div style={{ fontSize: 11, lineHeight: 1.7, color: "#555" }}>{selected.desc}</div>
+                  <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" as const }}>
                     {selected.areas.map(a => (
-                      <span key={a} className="sk-detail-area" style={{ color: AREA_COLORS[a], borderColor: AREA_COLORS[a] + "44", background: AREA_COLORS[a] + "08" }}>
+                      <span key={a} style={{ fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 4, color: AREA_COLORS[a], border: `1px solid ${AREA_COLORS[a]}33`, background: AREA_COLORS[a] + "08" }}>
                         {a}
                       </span>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </foreignObject>
             )}
-          </AnimatePresence>
+
+          </svg>
         </div>
       </div>
 
@@ -333,19 +343,22 @@ const CSS = `
 .sk-leg-sep { color: var(--border-hover); font-size: 14px; }
 
 .sk-scroll { overflow-x: auto; padding: 0 48px 20px; }
-.sk-scroll svg { display: block; }
+.sk-scroll svg { display: block; transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
+.sk-svg-zoomed { cursor: zoom-out; }
 
-.sk-detail { overflow: hidden; margin-top: 24px; }
-.sk-detail-inner { padding: 28px 32px; border: 1px solid var(--border); border-left: 4px solid; border-radius: 14px; background: var(--bg); }
-.sk-detail-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.sk-detail-code { font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono',monospace; letter-spacing: 0.04em; }
-.sk-detail-grad { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-left: 12px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 4px; }
-.sk-detail-close { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); transition: all 0.2s; }
-.sk-detail-close:hover { color: var(--text-primary); background: var(--surface); }
-.sk-detail-name { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 10px; }
-.sk-detail-desc { font-size: 16px; line-height: 1.8; color: var(--text-secondary); max-width: 680px; margin-bottom: 14px; }
-.sk-detail-areas { display: flex; gap: 8px; flex-wrap: wrap; }
-.sk-detail-area { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 6px; border: 1px solid; }
+.sk-inline-detail {
+  background: #fff;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  animation: skDetailIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes skDetailIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
 @media (max-width: 900px) {
   .sk-scroll { padding: 0 16px; }
