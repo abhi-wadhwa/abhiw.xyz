@@ -230,34 +230,39 @@ export default function CoursesPage(){
                     })}
                   </AnimatePresence>
 
-                  {/* Detail card — points at the node when selected */}
-                  <AnimatePresence>
-                    {isS&&(
-                      <motion.div className="ct-card"
-                        initial={{opacity:0,scale:.9,y:8}}
-                        animate={{opacity:1,scale:1,y:0}}
-                        exit={{opacity:0,scale:.9,y:8}}
-                        transition={{duration:.35,delay:.25,ease:[.16,1,.3,1]}}
-                        onClick={e=>e.stopPropagation()}>
-                        <div className="ct-card-arrow"/>
-                        <div className="ct-card-code" style={{color:dc}}>{course.code}</div>
-                        <div className="ct-card-name">{course.name}</div>
-                        {course.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
-                        <p className="ct-card-desc">{course.desc}</p>
-                        <div className="ct-card-foot">
-                          {course.semester&&<span>{course.semester}</span>}
-                          {course.textbook&&<span>Textbook: {course.textbook}</span>}
-                        </div>
-                        <div className="ct-card-areas">
-                          {course.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </motion.div>
               );
             })}
           </motion.div>
+
+          {/* Detail card — rendered in viewport space (not inside the scaled canvas) */}
+          <AnimatePresence>
+            {sel&&sp&&(
+              <motion.div className="ct-card"
+                style={{
+                  left: zx + sp.x * zs,
+                  top: zy + sp.y * zs + (NS/2)*zs + 12,
+                }}
+                initial={{opacity:0,y:10}}
+                animate={{opacity:1,y:0}}
+                exit={{opacity:0,y:10}}
+                transition={{duration:.3,delay:.2,ease:[.16,1,.3,1]}}
+                onClick={e=>e.stopPropagation()}>
+                <div className="ct-card-arrow"/>
+                <div className="ct-card-code" style={{color:DISCIPLINES[sel.category].color}}>{sel.code}</div>
+                <div className="ct-card-name">{sel.name}</div>
+                {sel.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
+                <p className="ct-card-desc">{sel.desc}</p>
+                <div className="ct-card-foot">
+                  {sel.semester&&<span>{sel.semester}</span>}
+                  {sel.textbook&&<span>Textbook: {sel.textbook}</span>}
+                </div>
+                <div className="ct-card-areas">
+                  {sel.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <Footer/>
@@ -302,22 +307,22 @@ const CSS=`
 .ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#fff;
   padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
 
-/* Detail card — tooltip pointing at selected node */
-.ct-card{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
-  width:160px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);
-  border:1px solid var(--border);border-radius:6px;
-  padding:8px 10px;z-index:10;pointer-events:auto;
-  box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.ct-card-arrow{position:absolute;top:-4px;left:50%;transform:translateX(-50%) rotate(45deg);
-  width:7px;height:7px;background:rgba(255,255,255,.96);border-left:1px solid var(--border);border-top:1px solid var(--border)}
-.ct-card-code{font-size:4.5px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.4px;margin-bottom:1px}
-.ct-card-name{font-size:6.5px;font-weight:800;color:var(--text-primary);margin-bottom:2px;line-height:1.3}
-.ct-card-grad{font-size:3.5px;font-weight:700;color:var(--accent);letter-spacing:.6px;text-transform:uppercase;
-  padding:1px 3px;border:.5px solid var(--accent);border-radius:2px;display:inline-block;margin-bottom:2px}
-.ct-card-desc{font-size:4.5px;line-height:1.65;color:var(--text-secondary);margin-bottom:3px}
-.ct-card-foot{font-size:3.5px;color:var(--text-tertiary);font-weight:600;display:flex;gap:3px;flex-wrap:wrap;margin-bottom:3px}
-.ct-card-areas{display:flex;gap:2px;flex-wrap:wrap}
-.ct-card-area{font-size:3.5px;font-weight:700;padding:1px 3px;border-radius:2px;border:.5px solid}
+/* Detail card — rendered in viewport space, not inside scaled canvas */
+.ct-card{position:absolute;transform:translateX(-50%);
+  width:340px;background:#fff;
+  border:1px solid var(--border);border-radius:14px;
+  padding:20px 24px;z-index:30;pointer-events:auto;
+  box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.ct-card-arrow{position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:12px;height:12px;background:#fff;border-left:1px solid var(--border);border-top:1px solid var(--border)}
+.ct-card-code{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;margin-bottom:4px}
+.ct-card-name{font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:6px;line-height:1.3}
+.ct-card-grad{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;
+  padding:2px 8px;border:1px solid var(--accent);border-radius:4px;display:inline-block;margin-bottom:8px}
+.ct-card-desc{font-size:14px;line-height:1.7;color:var(--text-secondary);margin-bottom:10px}
+.ct-card-foot{font-size:12px;color:var(--text-tertiary);font-weight:600;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.ct-card-areas{display:flex;gap:6px;flex-wrap:wrap}
+.ct-card-area{font-size:11px;font-weight:600;padding:3px 10px;border-radius:5px;border:1px solid}
 
 @media(max-width:900px){
   .ct-page{height:auto;min-height:100vh}
