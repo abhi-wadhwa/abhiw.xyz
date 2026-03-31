@@ -68,7 +68,9 @@ const EDGES:[string,string][]=[
 ];
 
 /* ═══════════════════ LAYOUT ═══════════════════ */
-const TG=200, CG=220, DG=110, TP=80, NS=130;
+// Render at 2.5x size. Default view scales DOWN to fit. Zoom IN = scale to 1x (native res = crisp).
+const RENDER_SCALE = 2.5;
+const TG=200*RENDER_SCALE, CG=220*RENDER_SCALE, DG=110*RENDER_SCALE, TP=80*RENDER_SCALE, NS=130*RENDER_SCALE;
 const LAYOUT=(()=>{
   const dw:Record<string,number>={},dx:Record<string,number>={};
   DISC_ORDER.forEach(d=>{dw[d]=(Math.max(...COURSES.filter(n=>n.category===d).map(n=>n.col),0)+1)*CG});
@@ -128,12 +130,12 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Pan to center selected node (no scale change = no blur)
-  const zs=fit;
-  const defaultX=(vpW - cW*fit)/2;
-  const defaultY=(vpH - cH*fit)/2;
-  const zx=sel&&sp? vpW/2 - sp.x*zs : defaultX + pan.x;
-  const zy=sel&&sp? vpH/2 - sp.y*zs - 60 : defaultY + pan.y;
+  // Default: scale down to fit viewport. Zoom: scale to 1x (native = crisp).
+  const defaultScale = Math.min(vpW / cW, vpH / cH, 1/RENDER_SCALE);
+  const zoomedScale = 1 / RENDER_SCALE; // 1x native
+  const zs = sel ? zoomedScale : defaultScale;
+  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*defaultScale)/2 + pan.x;
+  const zy = sel && sp ? vpH/2 - sp.y*zs - 50 : (vpH - cH*defaultScale)/2 + pan.y;
 
   return(
     <>
@@ -223,7 +225,7 @@ export default function CoursesPage(){
                     {act&&course.areas.map((a,ai)=>{
                       const angleDeg=-90+(ai+.5)*(360/course.areas.length);
                       const angleRad=angleDeg*Math.PI/180;
-                      const labelR=NS/2+28;
+                      const labelR=NS/2+28*RENDER_SCALE;
                       const cx=NS/2; // node center in local coords
                       const cy=NS/2;
                       const lx=cx+Math.cos(angleRad)*labelR;
@@ -242,70 +244,30 @@ export default function CoursesPage(){
             })}
           </motion.div>
 
-          {/* Blur overlay when a node is selected */}
+          {/* Card — appears after zoom settles, at fixed viewport position */}
           <AnimatePresence>
-            {sel&&(
-              <motion.div className="ct-blur-overlay"
-                initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
-                transition={{duration:.3}}
-                onClick={()=>{setSel(null);setPan({x:0,y:0})}}/>
+            {sel&&sp&&(
+              <motion.div className="ct-card"
+                style={{left:vpW/2,top:vpH/2-50+(NS/2)*zoomedScale+16}}
+                initial={{opacity:0,y:12}}
+                animate={{opacity:1,y:0}}
+                exit={{opacity:0,y:12}}
+                transition={{duration:.35,delay:.5,ease:[.16,1,.3,1]}}
+                onClick={e=>e.stopPropagation()}>
+                <div className="ct-card-arrow-top"/>
+                <div className="ct-card-code" style={{color:DISCIPLINES[sel.category].color}}>{sel.code}</div>
+                <div className="ct-card-name">{sel.name}</div>
+                {sel.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
+                <p className="ct-card-desc">{sel.desc}</p>
+                <div className="ct-card-foot">
+                  {sel.semester&&<span>{sel.semester}</span>}
+                  {sel.textbook&&<span>Textbook: {sel.textbook}</span>}
+                </div>
+                <div className="ct-card-areas">
+                  {sel.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
+                </div>
+              </motion.div>
             )}
-          </AnimatePresence>
-
-          {/* Selected node highlight — rendered crisp above the blur */}
-          <AnimatePresence>
-            {sel&&sp&&(()=>{
-              const dc=DISCIPLINES[sel.category].color;
-              const nodeScreenX=vpW/2;
-              const nodeScreenY=vpH/2-60;
-              return(
-                <>
-                  {/* The node itself, re-rendered above the blur */}
-                  <div className="ct-highlight-node" style={{left:nodeScreenX,top:nodeScreenY}}>
-                    <div className="ct-glow" style={{boxShadow:`0 0 28px ${dc}20,0 0 56px ${dc}10`}}/>
-                    <div className="ct-ring" style={{background:conicGrad(sel.areas),opacity:.75}}/>
-                    <div className="ct-gap"/>
-                    <div className="ct-inner" style={{background:dc,opacity:1,borderColor:"#fff3"}}>
-                      <span className="ct-nm">{sel.name}</span>
-                      <span className="ct-cd">{sel.code}</span>
-                    </div>
-                    {sel.level==="GR"&&<div className="ct-star" style={{color:dc}}>&#9733;</div>}
-                    {/* Area pills */}
-                    {sel.areas.map((a,ai)=>{
-                      const angleDeg=-90+(ai+.5)*(360/sel.areas.length);
-                      const angleRad=angleDeg*Math.PI/180;
-                      const labelR=NS/2+28;
-                      return<div key={a} className="ct-pill"
-                        style={{left:NS/2+Math.cos(angleRad)*labelR,top:NS/2+Math.sin(angleRad)*labelR,background:AREA_COLORS[a]||"#888"}}>
-                        {a}
-                      </div>;
-                    })}
-                  </div>
-
-                  {/* Card below the highlighted node */}
-                  <motion.div className="ct-card"
-                    style={{left:nodeScreenX,top:nodeScreenY+(NS/2)*1+20}}
-                    initial={{opacity:0,y:10}}
-                    animate={{opacity:1,y:0}}
-                    exit={{opacity:0,y:10}}
-                    transition={{duration:.3,delay:.15,ease:[.16,1,.3,1]}}
-                    onClick={e=>e.stopPropagation()}>
-                    <div className="ct-card-arrow-top"/>
-                    <div className="ct-card-code" style={{color:dc}}>{sel.code}</div>
-                    <div className="ct-card-name">{sel.name}</div>
-                    {sel.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
-                    <p className="ct-card-desc">{sel.desc}</p>
-                    <div className="ct-card-foot">
-                      {sel.semester&&<span>{sel.semester}</span>}
-                      {sel.textbook&&<span>Textbook: {sel.textbook}</span>}
-                    </div>
-                    <div className="ct-card-areas">
-                      {sel.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
-                    </div>
-                  </motion.div>
-                </>
-              );
-            })()}
           </AnimatePresence>
         </div>
       </div>
@@ -339,23 +301,17 @@ const CSS=`
 
 /* Node */
 .ct-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);cursor:pointer;z-index:2;will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden}
-.ct-glow{position:absolute;inset:-12px;border-radius:50%;pointer-events:none;z-index:0;transition:opacity .35s}
-.ct-ring{position:absolute;inset:0;border-radius:50%;transition:opacity .35s;z-index:1;box-shadow:0 3px 16px rgba(0,0,0,.05)}
-.ct-gap{position:absolute;inset:10px;border-radius:50%;background:var(--bg);z-index:2}
-.ct-inner{position:absolute;inset:14px;border-radius:50%;border:2px solid;
+.ct-glow{position:absolute;inset:${-12*RENDER_SCALE}px;border-radius:50%;pointer-events:none;z-index:0;transition:opacity .35s}
+.ct-ring{position:absolute;inset:0;border-radius:50%;transition:opacity .35s;z-index:1;box-shadow:0 ${3*RENDER_SCALE}px ${16*RENDER_SCALE}px rgba(0,0,0,.05)}
+.ct-gap{position:absolute;inset:${10*RENDER_SCALE}px;border-radius:50%;background:var(--bg);z-index:2}
+.ct-inner{position:absolute;inset:${14*RENDER_SCALE}px;border-radius:50%;border:${2*RENDER_SCALE}px solid;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:3;transition:all .3s;box-shadow:0 2px 12px rgba(0,0,0,.08);-webkit-font-smoothing:antialiased}
-.ct-nm{font-size:11px;font-weight:800;text-align:center;line-height:1.25;padding:0 8px;color:#fff}
-.ct-cd{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.ct-star{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:11px;z-index:4}
-.ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#fff;
-  padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
-
-/* Blur overlay */
-.ct-blur-overlay{position:absolute;inset:0;z-index:20;background:rgba(255,255,255,.5);backdrop-filter:blur(6px)}
-
-/* Highlighted node above blur */
-.ct-highlight-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);z-index:25;pointer-events:none}
+  z-index:3;transition:all .3s;box-shadow:0 ${2*RENDER_SCALE}px ${12*RENDER_SCALE}px rgba(0,0,0,.08);-webkit-font-smoothing:antialiased}
+.ct-nm{font-size:${11*RENDER_SCALE}px;font-weight:800;text-align:center;line-height:1.25;padding:0 ${8*RENDER_SCALE}px;color:#fff}
+.ct-cd{font-size:${8.5*RENDER_SCALE}px;font-weight:600;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;margin-top:${2*RENDER_SCALE}px}
+.ct-star{position:absolute;top:${-4*RENDER_SCALE}px;left:50%;transform:translateX(-50%);font-size:${11*RENDER_SCALE}px;z-index:4}
+.ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:${8*RENDER_SCALE}px;font-weight:700;color:#fff;
+  padding:${3*RENDER_SCALE}px ${8*RENDER_SCALE}px;border-radius:${5*RENDER_SCALE}px;white-space:nowrap;z-index:5;pointer-events:none}
 
 /* Detail card — rendered in viewport space, not inside scaled canvas */
 .ct-card{position:absolute;transform:translateX(-50%);
