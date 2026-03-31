@@ -112,23 +112,19 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Zoom: 2x when selected — centered on the node
+  // Zoom: 2x when selected — node centered in viewport
   const zs=sel?2:fit;
-  const zx=sel&&sp?-sp.x*zs+vpW*0.5:-((cW*fit-vpW)/2);
-  const zy=sel&&sp?-sp.y*zs+vpH*0.5:-((cH*fit-vpH)/2);
+  // When zoomed, translate so the node position * scale lands at viewport center
+  const zx=sel&&sp?vpW/2-sp.x*zs:(vpW-cW*fit)/2;
+  const zy=sel&&sp?vpH/2-sp.y*zs:(vpH-cH*fit)/2;
 
   return(
     <>
       <style>{CSS}</style>
-      <div className="section-header">
-        <div className="container">
-          <h1 className="section-title">Coursework</h1>
-        </div>
-      </div>
-
       <div className="ct-page">
-        {/* Left sidebar key */}
-        <div className="ct-sidebar">
+        {/* Map key — overlaid on the viewport */}
+        <div className="ct-key">
+          <h1 className="ct-key-title">Coursework</h1>
           <div className="ct-key-section">
             <div className="ct-key-label">Disciplines</div>
             {DISC_ORDER.map(d=>(
@@ -154,7 +150,7 @@ export default function CoursesPage(){
           </div>
         </div>
 
-        {/* Main viewport */}
+        {/* Viewport */}
         <div className="ct-viewport" ref={vpRef}>
           <motion.div className="ct-canvas" style={{width:cW,height:cH}}
             animate={{scale:zs,x:zx,y:zy}}
@@ -253,20 +249,25 @@ export default function CoursesPage(){
 }
 
 const CSS=`
-.ct-page{display:flex;height:calc(100vh - 160px);overflow:hidden;background:var(--bg)}
+.ct-page{position:relative;height:100vh;overflow:hidden;background:var(--bg)}
 
-/* Left sidebar */
-.ct-sidebar{width:200px;flex-shrink:0;padding:24px;border-right:1px solid var(--border);
-  overflow-y:auto;display:flex;flex-direction:column;gap:24px}
-.ct-key-section{display:flex;flex-direction:column;gap:6px}
-.ct-key-label{font-size:9px;font-weight:700;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
-.ct-key-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--text-secondary)}
-.ct-key-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.ct-key-dot-sm{width:6px;height:6px;background:var(--text-tertiary)}
-.ct-key-dot-lg{width:10px;height:10px;background:var(--text-tertiary)}
+/* Map key — floating overlay top-left */
+.ct-key{position:absolute;top:84px;left:24px;z-index:20;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+  border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;width:170px;
+  display:flex;flex-direction:column;gap:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.ct-key-title{font-size:20px;font-weight:800;color:var(--text-primary);letter-spacing:-0.02em}
+.ct-key-section{display:flex;flex-direction:column;gap:3px}
+.ct-key-label{font-size:8px;font-weight:700;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1px}
+.ct-key-item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--text-secondary)}
+.ct-key-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ct-key-dot-sm{width:5px;height:5px;background:var(--text-tertiary)}
+.ct-key-dot-lg{width:8px;height:8px;background:var(--text-tertiary)}
 
-/* Viewport */
-.ct-viewport{flex:1;position:relative;overflow:hidden}
+/* Viewport — full page */
+.ct-viewport{position:absolute;inset:0;overflow:hidden}
 .ct-canvas{position:relative;transform-origin:0 0;will-change:transform}
 .ct-edges{position:absolute;inset:0;pointer-events:none;z-index:0}
 
@@ -284,13 +285,14 @@ const CSS=`
 .ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#fff;
   padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
 
-/* Detail card — tooltip pointing at node */
-.ct-card{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);
-  width:200px;background:#fff;border:1px solid var(--border);border-radius:10px;
+/* Detail card — tooltip pointing at selected node */
+.ct-card{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+  width:200px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:10px;
   padding:10px 12px;z-index:10;pointer-events:auto;
   box-shadow:0 8px 32px rgba(0,0,0,.1)}
 .ct-card-arrow{position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);
-  width:10px;height:10px;background:#fff;border-left:1px solid var(--border);border-top:1px solid var(--border)}
+  width:10px;height:10px;background:rgba(255,255,255,.95);border-left:1px solid var(--border);border-top:1px solid var(--border)}
 .ct-card-code{font-size:5.5px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;margin-bottom:1px}
 .ct-card-name{font-size:8px;font-weight:800;color:var(--text-primary);margin-bottom:2px;line-height:1.3}
 .ct-card-grad{font-size:4px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;
@@ -301,10 +303,11 @@ const CSS=`
 .ct-card-area{font-size:4px;font-weight:700;padding:1px 4px;border-radius:3px;border:1px solid}
 
 @media(max-width:900px){
-  .ct-page{flex-direction:column;height:auto}
-  .ct-page{height:auto}
-  .ct-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:16px 24px;border-right:none;border-bottom:1px solid var(--border);gap:16px}
-  .ct-viewport{height:70vh;min-height:400px}
+  .ct-page{height:auto;min-height:100vh}
+  .ct-key{position:relative;top:auto;left:auto;width:100%;border-radius:0;border:none;
+    border-bottom:1px solid var(--border);flex-direction:row;flex-wrap:wrap;gap:16px;
+    padding:100px 24px 16px;backdrop-filter:none;background:var(--bg)}
+  .ct-viewport{position:relative;height:70vh;min-height:400px}
   .ct-canvas{transform:none!important}
 }
 `;
