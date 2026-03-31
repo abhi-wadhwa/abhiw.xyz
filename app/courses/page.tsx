@@ -73,47 +73,40 @@ const NS = 130 * RENDER_SCALE;
 
 // Manual positions — grouped by discipline, left edge at 200*S
 const S = RENDER_SCALE;
-const G = 250*S; // column gap (wider)
-const R = 220*S; // row gap (taller)
-const L = 250*S; // left offset (push right of key)
+const G = 230*S; // column gap
+const R = 160*S; // row gap (shorter to fit vertically)
+const L = 220*S; // left offset
 
 const MANUAL_POS: Record<string, { x: number; y: number }> = {
-  // ═══ MATHEMATICS (left cluster) ═══
-  // Foundations row
+  // ═══ MATHEMATICS (left, 3 columns) ═══
   m1:  { x: L,       y: R*1 },    // Calc II
   m2:  { x: L+G,     y: R*1 },    // Calc III
-  // Core row
   m3:  { x: L,       y: R*2 },    // Diff Eq
   m6:  { x: L+G,     y: R*2 },    // Real Analysis
-  // Intermediate row
+  m7:  { x: L+G*2,   y: R*1 },    // Linear Algebra
   m4:  { x: L,       y: R*3 },    // Probability
   m5:  { x: L+G,     y: R*3 },    // Statistics
-  m7:  { x: L+G*2,   y: R*3 },    // Linear Algebra
-  // Advanced row
-  m8:  { x: L,       y: R*4 },    // Optimization
-  m9:  { x: L+G,     y: R*4 },    // Numerical Analysis
-  m10: { x: L+G*2,   y: R*4 },    // Grad Stats
-  // Graduate row
-  m11: { x: L,       y: R*5 },    // Applied Prob
-  m12: { x: L+G,     y: R*5 },    // Measure Theory
+  m8:  { x: L+G*2,   y: R*2 },    // Optimization
+  m9:  { x: L+G*2,   y: R*3 },    // Numerical Analysis
+  m10: { x: L,       y: R*4 },    // Grad Stats
+  m11: { x: L+G,     y: R*4 },    // Applied Prob
+  m12: { x: L+G*2,   y: R*4 },    // Measure Theory
 
-  // ═══ CS / ML (right cluster) ═══
-  c1:  { x: L+G*4,   y: R*1 },    // Algorithms
-  c2:  { x: L+G*4,   y: R*2 },    // Machine Learning
-  c3:  { x: L+G*5,   y: R*2 },    // Probabilistic Reasoning
-  c4:  { x: L+G*4,   y: R*3 },    // Stochastic RL
-  c5:  { x: L+G*5,   y: R*3 },    // RL & Control
-  c6:  { x: L+G*4.5, y: R*4 },    // Decision Theory
+  // ═══ ECONOMICS + FINANCE (center, vertical) ═══
+  e1:  { x: L+G*3.5, y: R*1 },    // Microeconomics
+  e2:  { x: L+G*3.5, y: R*2 },    // Macroeconomics
+  f1:  { x: L+G*3.5, y: R*3 },    // Accounting
+  f2:  { x: L+G*3.5, y: R*4 },    // Corporate Finance
+  f3:  { x: L+G*4.5, y: R*3 },    // VC & PE
+  f4:  { x: L+G*4.5, y: R*4 },    // Fixed Income
 
-  // ═══ ECONOMICS (center-right) ═══
-  e1:  { x: L+G*3,   y: R*2 },    // Microeconomics
-  e2:  { x: L+G*3,   y: R*3 },    // Macroeconomics
-
-  // ═══ FINANCE (center-bottom) ═══
-  f1:  { x: L+G*3,   y: R*4 },    // Accounting
-  f2:  { x: L+G*3,   y: R*5 },    // Corporate Finance
-  f3:  { x: L+G*3.5, y: R*6 },    // VC & PE
-  f4:  { x: L+G*4.5, y: R*5 },    // Fixed Income
+  // ═══ CS / ML (right, 2 columns) ═══
+  c1:  { x: L+G*5.5, y: R*1 },    // Algorithms
+  c2:  { x: L+G*5.5, y: R*2 },    // Machine Learning
+  c3:  { x: L+G*6.5, y: R*2 },    // Probabilistic Reasoning
+  c4:  { x: L+G*5.5, y: R*3 },    // Stochastic RL
+  c5:  { x: L+G*6.5, y: R*3 },    // RL & Control
+  c6:  { x: L+G*6,   y: R*4 },    // Decision Theory
 };
 
 const LAYOUT = (() => {
@@ -142,7 +135,7 @@ export default function CoursesPage(){
   const[vpW,setVpW]=useState(1200);
   const[vpH,setVpH]=useState(800);
   const[pan,setPan]=useState({x:0,y:0});
-  const[manualZoom,setManualZoom]=useState(1.6); // start bigger
+  const[manualZoom,setManualZoom]=useState(1.3); // fit 4 rows
   const dragRef=useRef({dragging:false,startX:0,startY:0,startPanX:0,startPanY:0});
 
   useEffect(()=>{
@@ -216,6 +209,7 @@ export default function CoursesPage(){
       <div className="ct-title-bar">
         <div className="container">
           <h1 className="ct-page-title">Coursework</h1>
+          <p className="ct-page-sub">coursework across everything</p>
         </div>
       </div>
 
@@ -372,6 +366,7 @@ const CSS=`
 /* Title bar */
 .ct-title-bar{padding:110px 0 20px;background:var(--bg)}
 .ct-page-title{font-size:clamp(36px,5vw,56px);font-weight:800;color:var(--text-primary);letter-spacing:-0.03em}
+.ct-page-sub{font-size:14px;color:var(--text-tertiary);margin-top:4px}
 
 .ct-page{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--bg);touch-action:none}
 .ct-viewport{overscroll-behavior:none}
