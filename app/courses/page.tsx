@@ -210,7 +210,7 @@ export default function CoursesPage(){
               const isH=hov===course.id,isS=sel?.id===course.id,act=isH||isS;
               const dim=!!(hovCat&&course.category!==hovCat&&!conn.has(course.id))&&!isS;
               return(
-                <motion.div key={course.id} className="ct-node" style={{left:np.x,top:np.y}}
+                <motion.div key={course.id} className="ct-node" style={{left:np.x-NS/2,top:np.y-NS/2}}
                   initial={{opacity:0,scale:.4}}
                   animate={{
                     opacity: sel&&!isS ? 0.15 : dim ? 0.15 : 1,
@@ -259,7 +259,7 @@ export default function CoursesPage(){
           <AnimatePresence>
             {sel&&sp&&(
               <motion.div className="ct-card"
-                style={{left:zx+sp.x*zs,top:zy+sp.y*zs+(NS/2)*zs+16}}
+                style={{left:zx+sp.x*zs,top:zy+sp.y*zs+(NS/2)*zs+12}}
                 initial={{opacity:0,y:12}}
                 animate={{opacity:1,y:0}}
                 exit={{opacity:0,y:12}}
@@ -311,7 +311,7 @@ const CSS=`
 .ct-edges{position:absolute;inset:0;pointer-events:none;z-index:0}
 
 /* Node */
-.ct-node{position:absolute;width:${NS}px;height:${NS}px;transform:translate(-50%,-50%);cursor:pointer;z-index:2;will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.ct-node{position:absolute;width:${NS}px;height:${NS}px;cursor:pointer;z-index:2;will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .ct-glow{position:absolute;inset:${-12*RENDER_SCALE}px;border-radius:50%;pointer-events:none;z-index:0;transition:opacity .35s}
 .ct-ring{position:absolute;inset:0;border-radius:50%;transition:opacity .35s;z-index:1;box-shadow:0 ${3*RENDER_SCALE}px ${16*RENDER_SCALE}px rgba(0,0,0,.05)}
 .ct-gap{position:absolute;inset:${10*RENDER_SCALE}px;border-radius:50%;background:var(--bg);z-index:2}
