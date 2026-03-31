@@ -238,7 +238,7 @@ export default function CoursesPage(){
                       const sliceDeg = 360 / course.areas.length;
                       const cssDeg = ai * sliceDeg + sliceDeg / 2; // center of segment (from top, CW)
                       const rad = cssDeg * Math.PI / 180;
-                      const labelR = NS/2 + 28*RENDER_SCALE;
+                      const labelR = NS/2 + 12*RENDER_SCALE;
                       const px = NS/2 + Math.sin(rad) * labelR;
                       const py = NS/2 - Math.cos(rad) * labelR;
                       return<motion.div key={a} className="ct-pill"
