@@ -71,43 +71,49 @@ const EDGES:[string,string][]=[
 const RENDER_SCALE = 2.5;
 const NS = 130 * RENDER_SCALE;
 
-// Manual positions — clean grid-like layout with organic feel
-// Left edge at ~120*S to align with container padding (~48px at default scale)
+// Manual positions — grouped by discipline, left edge at 200*S
 const S = RENDER_SCALE;
+const G = 220*S; // column gap
+const R = 200*S; // row gap
+const L = 200*S; // left offset
+
 const MANUAL_POS: Record<string, { x: number; y: number }> = {
-  // Row 0: Foundations
-  m1:  { x: 120*S, y: 100*S },  // Calc II
-  m2:  { x: 340*S, y: 100*S },  // Calc III
-  c1:  { x: 780*S, y: 100*S },  // Algorithms
+  // ═══ MATHEMATICS (left cluster) ═══
+  // Foundations row
+  m1:  { x: L,       y: R*0.5 },  // Calc II
+  m2:  { x: L+G,     y: R*0.5 },  // Calc III
+  // Core row
+  m3:  { x: L,       y: R*1.5 },  // Diff Eq
+  m6:  { x: L+G,     y: R*1.5 },  // Real Analysis
+  // Intermediate row
+  m4:  { x: L,       y: R*2.5 },  // Probability
+  m5:  { x: L+G,     y: R*2.5 },  // Statistics
+  m7:  { x: L+G*2,   y: R*2.5 },  // Linear Algebra
+  // Advanced row
+  m8:  { x: L,       y: R*3.5 },  // Optimization
+  m9:  { x: L+G,     y: R*3.5 },  // Numerical Analysis
+  m10: { x: L+G*2,   y: R*3.5 },  // Grad Stats
+  // Graduate row
+  m11: { x: L,       y: R*4.5 },  // Applied Prob
+  m12: { x: L+G,     y: R*4.5 },  // Measure Theory
 
-  // Row 1: Core
-  m3:  { x: 120*S, y: 300*S },  // Diff Eq
-  m6:  { x: 340*S, y: 300*S },  // Real Analysis
-  e1:  { x: 560*S, y: 300*S },  // Microeconomics
-  c2:  { x: 780*S, y: 300*S },  // Machine Learning
-  c3:  { x: 1000*S, y: 300*S }, // Probabilistic Reasoning
-  f1:  { x: 560*S, y: 100*S },  // Accounting
+  // ═══ CS / ML (right cluster) ═══
+  c1:  { x: L+G*4,   y: R*0.5 },  // Algorithms
+  c2:  { x: L+G*4,   y: R*1.5 },  // Machine Learning
+  c3:  { x: L+G*5,   y: R*1.5 },  // Probabilistic Reasoning
+  c4:  { x: L+G*4,   y: R*2.5 },  // Stochastic RL
+  c5:  { x: L+G*5,   y: R*2.5 },  // RL & Control
+  c6:  { x: L+G*4.5, y: R*3.5 },  // Decision Theory
 
-  // Row 2: Intermediate
-  m4:  { x: 120*S, y: 500*S },  // Probability
-  m5:  { x: 340*S, y: 500*S },  // Statistics
-  m7:  { x: 560*S, y: 500*S },  // Linear Algebra
-  e2:  { x: 780*S, y: 500*S },  // Macroeconomics
-  c4:  { x: 1000*S, y: 500*S }, // Stochastic RL
-  c5:  { x: 1000*S, y: 700*S }, // RL & Control
-  f2:  { x: 780*S, y: 700*S },  // Corporate Finance
+  // ═══ ECONOMICS (center-right) ═══
+  e1:  { x: L+G*3,   y: R*1.5 },  // Microeconomics
+  e2:  { x: L+G*3,   y: R*2.5 },  // Macroeconomics
 
-  // Row 3: Advanced
-  m8:  { x: 120*S, y: 700*S },  // Optimization
-  m9:  { x: 340*S, y: 700*S },  // Numerical Analysis
-  m10: { x: 560*S, y: 700*S },  // Grad Stats
-  c6:  { x: 1000*S, y: 900*S }, // Decision Theory
-
-  // Row 4: Graduate / Deep
-  m11: { x: 120*S, y: 900*S },  // Applied Prob
-  m12: { x: 340*S, y: 900*S },  // Measure Theory
-  f3:  { x: 780*S, y: 900*S },  // VC & PE
-  f4:  { x: 560*S, y: 900*S },  // Fixed Income
+  // ═══ FINANCE (center-bottom) ═══
+  f1:  { x: L+G*3,   y: R*3.5 },  // Accounting
+  f2:  { x: L+G*3,   y: R*4.5 },  // Corporate Finance
+  f3:  { x: L+G*3.5, y: R*5.5 },  // VC & PE
+  f4:  { x: L+G*4.5, y: R*4.5 },  // Fixed Income
 };
 
 const LAYOUT = (() => {
