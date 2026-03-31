@@ -68,17 +68,52 @@ const EDGES:[string,string][]=[
 ];
 
 /* ═══════════════════ LAYOUT ═══════════════════ */
-// Render at 2.5x size. Default view scales DOWN to fit. Zoom IN = scale to 1x (native res = crisp).
 const RENDER_SCALE = 2.5;
-const TG=200*RENDER_SCALE, CG=220*RENDER_SCALE, DG=110*RENDER_SCALE, TP=80*RENDER_SCALE, NS=130*RENDER_SCALE;
-const LAYOUT=(()=>{
-  const dw:Record<string,number>={},dx:Record<string,number>={};
-  DISC_ORDER.forEach(d=>{dw[d]=(Math.max(...COURSES.filter(n=>n.category===d).map(n=>n.col),0)+1)*CG});
-  let x=100;DISC_ORDER.forEach(d=>{dx[d]=x;x+=dw[d]+DG});
-  const pos:Record<string,{x:number;y:number}>={};
-  COURSES.forEach(n=>{pos[n.id]={x:dx[n.category]+n.col*CG,y:TP+n.tier*TG}});
-  const mt=Math.max(...COURSES.map(n=>n.tier));
-  return{pos,w:x+60,h:TP+mt*TG+140,dx,dw};
+const NS = 130 * RENDER_SCALE;
+
+// Manual positions — organic map layout, all values pre-multiplied by RENDER_SCALE
+const S = RENDER_SCALE;
+const MANUAL_POS: Record<string, { x: number; y: number }> = {
+  // MATH — center-left spread
+  m1:  { x: 280*S, y: 80*S },   // Calc II — top left
+  m2:  { x: 520*S, y: 80*S },   // Calc III — top center
+  m3:  { x: 280*S, y: 280*S },  // Diff Eq — mid left
+  m6:  { x: 520*S, y: 280*S },  // Real Analysis — mid center
+  m4:  { x: 180*S, y: 480*S },  // Probability — lower left
+  m5:  { x: 420*S, y: 480*S },  // Statistics — lower center
+  m7:  { x: 660*S, y: 480*S },  // Linear Algebra — lower right
+  m8:  { x: 180*S, y: 680*S },  // Optimization — bottom left
+  m9:  { x: 420*S, y: 680*S },  // Numerical Analysis — bottom center
+  m10: { x: 660*S, y: 680*S },  // Grad Stats — bottom right
+  m11: { x: 180*S, y: 880*S },  // Applied Prob — deep left
+  m12: { x: 420*S, y: 880*S },  // Measure Theory — deep center
+
+  // CS/ML — right side, branching from Math
+  c1:  { x: 880*S, y: 80*S },   // Algorithms — top right
+  c2:  { x: 880*S, y: 280*S },  // Machine Learning
+  c3:  { x: 1080*S, y: 280*S }, // Probabilistic Reasoning
+  c4:  { x: 880*S, y: 480*S },  // Stochastic RL
+  c5:  { x: 1080*S, y: 480*S }, // RL & Control
+  c6:  { x: 980*S, y: 680*S },  // Decision Theory
+
+  // ECON — bottom-left area
+  e1:  { x: 760*S, y: 280*S },  // Microeconomics — between Math and CS
+  e2:  { x: 760*S, y: 480*S },  // Macroeconomics
+
+  // FIN — bottom area between Econ and Math
+  f1:  { x: 760*S, y: 680*S },  // Accounting
+  f2:  { x: 660*S, y: 880*S },  // Corporate Finance
+  f3:  { x: 760*S, y: 1060*S }, // VC & PE
+  f4:  { x: 960*S, y: 880*S },  // Fixed Income
+};
+
+const LAYOUT = (() => {
+  const pos = MANUAL_POS;
+  const xs = Object.values(pos).map(p => p.x);
+  const ys = Object.values(pos).map(p => p.y);
+  const w = Math.max(...xs) + NS + 100*S;
+  const h = Math.max(...ys) + NS + 100*S;
+  return { pos, w, h };
 })();
 
 function bCurve(x1:number,y1:number,x2:number,y2:number){const m=(y1+y2)/2;return`M${x1},${y1}C${x1},${m} ${x2},${m} ${x2},${y2}`}
@@ -125,8 +160,8 @@ export default function CoursesPage(){
     const newS=fitScale*newZ;
     // Adjust pan so the point under the cursor stays fixed
     setPan(p=>({
-      x:p.x-(mx-p.x-(vpW-cW*oldS)/2-120)*(newS/oldS-1),
-      y:p.y-(my-p.y-(vpH-cH*oldS)/2+40)*(newS/oldS-1),
+      x:p.x-(mx-p.x-(vpW-cW*oldS)/2)*(newS/oldS-1),
+      y:p.y-(my-p.y-(vpH-cH*oldS)/2)*(newS/oldS-1),
     }));
     setManualZoom(newZ);
   };
@@ -160,8 +195,8 @@ export default function CoursesPage(){
   const browseScale = fitScale * manualZoom;
   const zoomedScale = fitScale * 3;
   const zs = sel ? zoomedScale : browseScale;
-  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*browseScale)/2 + 120 + pan.x;
-  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*browseScale)/2 - 40 + pan.y;
+  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*browseScale)/2 + pan.x;
+  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*browseScale)/2 + pan.y;
   // Where the selected node actually lands on screen:
   const nodeScreenX = sel && sp ? vpW/2 : 0;
   const nodeScreenY = sel && sp ? vpH*0.35 : 0;
