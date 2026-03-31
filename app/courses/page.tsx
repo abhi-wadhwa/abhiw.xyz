@@ -112,10 +112,10 @@ export default function CoursesPage(){
   const sp=sel?pos[sel.id]:null;
   const fit=Math.min(1,vpW/cW);
 
-  // Zoom: 2.8x when selected so the node fills a good portion and we can show text nearby
-  const zs=sel?2.8:fit;
+  // Zoom: 2x when selected — centered on the node
+  const zs=sel?2:fit;
   const zx=sel&&sp?-sp.x*zs+vpW*0.5:-((cW*fit-vpW)/2);
-  const zy=sel&&sp?-sp.y*zs+vpH*0.4:0;
+  const zy=sel&&sp?-sp.y*zs+vpH*0.5:-((cH*fit-vpH)/2);
 
   return(
     <>
@@ -217,15 +217,27 @@ export default function CoursesPage(){
                     })}
                   </AnimatePresence>
 
-                  {/* Zoomed-in description — appears when selected and zoomed */}
+                  {/* Detail card — points at the node when selected */}
                   <AnimatePresence>
                     {isS&&(
-                      <motion.div className="ct-zoom-detail"
-                        initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:10}}
-                        transition={{duration:.35,delay:.3,ease:[.16,1,.3,1]}}>
-                        <p className="ct-zoom-desc">{course.desc}</p>
-                        {course.semester&&<span className="ct-zoom-meta">{course.semester}</span>}
-                        {course.textbook&&<span className="ct-zoom-meta"> · {course.textbook}</span>}
+                      <motion.div className="ct-card"
+                        initial={{opacity:0,scale:.9,y:8}}
+                        animate={{opacity:1,scale:1,y:0}}
+                        exit={{opacity:0,scale:.9,y:8}}
+                        transition={{duration:.35,delay:.25,ease:[.16,1,.3,1]}}
+                        onClick={e=>e.stopPropagation()}>
+                        <div className="ct-card-arrow"/>
+                        <div className="ct-card-code" style={{color:dc}}>{course.code}</div>
+                        <div className="ct-card-name">{course.name}</div>
+                        {course.level==="GR"&&<span className="ct-card-grad">Graduate</span>}
+                        <p className="ct-card-desc">{course.desc}</p>
+                        <div className="ct-card-foot">
+                          {course.semester&&<span>{course.semester}</span>}
+                          {course.textbook&&<span>Textbook: {course.textbook}</span>}
+                        </div>
+                        <div className="ct-card-areas">
+                          {course.areas.map(a=><span key={a} className="ct-card-area" style={{color:AREA_COLORS[a],background:(AREA_COLORS[a]||"#888")+"10",borderColor:(AREA_COLORS[a]||"#888")+"30"}}>{a}</span>)}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -272,11 +284,21 @@ const CSS=`
 .ct-pill{position:absolute;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#fff;
   padding:3px 8px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none}
 
-/* Zoomed-in description — appears below the node when selected */
-.ct-zoom-detail{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);
-  width:240px;text-align:center;z-index:6;pointer-events:none}
-.ct-zoom-desc{font-size:5px;line-height:1.7;color:var(--text-secondary);font-weight:500}
-.ct-zoom-meta{font-size:4px;color:var(--text-tertiary);font-weight:600}
+/* Detail card — tooltip pointing at node */
+.ct-card{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);
+  width:200px;background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;z-index:10;pointer-events:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.ct-card-arrow{position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:10px;height:10px;background:#fff;border-left:1px solid var(--border);border-top:1px solid var(--border)}
+.ct-card-code{font-size:5.5px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;margin-bottom:1px}
+.ct-card-name{font-size:8px;font-weight:800;color:var(--text-primary);margin-bottom:2px;line-height:1.3}
+.ct-card-grad{font-size:4px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;
+  padding:1px 4px;border:1px solid var(--accent);border-radius:2px;display:inline-block;margin-bottom:3px}
+.ct-card-desc{font-size:5px;line-height:1.7;color:var(--text-secondary);margin-bottom:4px}
+.ct-card-foot{font-size:4.5px;color:var(--text-tertiary);font-weight:600;display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.ct-card-areas{display:flex;gap:2px;flex-wrap:wrap}
+.ct-card-area{font-size:4px;font-weight:700;padding:1px 4px;border-radius:3px;border:1px solid}
 
 @media(max-width:900px){
   .ct-page{flex-direction:column;height:auto}
