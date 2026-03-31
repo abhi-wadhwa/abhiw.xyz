@@ -142,8 +142,8 @@ export default function CoursesPage(){
   const browseScale = fitScale * manualZoom;
   const zoomedScale = fitScale * 3;
   const zs = sel ? zoomedScale : browseScale;
-  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*browseScale)/2 + pan.x;
-  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*browseScale)/2 + pan.y;
+  const zx = sel && sp ? vpW/2 - sp.x*zs : (vpW - cW*browseScale)/2 + 120 + pan.x;
+  const zy = sel && sp ? vpH*0.35 - sp.y*zs : (vpH - cH*browseScale)/2 - 40 + pan.y;
   // Where the selected node actually lands on screen:
   const nodeScreenX = sel && sp ? vpW/2 : 0;
   const nodeScreenY = sel && sp ? vpH*0.35 : 0;
