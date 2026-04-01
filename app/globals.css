@@ -2148,6 +2148,55 @@ button {
    PROJECTS PAGE
    ============================================ */
 
+/* Jump-to-section nav */
+.proj-jump-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.proj-jump-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.proj-jump-btn:hover {
+  color: var(--text-primary);
+}
+
+.proj-jump-active {
+  color: var(--text-primary);
+}
+
+.proj-jump-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle);
+  border-radius: 10px;
+  padding: 0 6px;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+
 .proj-stage {
   min-height: 440px;
   display: flex;
@@ -2320,6 +2369,21 @@ button {
 }
 
 @media (max-width: 900px) {
+  .proj-jump-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .proj-jump-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .proj-jump-btn {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
   .proj-stage {
     min-height: 360px;
     padding: 40px 0;

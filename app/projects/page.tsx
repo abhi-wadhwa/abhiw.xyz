@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import TextReveal from "@/components/TextReveal";
@@ -10,6 +10,13 @@ import { projects } from "@/data/projects";
 const FLICKER_COUNT = 5;
 const FLICKER_SPEED = 60;
 const AUTO_ADVANCE = 5000;
+
+const CATEGORIES = [
+  "Finance",
+  "Economics & Mechanism Design",
+  "Game Theory & AI",
+  "Debate",
+] as const;
 
 const CATEGORY_COLORS: Record<string, string> = {
   Finance: "#1e52f3",
@@ -27,6 +34,18 @@ export default function ProjectsPage() {
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const current = projects[index];
+
+  // First index of each category in the projects array
+  const categoryStart = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const cat of CATEGORIES) {
+      map[cat] = projects.findIndex((p) => p.category === cat);
+    }
+    return map;
+  }, []);
+
+  // Which category the current project belongs to
+  const activeCategory = current.category;
 
   const flickerTo = useCallback(
     (target: number) => {
@@ -93,6 +112,38 @@ export default function ProjectsPage() {
 
       <div className="page-content">
         <div className="container">
+          {/* Jump-to-section nav */}
+          <Reveal delay={0.4}>
+            <nav className="proj-jump-nav">
+              {CATEGORIES.map((cat) => {
+                const count = projects.filter((p) => p.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    className={`proj-jump-btn ${activeCategory === cat ? "proj-jump-active" : ""}`}
+                    onClick={() => flickerTo(categoryStart[cat])}
+                    style={{
+                      borderBottomColor: activeCategory === cat ? CATEGORY_COLORS[cat] : "transparent",
+                    }}
+                  >
+                    <span className="proj-jump-label">{cat}</span>
+                    <span
+                      className="proj-jump-count"
+                      style={{
+                        color: activeCategory === cat ? CATEGORY_COLORS[cat] : undefined,
+                        background: activeCategory === cat
+                          ? `${CATEGORY_COLORS[cat]}12`
+                          : undefined,
+                      }}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
+          </Reveal>
+
           <div
             className="proj-stage"
             onMouseEnter={() => setPaused(true)}
