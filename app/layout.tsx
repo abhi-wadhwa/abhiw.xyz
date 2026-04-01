@@ -3,6 +3,7 @@ import { Nunito, Dancing_Script } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
 import MusicPlayer from "@/components/MusicPlayer";
+import MathBackground from "@/components/MathBackground";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -45,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${nunito.variable} ${dancingScript.variable}`}>
       <body>
+        <MathBackground />
         <Navigation />
         <PageTransition />
         <MusicPlayer />

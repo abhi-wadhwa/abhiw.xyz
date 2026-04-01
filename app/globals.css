@@ -2346,7 +2346,7 @@ button {
 .mp {
   position: fixed;
   bottom: 28px;
-  right: 28px;
+  left: 28px;
   z-index: 200;
 }
 
@@ -2648,7 +2648,7 @@ button {
 @media (max-width: 900px) {
   .mp {
     bottom: 16px;
-    right: 16px;
+    left: 16px;
   }
 
   .mp-panel {

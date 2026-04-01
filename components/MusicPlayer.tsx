@@ -3,11 +3,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 const PLAYLIST = [
-  { title: "Can't Decide", artist: "Max Dean", cover: "", file: "/assets/music/Can't Decide.mp3" },
-  { title: "Never Alone", artist: "Odd Mob ft. Lizzy Land", cover: "", file: "/assets/music/Never Alone (feat. Lizzy Land)_spotdown.org.mp3" },
-  { title: "TESLA", artist: "Mau P", cover: "", file: "/assets/music/TESLA_spotdown.org.mp3" },
-  { title: "Too Cool To Be Careless", artist: "Unknown", cover: "", file: "/assets/music/TOO COOL TO BE CARELESS_spotdown.org.mp3" },
-  { title: "In The Yuma", artist: "Aatig", cover: "", file: "/assets/music/[SPOTIFY-DOWNLOADER.COM] In The Yuma (feat. Aatig).mp3" },
+  { title: "Can't Decide", artist: "Max Dean", cover: "/assets/music/covers/cant-decide.png", file: "/assets/music/Can't Decide.mp3" },
+  { title: "Never Alone", artist: "Odd Mob ft. Lizzy Land", cover: "/assets/music/covers/never-alone.png", file: "/assets/music/Never Alone (feat. Lizzy Land)_spotdown.org.mp3" },
+  { title: "TESLA", artist: "Mau P", cover: "/assets/music/covers/tesla.png", file: "/assets/music/TESLA_spotdown.org.mp3" },
+  { title: "Too Cool To Be Careless", artist: "PAWSA", cover: "/assets/music/covers/too-cool-to-be-careless.png", file: "/assets/music/TOO COOL TO BE CARELESS_spotdown.org.mp3" },
+  { title: "In The Yuma", artist: "Chris Lake & Aatig", cover: "/assets/music/covers/in-the-yuma.png", file: "/assets/music/[SPOTIFY-DOWNLOADER.COM] In The Yuma (feat. Aatig).mp3" },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
