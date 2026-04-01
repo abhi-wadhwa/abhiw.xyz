@@ -117,45 +117,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Currently */}
-      <section className="now-section">
-        <div className="container">
-          <Reveal>
-            <div className="now-label">
-              <span className="now-dot" />
-              Currently
-            </div>
-          </Reveal>
-
-          <div className="now-grid">
-            <Reveal delay={0.05}>
-              <div className="now-item">
-                <span className="now-category">Building</span>
-                <span className="now-desc">Volatility surfaces and systematic single-stock options strategies at Optiver Chicago</span>
-              </div>
-            </Reveal>
-            <Reveal delay={0.10}>
-              <div className="now-item">
-                <span className="now-category">Researching</span>
-                <span className="now-desc">Smoothed analysis of singular values &mdash; the Spielman-Teng Conjecture</span>
-              </div>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <div className="now-item">
-                <span className="now-category">Taking</span>
-                <span className="now-desc">MATH 501 &middot; MATH 541a &middot; ISE 615 &middot; MATH 525a</span>
-              </div>
-            </Reveal>
-            <Reveal delay={0.20}>
-              <div className="now-item">
-                <span className="now-category">Reading</span>
-                <span className="now-desc">Algorithmic Game Theory &mdash; Nisan, Roughgarden, Tardos &amp; Vazirani</span>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </>
   );
