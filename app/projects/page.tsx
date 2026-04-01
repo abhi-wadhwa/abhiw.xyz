@@ -1,17 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import TextReveal from "@/components/TextReveal";
 import Reveal from "@/components/Reveal";
-import { projects, type Project } from "@/data/projects";
+import { projects } from "@/data/projects";
 
-const CATEGORIES = [
-  "Finance",
-  "Economics & Mechanism Design",
-  "Game Theory & AI",
-  "Debate",
-] as const;
+const FLICKER_COUNT = 5;
+const FLICKER_SPEED = 60;
+const AUTO_ADVANCE = 5000;
 
 const CATEGORY_COLORS: Record<string, string> = {
   Finance: "#1e52f3",
@@ -20,47 +18,60 @@ const CATEGORY_COLORS: Record<string, string> = {
   Debate: "#059669",
 };
 
-function slugify(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-}
-
 export default function ProjectsPage() {
-  const [activeSection, setActiveSection] = useState(slugify(CATEGORIES[0]));
-  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const [index, setIndex] = useState(0);
+  const [flickering, setFlickering] = useState(false);
+  const [flickerName, setFlickerName] = useState("");
+  const [paused, setPaused] = useState(false);
+  const targetRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const grouped = useMemo(() => {
-    const map: Record<string, Project[]> = {};
-    for (const cat of CATEGORIES) map[cat] = [];
-    for (const p of projects) map[p.category]?.push(p);
-    return map;
-  }, []);
+  const current = projects[index];
 
-  // Intersection observer for sticky nav highlight
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+  const flickerTo = useCallback(
+    (target: number) => {
+      if (flickering) return;
+      targetRef.current = target;
+      setFlickering(true);
+      let count = 0;
+      const interval = setInterval(() => {
+        setFlickerName(projects[Math.floor(Math.random() * projects.length)].name);
+        count++;
+        if (count >= FLICKER_COUNT) {
+          clearInterval(interval);
+          setFlickerName("");
+          setIndex(target);
+          setFlickering(false);
         }
-      },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
-    );
+      }, FLICKER_SPEED);
+    },
+    [flickering]
+  );
 
-    for (const el of Object.values(sectionRefs.current)) {
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
-  }, []);
+  const next = useCallback(() => {
+    flickerTo((index + 1) % projects.length);
+  }, [index, flickerTo]);
 
-  const scrollTo = (slug: string) => {
-    const el = sectionRefs.current[slug];
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  const prev = useCallback(() => {
+    flickerTo((index - 1 + projects.length) % projects.length);
+  }, [index, flickerTo]);
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused || flickering) return;
+    timerRef.current = setTimeout(next, AUTO_ADVANCE);
+    return () => clearTimeout(timerRef.current);
+  }, [index, paused, flickering, next]);
+
+  // Arrow key navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); next(); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); prev(); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [next, prev]);
 
   return (
     <>
@@ -71,7 +82,7 @@ export default function ProjectsPage() {
           </TextReveal>
           <Reveal delay={0.2}>
             <p className="section-desc">
-              {projects.length} repositories across finance, economics, game theory, and debate.
+              some finance stuff, some econ stuff, some ml stuff
             </p>
           </Reveal>
           <Reveal delay={0.3} variant="scale">
@@ -80,92 +91,101 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Sticky jump-to nav */}
-      <div className="pj-nav-rail">
-        <nav className="pj-nav">
-          {CATEGORIES.map((cat) => {
-            const slug = slugify(cat);
-            const count = grouped[cat].length;
-            return (
-              <button
-                key={slug}
-                className={`pj-nav-item ${activeSection === slug ? "pj-nav-active" : ""}`}
-                onClick={() => scrollTo(slug)}
-              >
-                <span className="pj-nav-label">{cat}</span>
-                <span
-                  className="pj-nav-count"
-                  style={{
-                    color: activeSection === slug ? CATEGORY_COLORS[cat] : undefined,
-                  }}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
       <div className="page-content">
         <div className="container">
-          {CATEGORIES.map((cat, ci) => {
-            const slug = slugify(cat);
-            const items = grouped[cat];
-            return (
-              <section
-                key={slug}
-                id={slug}
-                ref={(el) => { sectionRefs.current[slug] = el; }}
-                className="pj-section"
-              >
-                <Reveal delay={ci * 0.08}>
-                  <div className="pj-section-header">
-                    <h2
-                      className="pj-section-title"
-                      style={{ color: CATEGORY_COLORS[cat] }}
-                    >
-                      {cat}
-                    </h2>
-                    <span className="pj-section-count">
-                      {items.length} project{items.length !== 1 ? "s" : ""}
-                    </span>
-                  </div>
-                </Reveal>
+          <div
+            className="proj-stage"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {/* Left arrow */}
+            <button className="proj-arrow proj-arrow-left" onClick={prev} aria-label="Previous project">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
 
-                <div className="pj-grid">
-                  {items.map((p, i) => (
-                    <Reveal key={p.repo} delay={i * 0.06}>
-                      {p.private ? (
-                        <div className="pj-card">
-                          <div className="pj-card-top">
-                            <span className="pj-card-lang">{p.lang}</span>
-                            <span className="pj-card-private">Private</span>
-                          </div>
-                          <h3 className="pj-card-name">{p.name}</h3>
-                          <p className="pj-card-desc">{p.desc}</p>
-                        </div>
-                      ) : (
-                        <a
-                          href={`https://github.com/abhi-wadhwa/${p.repo}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="pj-card pj-card-link"
-                        >
-                          <div className="pj-card-top">
-                            <span className="pj-card-lang">{p.lang}</span>
-                            <span className="pj-card-arrow">&rarr;</span>
-                          </div>
-                          <h3 className="pj-card-name">{p.name}</h3>
-                          <p className="pj-card-desc">{p.desc}</p>
-                        </a>
-                      )}
-                    </Reveal>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
+            {/* Right arrow */}
+            <button className="proj-arrow proj-arrow-right" onClick={next} aria-label="Next project">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
+            {/* Counter */}
+            <div className="proj-counter">
+              <span className="proj-counter-current">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="proj-counter-sep">/</span>
+              <span className="proj-counter-total">
+                {String(projects.length).padStart(2, "0")}
+              </span>
+            </div>
+
+            {/* Content */}
+            <div className="proj-content">
+              <AnimatePresence mode="wait">
+                {flickering ? (
+                  <motion.div
+                    key="flicker"
+                    className="proj-flicker"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.05 }}
+                  >
+                    <h2 className="proj-name proj-name-flicker">{flickerName || current.name}</h2>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className="proj-category-row">
+                      <span
+                        className="proj-category"
+                        style={{ color: CATEGORY_COLORS[current.category] }}
+                      >
+                        {current.category}
+                      </span>
+                      <span className="proj-lang">{current.lang}</span>
+                    </div>
+                    <h2 className="proj-name">{current.name}</h2>
+                    <p className="proj-desc">{current.desc}</p>
+                    {current.private ? (
+                      <span className="proj-private">Private Repository</span>
+                    ) : (
+                      <a
+                        href={`https://github.com/abhi-wadhwa/${current.repo}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="proj-link"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View on GitHub &rarr;
+                      </a>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Progress dots */}
+            <div className="proj-dots">
+              {projects.map((_, i) => (
+                <button
+                  key={i}
+                  className={`proj-dot ${i === index ? "proj-dot-active" : ""}`}
+                  onClick={() => flickerTo(i)}
+                  aria-label={`Project ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
