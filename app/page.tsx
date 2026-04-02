@@ -11,15 +11,42 @@ export default function Home() {
     <>
       <HeroIntro />
 
-      {/* Hero — statement + sticky photo */}
+      {/* Hero — greeting + status bar + photo */}
       <section className="hero-scroll">
         <div className="container">
           <div className="hero-scroll-grid">
             <div className="hero-scroll-left">
               <div className="hero-scroll-statement">
-                <TextReveal as="h1" className="statement-text" delay={0.15}>
-                  I am Abhi Wadhwa, a Quant Trader at Optiver and applied mathematician studying game theory, optimization, and market design at USC.
-                </TextReveal>
+                <div className="hero-greeting-block">
+                  <TextReveal as="h1" className="statement-text" delay={0.15}>
+                    Howdy.
+                  </TextReveal>
+
+                  <Reveal delay={0.35}>
+                    <div className="status-bar">
+                      <div className="status-item">
+                        <span className="status-label">currently</span>
+                        <span className="status-value">
+                          incoming @{" "}
+                          <Link href="/experience" className="status-link">Optiver</Link>
+                        </span>
+                      </div>
+                      <div className="status-item">
+                        <span className="status-label">studying</span>
+                        <span className="status-value">
+                          mathematics @{" "}
+                          <Link href="/courses" className="status-link">USC</Link>
+                        </span>
+                      </div>
+                      <div className="status-item">
+                        <span className="status-label">from</span>
+                        <span className="status-value">
+                          <Link href="/personal" className="status-link">Richmond, Mumbai, Dubai, LA</Link>
+                        </span>
+                      </div>
+                    </div>
+                  </Reveal>
+                </div>
               </div>
             </div>
 
@@ -44,64 +71,46 @@ export default function Home() {
           <div className="about-content">
             <Reveal>
               <p className="about-para">
-                This summer I&rsquo;m joining{" "}
+                I trade options at{" "}
                 <Link href="/experience" className="about-link">Optiver</Link>{" "}
-                as a Quantitative Trader intern in Chicago, building models
-                and generating alpha for systematic options strategies.
-                Previously, I sourced deals at{" "}
-                <Link href="/experience" className="about-link">Iron Pillar Fund</Link>{" "}
+                this summer in Chicago. Before that I sourced deals at{" "}
+                <Link href="/experience" className="about-link">Iron Pillar</Link>{" "}
                 in Dubai, built ML pipelines at{" "}
-                <Link href="/experience" className="about-link">The World Bank</Link>,
-                and ranked first in an operating-model competition at{" "}
-                <Link href="/experience" className="about-link">RBC Capital Markets</Link>.
+                <Link href="/experience" className="about-link">the World Bank</Link>,
+                and won an operating-model competition at{" "}
+                <Link href="/experience" className="about-link">RBC</Link>.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                My{" "}
-                <Link href="/research" className="about-link">research</Link>{" "}
-                spans random matrix theory, stochastic control, and behavioral
-                economics. I&rsquo;ve investigated the Spielman-Teng Conjecture
-                in SVD under Prof. Zixiang Zhou, applied convex optimization to
-                dynamic policy systems with Prof. Rodney Ramcharan, and modeled
-                vaccine hesitancy using game-theoretic incentives at{" "}
-                <Link href="/research" className="about-link">UC Berkeley</Link>.
+                I spend most of my time thinking about random matrices,
+                stochastic control, and why people make the decisions they do.
+                I&rsquo;ve worked on the Spielman-Teng Conjecture with
+                Prof. Zixiang Zhou, convex optimization for dynamic policy
+                with Prof. Rodney Ramcharan, and game-theoretic models of
+                vaccine hesitancy at{" "}
+                <Link href="/research" className="about-link">Berkeley</Link>.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                I compete in parliamentary{" "}
+                I{" "}
                 <Link href="/awards" className="about-link">debate</Link>{" "}
-                &mdash; a USUDC quarterfinalist, UC Berkeley IV semifinalist,
-                and former member of Team UAE at the World Schools Debate
-                Championships. In mathematics, I qualified for the{" "}
-                <Link href="/awards" className="about-link">USAMO</Link>,
-                earned distinction in the British Mathematical Olympiad, and
-                qualified twice for the AIME.
+                competitively &mdash; USUDC quarterfinals, Berkeley IV semis,
+                Team UAE at Worlds. I qualified for the{" "}
+                <Link href="/awards" className="about-link">USAMO</Link>{" "}
+                and the AIME twice.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                I&rsquo;m completing graduate-level{" "}
+                Right now I&rsquo;m doing graduate{" "}
                 <Link href="/courses" className="about-link">coursework</Link>{" "}
-                in measure-theoretic real analysis, probability theory,
-                stochastic systems &amp; reinforcement learning, and machine
-                learning &mdash; alongside my undergraduate degree in applied
-                mathematics at USC on a Dean&rsquo;s Scholarship.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <p className="about-para">
-                Beyond academics, I care deeply about{" "}
-                <Link href="/personal" className="about-link">public goods provision</Link>,
-                institutional trust, and economic development. I grew up across{" "}
-                <Link href="/personal" className="about-link">Richmond, Mumbai, Dubai, and Los Angeles</Link>{" "}
-                &mdash; and that background shapes how I think about incentives,
-                policy, and markets.
+                in real analysis, probability, stochastic systems, and ML
+                alongside my undergrad in applied math on a Dean&rsquo;s Scholarship.
                 {" "}I also{" "}
                 <span
                   className="about-link easter-egg-link"

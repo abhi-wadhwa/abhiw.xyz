@@ -287,12 +287,66 @@ button {
   align-items: center;
 }
 
+.hero-greeting-block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
 .statement-text {
-  font-size: clamp(28px, 3.5vw, 42px);
+  font-size: clamp(36px, 5vw, 64px);
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.45;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+/* Status bar */
+.status-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+.status-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  min-width: 72px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.status-value {
+  font-size: 16px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.status-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.status-link:hover {
+  color: var(--accent-bright);
 }
 
 /* Paragraphs below the fold */
@@ -2895,6 +2949,19 @@ button {
 
   .about-para {
     font-size: 16px;
+  }
+
+  .status-bar {
+    padding-left: 16px;
+  }
+
+  .status-label {
+    min-width: 60px;
+    font-size: 10px;
+  }
+
+  .status-value {
+    font-size: 14px;
   }
 
   .home-nav-item {
