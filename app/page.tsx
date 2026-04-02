@@ -83,7 +83,7 @@ export default function Home() {
                 I also got invited to{" "}
                 <Link href="/experience" className="about-link">Citadel Securities</Link>&rsquo;{" "}
                 trading invitational, which was mostly me sweating through
-                simulations in Miami.
+                simulations in NYC.
               </p>
             </Reveal>
 
