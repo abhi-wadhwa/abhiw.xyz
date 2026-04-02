@@ -71,26 +71,37 @@ export default function Home() {
           <div className="about-content">
             <Reveal>
               <p className="about-para">
-                I trade options at{" "}
+                This summer I&rsquo;m trading options at{" "}
                 <Link href="/experience" className="about-link">Optiver</Link>{" "}
-                this summer in Chicago. Before that I sourced deals at{" "}
+                in Chicago. Before that I sourced deals for a $500MM fund at{" "}
                 <Link href="/experience" className="about-link">Iron Pillar</Link>{" "}
-                in Dubai, built ML pipelines at{" "}
-                <Link href="/experience" className="about-link">the World Bank</Link>,
-                and won an operating-model competition at{" "}
+                in Dubai, built census models at{" "}
+                <Link href="/experience" className="about-link">the World Bank</Link>{" "}
+                that actually worked 30% better, and somehow placed first out
+                of 40 teams at{" "}
                 <Link href="/experience" className="about-link">RBC</Link>.
+                I also got invited to{" "}
+                <Link href="/experience" className="about-link">Citadel Securities</Link>&rsquo;{" "}
+                trading invitational, which was mostly me sweating through
+                simulations in Miami.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                I spend most of my time thinking about random matrices,
-                stochastic control, and why people make the decisions they do.
-                I&rsquo;ve worked on the Spielman-Teng Conjecture with
-                Prof. Zixiang Zhou, convex optimization for dynamic policy
-                with Prof. Rodney Ramcharan, and game-theoretic models of
-                vaccine hesitancy at{" "}
-                <Link href="/research" className="about-link">Berkeley</Link>.
+                I do{" "}
+                <Link href="/research" className="about-link">research</Link>{" "}
+                on things nobody asks me about at parties: random matrix theory,
+                stochastic control, why people refuse vaccines even when it&rsquo;s
+                free. I&rsquo;ve worked with Prof. Zhou on the Spielman-Teng
+                Conjecture, Prof. Ramcharan on optimization for policy, and
+                Prof. Iyer at{" "}
+                <Link href="/research" className="about-link">Berkeley</Link>{" "}
+                on game-theoretic models of public health. I also build things
+                &mdash; Nash equilibrium solvers, poker bots, a limit order book
+                simulator, an AlphaZero engine, and too many{" "}
+                <Link href="/projects" className="about-link">mechanism design toys</Link>{" "}
+                to list here.
               </p>
             </Reveal>
 
@@ -100,8 +111,9 @@ export default function Home() {
                 <Link href="/awards" className="about-link">debate</Link>{" "}
                 competitively &mdash; USUDC quarterfinals, Berkeley IV semis,
                 Team UAE at Worlds. I qualified for the{" "}
-                <Link href="/awards" className="about-link">USAMO</Link>{" "}
-                and the AIME twice.
+                <Link href="/awards" className="about-link">USAMO</Link>,
+                the AIME twice, and got distinction in the British Math Olympiad,
+                which sounds impressive until you learn how many people take it.
               </p>
             </Reveal>
 
@@ -109,8 +121,11 @@ export default function Home() {
               <p className="about-para">
                 Right now I&rsquo;m doing graduate{" "}
                 <Link href="/courses" className="about-link">coursework</Link>{" "}
-                in real analysis, probability, stochastic systems, and ML
-                alongside my undergrad in applied math on a Dean&rsquo;s Scholarship.
+                in measure theory, probability, stochastic RL, and ML alongside
+                my undergrad on a Dean&rsquo;s Scholarship. I care a lot about{" "}
+                <Link href="/personal" className="about-link">public goods</Link>,
+                institutional trust, and why some countries figure it out and
+                others don&rsquo;t.
                 {" "}I also{" "}
                 <span
                   className="about-link easter-egg-link"
