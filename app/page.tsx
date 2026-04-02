@@ -19,7 +19,7 @@ export default function Home() {
               <div className="hero-scroll-statement">
                 <div className="hero-greeting-block">
                   <TextReveal as="h1" className="statement-text" delay={0.15}>
-                    Howdy.
+                    Howdy! I'm Abhi.
                   </TextReveal>
 
                   <Reveal delay={0.35}>
