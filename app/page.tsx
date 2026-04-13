@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import TextReveal from "@/components/TextReveal";
 import HeroIntro from "@/components/HeroIntro";
 
 export default function Home() {
+
   return (
     <>
       <HeroIntro />
@@ -24,26 +26,52 @@ export default function Home() {
 
                   <Reveal delay={0.35}>
                     <div className="status-bar">
-                      <div className="status-item">
-                        <span className="status-label">currently</span>
+                      <motion.div
+                        className="status-item"
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <span className="status-label">education</span>
                         <span className="status-value">
-                          incoming @{" "}
-                          <Link href="/experience" className="status-link">Optiver</Link>
+                          <span className="status-logo-link">
+                            <Link href="/courses" className="status-link status-link-pop">USC</Link>
+                            <img src="/assets/USC_square.png" alt="USC" className="status-logo-popup" />
+                          </span>
+                          {" "}&rsquo;26 &rarr;{" "}
+                          <span className="status-logo-link">
+                            <Link href="/courses" className="status-link status-link-pop">UChicago</Link>
+                            <img src="/assets/uchicago.svg" alt="UChicago" className="status-logo-popup" />
+                          </span>
+                          {" "}&rsquo;27
                         </span>
-                      </div>
-                      <div className="status-item">
-                        <span className="status-label">studying</span>
+                      </motion.div>
+                      <motion.div
+                        className="status-item"
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.65, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <span className="status-label">incoming</span>
                         <span className="status-value">
-                          mathematics @{" "}
-                          <Link href="/courses" className="status-link">USC</Link>
+                          trading @{" "}
+                          <span className="status-logo-link">
+                            <Link href="/experience" className="status-link status-link-pop">Optiver</Link>
+                            <img src="/assets/Optiver_square.png" alt="Optiver" className="status-logo-popup" />
+                          </span>
                         </span>
-                      </div>
-                      <div className="status-item">
-                        <span className="status-label">from</span>
-                        <span className="status-value">
-                          <Link href="/personal" className="status-link">Richmond, Mumbai, Dubai, LA</Link>
+                      </motion.div>
+                      <motion.div
+                        className="status-item"
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <span className="status-label">about</span>
+                        <span className="status-value status-value-muted">
+                          math, markets &amp; mechanism design
                         </span>
-                      </div>
+                      </motion.div>
                     </div>
                   </Reveal>
                 </div>
@@ -71,37 +99,41 @@ export default function Home() {
           <div className="about-content">
             <Reveal>
               <p className="about-para">
-                This summer I&rsquo;m trading options at{" "}
+                I&rsquo;m finishing up applied math at{" "}
+                <Link href="/courses" className="about-link">USC</Link>{" "}
+                on a Dean&rsquo;s Scholarship, then doing a master&rsquo;s
+                in applied math at{" "}
+                <Link href="/courses" className="about-link">UChicago</Link>.
+                This summer I&rsquo;m joining{" "}
                 <Link href="/experience" className="about-link">Optiver</Link>{" "}
-                in Chicago. Before that I sourced deals for a $500MM fund at{" "}
+                as a quant trader in Chicago. I&rsquo;ve done deal sourcing
+                for a $500MM venture fund at{" "}
                 <Link href="/experience" className="about-link">Iron Pillar</Link>{" "}
-                in Dubai, built census models at{" "}
+                in Dubai, population modeling for{" "}
                 <Link href="/experience" className="about-link">the World Bank</Link>{" "}
-                that actually worked 30% better, and somehow placed first out
-                of 40 teams at{" "}
-                <Link href="/experience" className="about-link">RBC</Link>.
-                I also got invited to{" "}
+                in DC, equity research at{" "}
+                <Link href="/experience" className="about-link">RBC</Link>{" "}
+                where my team placed first out of 40, and simulated trading
+                at{" "}
                 <Link href="/experience" className="about-link">Citadel Securities</Link>&rsquo;{" "}
-                trading invitational, which was mostly me sweating through
-                simulations in NYC.
+                invitational in New York.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                I do{" "}
+                What I spend most of my time thinking about is probability
+                and how people make decisions when they don&rsquo;t have full
+                information. I&rsquo;ve done{" "}
                 <Link href="/research" className="about-link">research</Link>{" "}
-                on things nobody asks me about at parties: random matrix theory,
-                stochastic control, why people refuse vaccines even when it&rsquo;s
-                free. I&rsquo;ve worked with Prof. Zhou on the Spielman-Teng
-                Conjecture, Prof. Ramcharan on optimization for policy, and
-                Prof. Iyer at{" "}
+                with Prof. Zhou on a conjecture in random matrix theory,
+                with Prof. Ramcharan on optimization models for economic policy,
+                and with Prof. Iyer at{" "}
                 <Link href="/research" className="about-link">Berkeley</Link>{" "}
-                on game-theoretic models of public health. I also build things
-                &mdash; Nash equilibrium solvers, poker bots, a limit order book
-                simulator, an AlphaZero engine, and too many{" "}
-                <Link href="/projects" className="about-link">mechanism design toys</Link>{" "}
-                to list here.
+                on modeling vaccination behavior. Most of my{" "}
+                <Link href="/projects" className="about-link">projects</Link>{" "}
+                live in that same world &mdash; poker bots, order book
+                simulators, equilibrium solvers, an AlphaZero engine.
               </p>
             </Reveal>
 
@@ -109,20 +141,12 @@ export default function Home() {
               <p className="about-para">
                 I{" "}
                 <Link href="/awards" className="about-link">debate</Link>{" "}
-                competitively &mdash; USUDC quarterfinals, Berkeley IV semis,
-                Team UAE at Worlds. I qualified for the{" "}
+                competitively &mdash; I&rsquo;ve broken at USUDC, Berkeley IV,
+                NAUDC, and represented the UAE at Worlds. I qualified for
+                the{" "}
                 <Link href="/awards" className="about-link">USAMO</Link>,
-                the AIME twice, and got distinction in the British Math Olympiad,
-                which sounds impressive until you learn how many people take it.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <p className="about-para">
-                Right now I&rsquo;m doing graduate{" "}
-                <Link href="/courses" className="about-link">coursework</Link>{" "}
-                in measure theory, probability, stochastic RL, and ML alongside
-                my undergrad on a Dean&rsquo;s Scholarship. I care a lot about{" "}
+                the AIME twice, and got distinction in the British Math Olympiad.
+                Outside of all that, I care a lot about{" "}
                 <Link href="/personal" className="about-link">public goods</Link>,
                 institutional trust, and why some countries figure it out and
                 others don&rsquo;t.
