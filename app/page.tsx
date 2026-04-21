@@ -99,49 +99,44 @@ export default function Home() {
           <div className="about-content">
             <Reveal>
               <p className="about-para">
-                Bachelor&rsquo;s in applied math at{" "}
+                I&rsquo;m finishing a bachelor&rsquo;s in applied math at{" "}
                 <Link href="/courses" className="about-link">USC</Link>{" "}
-                this spring, then a master&rsquo;s at{" "}
-                <Link href="/courses" className="about-link">UChicago</Link>.
-                This summer I&rsquo;m trading options at{" "}
+                this spring, then starting a master&rsquo;s at{" "}
+                <Link href="/courses" className="about-link">UChicago</Link>{" "}
+                in the fall. This summer I&rsquo;m at{" "}
                 <Link href="/experience" className="about-link">Optiver</Link>{" "}
-                in Chicago. Before that: sourcing deals for a $500MM fund at{" "}
+                in Chicago trading options. I&rsquo;ve also spent time at{" "}
                 <Link href="/experience" className="about-link">Iron Pillar</Link>{" "}
-                in Dubai, building census models at{" "}
-                <Link href="/experience" className="about-link">the World Bank</Link>{" "}
-                that actually worked 30% better, and placing first out of 40 at{" "}
-                <Link href="/experience" className="about-link">RBC</Link>.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <p className="about-para">
-                Most of my time goes to probability and why people make bad
-                decisions under uncertainty. I&rsquo;ve done{" "}
-                <Link href="/research" className="about-link">research</Link>{" "}
-                with Prof. Zhou on the Spielman-Teng Conjecture, with
-                Prof. Ramcharan on optimization for economic policy, and with
-                Prof. Iyer at{" "}
-                <Link href="/research" className="about-link">Berkeley</Link>{" "}
-                on game-theoretic models of vaccine hesitancy. My{" "}
-                <Link href="/projects" className="about-link">projects</Link>{" "}
-                are in the same neighborhood &mdash; poker bots, order book
-                simulators, equilibrium solvers, an AlphaZero engine.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <p className="about-para">
-                I{" "}
-                <Link href="/awards" className="about-link">debate</Link>{" "}
-                on the BP circuit &mdash; USUDC quarterfinals, Berkeley IV semis,
-                Team UAE at Worlds. I qualified for the{" "}
-                <Link href="/awards" className="about-link">USAMO</Link>{" "}
-                and the AIME twice. I also spend time around early-stage
-                startups, care a lot about{" "}
-                <Link href="/personal" className="about-link">public goods</Link>{" "}
-                and why some countries figure it out and others don&rsquo;t,
                 and{" "}
+                <Link href="/experience" className="about-link">the World Bank</Link>{" "}
+                &mdash; click for more.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <p className="about-para">
+                I&rsquo;m drawn to questions about probability, market structure,
+                and how rational behavior breaks down when information is incomplete.
+                I&rsquo;ve been lucky enough to explore this through{" "}
+                <Link href="/research" className="about-link">research</Link>{" "}
+                &mdash; on random matrix theory, optimization in policy systems,
+                and why people make the decisions they do around public health.
+                Most of my{" "}
+                <Link href="/projects" className="about-link">side projects</Link>{" "}
+                come from the same itch: building things to understand them better.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <p className="about-para">
+                Outside of that, I{" "}
+                <Link href="/awards" className="about-link">debate</Link>{" "}
+                competitively on the BP circuit and spent a lot of my teens doing
+                math olympiads &mdash; two things that taught me more about
+                how to think than almost anything else. I care a lot about{" "}
+                <Link href="/personal" className="about-link">public goods</Link>,
+                economic development, and why institutions work in some places
+                and fall apart in others. And I{" "}
                 <span
                   className="about-link easter-egg-link"
                   onClick={() => {
