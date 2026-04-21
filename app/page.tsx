@@ -99,40 +99,33 @@ export default function Home() {
           <div className="about-content">
             <Reveal>
               <p className="about-para">
-                I&rsquo;m finishing up applied math at{" "}
+                Bachelor&rsquo;s in applied math at{" "}
                 <Link href="/courses" className="about-link">USC</Link>{" "}
-                on a Dean&rsquo;s Scholarship, then doing a master&rsquo;s
-                in applied math at{" "}
+                this spring, then a master&rsquo;s at{" "}
                 <Link href="/courses" className="about-link">UChicago</Link>.
-                This summer I&rsquo;m joining{" "}
+                This summer I&rsquo;m trading options at{" "}
                 <Link href="/experience" className="about-link">Optiver</Link>{" "}
-                as a quant trader in Chicago. I&rsquo;ve done deal sourcing
-                for a $500MM venture fund at{" "}
+                in Chicago. Before that: sourcing deals for a $500MM fund at{" "}
                 <Link href="/experience" className="about-link">Iron Pillar</Link>{" "}
-                in Dubai, population modeling for{" "}
+                in Dubai, building census models at{" "}
                 <Link href="/experience" className="about-link">the World Bank</Link>{" "}
-                in DC, equity research at{" "}
-                <Link href="/experience" className="about-link">RBC</Link>{" "}
-                where my team placed first out of 40, and simulated trading
-                at{" "}
-                <Link href="/experience" className="about-link">Citadel Securities</Link>&rsquo;{" "}
-                invitational in New York.
+                that actually worked 30% better, and placing first out of 40 at{" "}
+                <Link href="/experience" className="about-link">RBC</Link>.
               </p>
             </Reveal>
 
             <Reveal delay={0.08}>
               <p className="about-para">
-                What I spend most of my time thinking about is probability
-                and how people make decisions when they don&rsquo;t have full
-                information. I&rsquo;ve done{" "}
+                Most of my time goes to probability and why people make bad
+                decisions under uncertainty. I&rsquo;ve done{" "}
                 <Link href="/research" className="about-link">research</Link>{" "}
-                with Prof. Zhou on a conjecture in random matrix theory,
-                with Prof. Ramcharan on optimization models for economic policy,
-                and with Prof. Iyer at{" "}
+                with Prof. Zhou on the Spielman-Teng Conjecture, with
+                Prof. Ramcharan on optimization for economic policy, and with
+                Prof. Iyer at{" "}
                 <Link href="/research" className="about-link">Berkeley</Link>{" "}
-                on modeling vaccination behavior. Most of my{" "}
+                on game-theoretic models of vaccine hesitancy. My{" "}
                 <Link href="/projects" className="about-link">projects</Link>{" "}
-                live in that same world &mdash; poker bots, order book
+                are in the same neighborhood &mdash; poker bots, order book
                 simulators, equilibrium solvers, an AlphaZero engine.
               </p>
             </Reveal>
@@ -141,16 +134,14 @@ export default function Home() {
               <p className="about-para">
                 I{" "}
                 <Link href="/awards" className="about-link">debate</Link>{" "}
-                competitively &mdash; I&rsquo;ve broken at USUDC, Berkeley IV,
-                NAUDC, and represented the UAE at Worlds. I qualified for
-                the{" "}
-                <Link href="/awards" className="about-link">USAMO</Link>,
-                the AIME twice, and got distinction in the British Math Olympiad.
-                Outside of all that, I care a lot about{" "}
-                <Link href="/personal" className="about-link">public goods</Link>,
-                institutional trust, and why some countries figure it out and
-                others don&rsquo;t.
-                {" "}I also{" "}
+                on the BP circuit &mdash; USUDC quarterfinals, Berkeley IV semis,
+                Team UAE at Worlds. I qualified for the{" "}
+                <Link href="/awards" className="about-link">USAMO</Link>{" "}
+                and the AIME twice. I also spend time around early-stage
+                startups, care a lot about{" "}
+                <Link href="/personal" className="about-link">public goods</Link>{" "}
+                and why some countries figure it out and others don&rsquo;t,
+                and{" "}
                 <span
                   className="about-link easter-egg-link"
                   onClick={() => {
